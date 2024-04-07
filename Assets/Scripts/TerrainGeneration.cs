@@ -20,6 +20,8 @@ public class TerrainGeneration : MonoBehaviour
 
     public Texture2D noiseTexture;
 
+    public bool isSolid = true;
+
     private void Start()
     {
         seed = Random.Range(-10000, 10000);
@@ -80,9 +82,15 @@ public class TerrainGeneration : MonoBehaviour
         GameObject newTile = new GameObject();
         newTile.transform.parent = this.transform;
         newTile.AddComponent<SpriteRenderer>();
+
+        newTile.AddComponent<BoxCollider2D>();
+        newTile.GetComponent<BoxCollider2D>().size = Vector2.one;
+        newTile.tag = "Ground";
         newTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
         newTile.name = tileSprite.name;
         newTile.transform.position = new Vector2(x + 0.5f, y+0.5f);
+
+        
 
     }
 }
