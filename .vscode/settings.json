@@ -56,6 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Void Piercers.sln",
+    "dotnet.defaultSolution": "voidPiercers.sln",
     "git.ignoreLimitWarning": true
 }
