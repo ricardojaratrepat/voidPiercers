@@ -31,16 +31,38 @@ public class PlayerController : MonoBehaviour
 
     public void DestroyBlockBelow()
     {
+        float horizontalDistance = 1f;
 
+        RaycastHit2D hitFarLeft = Physics2D.Raycast(transform.position + Vector3.left * horizontalDistance * 2, Vector2.down, 2f);
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position + Vector3.left * horizontalDistance, Vector2.down, 2f);
+        RaycastHit2D hitCenter = Physics2D.Raycast(transform.position, Vector2.down, 10f);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position + Vector3.right * horizontalDistance, Vector2.down, 2f);
+        RaycastHit2D hitFarRight = Physics2D.Raycast(transform.position + Vector3.right * horizontalDistance * 2, Vector2.down, 2f);
+        CheckHitAndDestroy(hitFarLeft);
+        CheckHitAndDestroy(hitLeft);
+        CheckHitAndDestroy(hitCenter);
+        CheckHitAndDestroy(hitRight);
+        CheckHitAndDestroy(hitFarRight);
+    }
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 10f);
-        Debug.Log(hit.collider.gameObject.name);
-        Debug.DrawRay(transform.position, Vector2.down * 10f, Color.red, 1f);
-        if (hit.collider != null && hit.collider.gameObject.CompareTag("Ground"))
-        {   Debug.Log(hit.collider.gameObject.name);
-            Destroy(hit.collider.gameObject);
+    private void CheckHitAndDestroy(RaycastHit2D hit)
+    {
+        if (hit.collider != null)
+        {
+            Debug.Log(hit.collider.gameObject.name);
+            Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 2f);
+            if (hit.collider.gameObject.CompareTag("Ground"))
+            {
+                Destroy(hit.collider.gameObject);
+            }
+        }
+        else
+        {
+            Debug.Log("No se encontró terreno debajo.");
         }
     }
+
+
 
     void FixedUpdate()
     {
@@ -63,10 +85,8 @@ public class PlayerController : MonoBehaviour
                 movement.y = jumpForce;
         }
 
-
         if (Input.GetKeyDown(KeyCode.S))
         {
-            Debug.Log("S key was pressed.");
             DestroyBlockBelow();
         }
 
