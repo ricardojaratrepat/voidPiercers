@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
+    }   
     private void OnTriggerStay2D(Collider2D col)
     {
         if (col.CompareTag("Ground"))
@@ -28,6 +28,20 @@ public class PlayerController : MonoBehaviour
             onGround = false;
         }
     }
+
+    public void DestroyBlockBelow()
+    {
+
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 10f);
+        Debug.Log(hit.collider.gameObject.name);
+        Debug.DrawRay(transform.position, Vector2.down * 10f, Color.red, 1f);
+        if (hit.collider != null && hit.collider.gameObject.CompareTag("Ground"))
+        {   Debug.Log(hit.collider.gameObject.name);
+            Destroy(hit.collider.gameObject);
+        }
+    }
+
     void FixedUpdate()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
@@ -47,6 +61,13 @@ public class PlayerController : MonoBehaviour
         {
             if (onGround)
                 movement.y = jumpForce;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("S key was pressed.");
+            DestroyBlockBelow();
         }
 
         rb.velocity = movement;
