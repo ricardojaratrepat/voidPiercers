@@ -18,11 +18,16 @@ public class InventoryManager : MonoBehaviour
     {
         if(Input.GetButtonDown("Inventory") && menuActivared)
         {
+            // Resumes the game
+            Time.timeScale = 1;
+
             InventoryMenu.SetActive(false);
             menuActivared = false;
         }
         else if(Input.GetButtonDown("Inventory") && !menuActivared)
         {
+            // Stops the game. (This can create problems if there is any animaiton in the manu)
+            Time.timeScale = 0;
             InventoryMenu.SetActive(true);
             menuActivared = true;
         }
