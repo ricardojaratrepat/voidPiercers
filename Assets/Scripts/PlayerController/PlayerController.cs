@@ -8,10 +8,14 @@ public class PlayerController : MonoBehaviour
     public bool onGround;
     private Rigidbody2D rb;
 
+    private InventoryManager inventoryManager;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
     }   
+
     private void OnTriggerStay2D(Collider2D col)
     {
         if (col.CompareTag("Ground"))
@@ -50,6 +54,12 @@ public class PlayerController : MonoBehaviour
         if (hit.collider != null)
         {
             Debug.Log(hit.collider.gameObject.name);
+            
+            if (hit.collider.gameObject.name != "Tierra pasto grande" && hit.collider.gameObject.name != "dirt")
+            {
+                inventoryManager.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite);
+            }
+
             Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 2f);
             if (hit.collider.gameObject.CompareTag("Ground"))
             {
