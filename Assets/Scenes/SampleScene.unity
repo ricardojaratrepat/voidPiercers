@@ -135,6 +135,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: idle excavadora derecha_0
       objectReference: {fileID: 0}
+    - target: {fileID: 1912520463210223147, guid: f7b8bbc7fee52944ba813c90b5bb36ce, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4837830102259291566, guid: f7b8bbc7fee52944ba813c90b5bb36ce, type: 3}
       propertyPath: m_LocalPosition.x
       value: 53
