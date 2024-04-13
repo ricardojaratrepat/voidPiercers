@@ -25,6 +25,7 @@ public class ItemSlot : MonoBehaviour
         if (this.quantity > 0)
         {
             this.quantity += quantity;
+            quantityText.text = this.quantity.ToString();
             return;
         }
         
@@ -32,7 +33,7 @@ public class ItemSlot : MonoBehaviour
         this.quantity = quantity;
         this.itemSprite = itemSprite;
 
-        quantityText.text = quantity.ToString();
+        quantityText.text = this.quantity.ToString();
         quantityText.enabled = true;
         itemImage.sprite = itemSprite;
         itemImage.enabled = true;
