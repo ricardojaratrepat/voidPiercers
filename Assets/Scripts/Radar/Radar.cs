@@ -6,7 +6,7 @@ public class Radar : MonoBehaviour
 {
     [SerializeField] private Transform pfRadarPing;
     private Transform sweetTransform; 
-    private float rotationSpeed;
+    public float rotationSpeed;
     private float radarDistance;
     private List<Collider2D> colliderList;
     private bool isRotating;
@@ -16,11 +16,15 @@ public class Radar : MonoBehaviour
         float angleRad = angle * (Mathf.PI / 180f);
         return new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
     }
+    private void Start()
+    {
+        sweetTransform.gameObject.SetActive(false); // Desactivar el objeto del radar al inicio
+    }
 
     private void Awake()
     {
         sweetTransform = transform.Find("Sweet");
-        rotationSpeed = 180f;
+        rotationSpeed = 450f;
         radarDistance = 40f;
         colliderList = new List<Collider2D>();
         isRotating = false;
