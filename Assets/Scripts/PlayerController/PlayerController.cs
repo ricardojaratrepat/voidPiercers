@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public bool onGround;
     private Rigidbody2D rb;
-
+    public float maxRotationAngle = 45f;
     private InventoryManager inventoryManager;
 
     void Start()
@@ -37,11 +37,11 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalDistance = 1f;
 
-        RaycastHit2D hitFarLeft = Physics2D.Raycast(transform.position + Vector3.left * horizontalDistance * 2, Vector2.down, 2f);
-        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position + Vector3.left * horizontalDistance, Vector2.down, 2f);
-        RaycastHit2D hitCenter = Physics2D.Raycast(transform.position, Vector2.down, 10f);
-        RaycastHit2D hitRight = Physics2D.Raycast(transform.position + Vector3.right * horizontalDistance, Vector2.down, 2f);
-        RaycastHit2D hitFarRight = Physics2D.Raycast(transform.position + Vector3.right * horizontalDistance * 2, Vector2.down, 2f);
+        RaycastHit2D hitFarLeft = Physics2D.Raycast(transform.position + Vector3.left * horizontalDistance * 2, Vector2.down, 1.5f);
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position + Vector3.left * horizontalDistance, Vector2.down, 1.5f);
+        RaycastHit2D hitCenter = Physics2D.Raycast(transform.position, Vector2.down, 1.5f);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position + Vector3.right * horizontalDistance, Vector2.down, 1.5f);
+        RaycastHit2D hitFarRight = Physics2D.Raycast(transform.position + Vector3.right * horizontalDistance * 2, Vector2.down, 1.5f);
         CheckHitAndDestroy(hitFarLeft);
         CheckHitAndDestroy(hitLeft);
         CheckHitAndDestroy(hitCenter);
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
                 inventoryManager.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite);
             }
 
-            Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 2f);
+            Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 1.5f);
             if (hit.collider.gameObject.CompareTag("Ground"))
             {
                 Destroy(hit.collider.gameObject);
@@ -102,6 +102,17 @@ public class PlayerController : MonoBehaviour
 
         rb.velocity = movement;
         
+        float zRotation = transform.rotation.eulerAngles.z;
+        if (zRotation > maxRotationAngle && zRotation < 360 - maxRotationAngle)
+        {
+            // Calculate target rotation
+            float targetZRotation = Mathf.Clamp(zRotation, -maxRotationAngle, maxRotationAngle);
+            Quaternion targetRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, targetZRotation);
+
+            // Interpolate between current rotation and target rotation
+            float rotationSpeed = 5.0f; // Adjust this value to change the speed of rotation
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
 
     }
 }

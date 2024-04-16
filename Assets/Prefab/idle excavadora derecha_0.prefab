@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 4837830102259291566}
   - component: {fileID: 6307193405901806825}
   - component: {fileID: 30256993446866197}
-  - component: {fileID: 2919972912930264009}
   - component: {fileID: 2250940146531717972}
   - component: {fileID: 2498581715904759698}
   - component: {fileID: 6493983967309698790}
+  - component: {fileID: -273314659248202975}
   m_Layer: 0
   m_Name: idle excavadora derecha_0
   m_TagString: Player
@@ -110,41 +110,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!70 &2919972912930264009
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912520463210223147}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.25, y: 0}
-  m_Size: {x: 4.57, y: 2.4}
-  m_Direction: 1
 --- !u!50 &2250940146531717972
 Rigidbody2D:
   serializedVersion: 4
@@ -171,7 +136,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!70 &2498581715904759698
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -222,3 +187,60 @@ MonoBehaviour:
   moveSpeed: 10
   jumpForce: 12
   onGround: 0
+  maxRotationAngle: 45
+--- !u!60 &-273314659248202975
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912520463210223147}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 2.53125}
+    newSize: {x: 4, y: 2.53125}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -1.28125, y: 1.171875}
+      - {x: -1.625, y: 1.140625}
+      - {x: -1.84375, y: 0.578125}
+      - {x: -1.96875, y: -0.703125}
+      - {x: -1.96875, y: -0.953125}
+      - {x: -1.9375, y: -1.046875}
+      - {x: -1.78125, y: -1.203125}
+      - {x: 1.3125, y: -1.203125}
+      - {x: 2, y: 0.078125}
+      - {x: 2, y: 0.515625}
+      - {x: 1.03125, y: 1.171875}
+  m_UseDelaunayMesh: 0
