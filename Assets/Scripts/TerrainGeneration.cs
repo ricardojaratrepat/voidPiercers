@@ -9,6 +9,7 @@ public class TerrainGeneration : MonoBehaviour
     public Sprite grass;
     public Sprite stone;
 
+    public int chunkSize = 20;
     public bool generateCaves = true;
     public float surfaceValue = 0.25f;
     public int worldSize = 100;
@@ -19,6 +20,7 @@ public class TerrainGeneration : MonoBehaviour
     public float seed;
 
     public Texture2D noiseTexture;
+    private GameObject[] worldChunks;
 
     public bool isSolid = true;
 
@@ -26,9 +28,21 @@ public class TerrainGeneration : MonoBehaviour
     {
         seed = Random.Range(-10000, 10000);
         GenerateNoiseTexture();
+        CreateChunks();
         GenerateTerrain();
     }
-
+    public void CreateChunks()
+    {
+        int numChuncks = worldSize / chunkSize;
+        worldChunks = new GameObject[numChuncks];
+        for (int i = 0; i < numChuncks; i++)
+        {
+            GameObject newChunk = new GameObject();
+            newChunk.name = i.ToString();
+            newChunk.transform.parent = this.transform;
+            worldChunks[i] = newChunk;
+        }
+    }
     public void GenerateTerrain()
     {
         for (int x = 0; x < worldSize; x++)
@@ -77,10 +91,16 @@ public class TerrainGeneration : MonoBehaviour
         noiseTexture.Apply();
     }
 
-    public void PlaceTile (Sprite tileSprite, float x, float y)
+    public void PlaceTile (Sprite tileSprite, int x, int y)
     {
         GameObject newTile = new GameObject();
-        newTile.transform.parent = this.transform;
+
+
+        int chunkCoord = Mathf.RoundToInt(x / chunkSize) * chunkSize;
+        chunkCoord /= chunkSize;
+        newTile.transform.parent = worldChunks[(int) chunkCoord].transform;
+        
+        
         newTile.AddComponent<SpriteRenderer>();
 
         newTile.AddComponent<BoxCollider2D>();
