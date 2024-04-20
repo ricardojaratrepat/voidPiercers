@@ -48,6 +48,7 @@ MonoBehaviour:
   dirt: {fileID: 21300000, guid: 3af46e165bbaddf42b07b5acaa23e2b6, type: 3}
   grass: {fileID: 21300000, guid: 3f53ba10aaf92aa438ff6b85634d880e, type: 3}
   stone: {fileID: 21300000, guid: 9555689cdb0108a4385b7cf1118fef61, type: 3}
+  chunkSize: 20
   generateCaves: 1
   surfaceValue: 0.25
   worldSize: 100
@@ -57,3 +58,4 @@ MonoBehaviour:
   heightAddition: 25
   seed: 567
   noiseTexture: {fileID: 0}
+  isSolid: 1
