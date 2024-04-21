@@ -4,30 +4,96 @@ using UnityEngine;
 
 public class TerrainGeneration : MonoBehaviour
 {
+    
+    public TileAtlas tileAtlas;
+    
     public int dirtLayerHeight = 5;
-    public Sprite dirt;
-    public Sprite grass;
-    public Sprite stone;
-
     public int chunkSize = 20;
     public bool generateCaves = true;
     public float surfaceValue = 0.25f;
     public int worldSize = 100;
-    public float caveFreq = 0.05f;
-    public float terrainFreq = 0.05f;
     public float heightMultiplier = 4f;
     public int heightAddition = 25;
+    
+
+    public float terrainFreq = 0.05f;
+    public float caveFreq = 0.05f;
     public float seed;
 
-    public Texture2D noiseTexture;
+    public float coalRarity;
+    public float coalSize;
+    public float ironRarity;
+    public float ironSize;
+    public float iceRarity;
+    public float iceSize;
+    public float uraniumRarity;
+    public float uraniumSize;
+    public float alfacrystalRarity;
+    public float alfacrystalSize;
+    public float tungstenRarity;
+    public float tungstenSize;
+    public Texture2D ironSpread;
+    public Texture2D coalSpread;
+    public Texture2D iceSpread;
+    public Texture2D uraniumSpread;
+    public Texture2D alfacrystalSpread;
+    public Texture2D tungstenSpread;
+
+
+
+
+    public Texture2D caveNoiseTexture;
     private GameObject[] worldChunks;
 
     public bool isSolid = true;
 
+    private void OnValidate()
+    {
+        if (caveNoiseTexture == null)
+        {
+            caveNoiseTexture = new Texture2D(worldSize, worldSize);
+            ironSpread = new Texture2D(worldSize, worldSize);
+            iceSpread = new Texture2D(worldSize, worldSize);
+            uraniumSpread = new Texture2D(worldSize, worldSize);
+            alfacrystalSpread = new Texture2D(worldSize, worldSize);
+            tungstenSpread = new Texture2D(worldSize, worldSize);
+            coalSpread = new Texture2D(worldSize, worldSize);
+        }
+            GenerateNoiseTexture(caveFreq, surfaceValue, caveNoiseTexture);
+
+            //ores
+            GenerateNoiseTexture(ironRarity, ironSize, ironSpread);
+            GenerateNoiseTexture(iceRarity, iceSize, iceSpread);
+            GenerateNoiseTexture(uraniumRarity, uraniumSize, uraniumSpread);
+            GenerateNoiseTexture(alfacrystalRarity, alfacrystalSize, alfacrystalSpread);
+            GenerateNoiseTexture(tungstenRarity, tungstenSize, tungstenSpread);
+            GenerateNoiseTexture(coalRarity, coalSize, coalSpread);
+        
+    }
+
     private void Start()
     {
+        if (caveNoiseTexture == null)
+        {
+            caveNoiseTexture = new Texture2D(worldSize, worldSize);
+            ironSpread = new Texture2D(worldSize, worldSize);
+            iceSpread = new Texture2D(worldSize, worldSize);
+            uraniumSpread = new Texture2D(worldSize, worldSize);
+            alfacrystalSpread = new Texture2D(worldSize, worldSize);
+            tungstenSpread = new Texture2D(worldSize, worldSize);
+            coalSpread = new Texture2D(worldSize, worldSize);
+        }
+
         seed = Random.Range(-10000, 10000);
-        GenerateNoiseTexture();
+        GenerateNoiseTexture(caveFreq,surfaceValue,caveNoiseTexture);
+
+        //ores
+        GenerateNoiseTexture(ironRarity,ironSize, ironSpread);
+        GenerateNoiseTexture(iceRarity,iceSize, iceSpread);
+        GenerateNoiseTexture(uraniumRarity,uraniumSize, uraniumSpread);
+        GenerateNoiseTexture(alfacrystalRarity,alfacrystalSize, alfacrystalSpread);
+        GenerateNoiseTexture(tungstenRarity,tungstenSize, tungstenSpread);
+        GenerateNoiseTexture(coalRarity,coalSize, coalSpread);
         CreateChunks();
         GenerateTerrain();
     }
@@ -53,19 +119,28 @@ public class TerrainGeneration : MonoBehaviour
                 Sprite tileSprite;
                 if (y < height - dirtLayerHeight) 
                 {
-                    tileSprite = stone;
+                    if (coalSpread.GetPixel(x, y).r > 0.5f)
+                        tileSprite = tileAtlas.coal.tileSprite;
+
+
+
+
+
+
+                    else
+                        tileSprite = tileAtlas.stone.tileSprite;
                 }
                 else if (y < height - 1)
                 {
-                    tileSprite = dirt;
+                    tileSprite = tileAtlas.dirt.tileSprite;
                 }
                 else
                 {
-                    tileSprite = grass;   
+                    tileSprite = tileAtlas.grass.tileSprite;   
                 }
                 if (generateCaves)
                 {
-                    if (noiseTexture.GetPixel(x, y).r > surfaceValue)
+                    if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
                     {
                         PlaceTile(tileSprite, x , y);
                     }
@@ -77,15 +152,17 @@ public class TerrainGeneration : MonoBehaviour
             }
         }
     }
-    public void GenerateNoiseTexture()
+    public void GenerateNoiseTexture(float frequency,float limit,Texture2D noiseTexture )
     {
-        noiseTexture = new Texture2D(worldSize, worldSize);
         for (int x = 0; x < noiseTexture.width; x++)
         {
             for (int y = 0; y < noiseTexture.height; y++)
             {
-                float v = Mathf.PerlinNoise((x + seed) * caveFreq,(y + seed)* caveFreq);
-                noiseTexture.SetPixel(x, y, new Color(v, v, v));
+                float v = Mathf.PerlinNoise((x + seed) * frequency, (y + seed)* frequency);
+                if (v > limit)
+                noiseTexture.SetPixel(x, y, Color.white);
+                else
+                    noiseTexture.SetPixel(x, y, Color.black);
             }
         }
         noiseTexture.Apply();

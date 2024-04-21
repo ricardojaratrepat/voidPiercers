@@ -44,18 +44,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae5573d143e08b64faf58ff59844e169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileAtlas: {fileID: 11400000, guid: 234be705f4d27d2489bb958acae1e706, type: 2}
   dirtLayerHeight: 5
-  dirt: {fileID: 21300000, guid: 3af46e165bbaddf42b07b5acaa23e2b6, type: 3}
-  grass: {fileID: 21300000, guid: 3f53ba10aaf92aa438ff6b85634d880e, type: 3}
-  stone: {fileID: 21300000, guid: 9555689cdb0108a4385b7cf1118fef61, type: 3}
   chunkSize: 20
   generateCaves: 1
   surfaceValue: 0.25
   worldSize: 100
-  caveFreq: 0.08
-  terrainFreq: 0.04
   heightMultiplier: 25
   heightAddition: 25
+  terrainFreq: 0.04
+  caveFreq: 0.08
   seed: 567
-  noiseTexture: {fileID: 0}
+  coalRarity: 0.13
+  coalSize: 0.7
+  ironRarity: 0
+  ironSize: 0
+  iceRarity: 0
+  iceSize: 0
+  uraniumRarity: 0
+  uraniumSize: 0
+  alfacrystalRarity: 0
+  alfacrystalSize: 0
+  tungstenRarity: 0
+  tungstenSize: 0
+  ironSpread: {fileID: 0}
+  coalSpread: {fileID: 0}
+  iceSpread: {fileID: 0}
+  uraniumSpread: {fileID: 0}
+  alfacrystalSpread: {fileID: 0}
+  tungstenSpread: {fileID: 0}
+  caveNoiseTexture: {fileID: 0}
   isSolid: 1

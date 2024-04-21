@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2498581715904759698}
   - component: {fileID: 6493983967309698790}
   - component: {fileID: -273314659248202975}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: idle excavadora derecha_0
   m_TagString: Player
   m_Icon: {fileID: 0}

@@ -2680,6 +2680,10 @@ PrefabInstance:
       propertyPath: stone
       value: 
       objectReference: {fileID: 21300000, guid: a790180016fe80b43bfe7e014a275e89, type: 3}
+    - target: {fileID: 2063752810992289788, guid: f5df42739fe3e0e4f96aa2bf73f371fb, type: 3}
+      propertyPath: tileAtlas
+      value: 
+      objectReference: {fileID: 11400000, guid: 234be705f4d27d2489bb958acae1e706, type: 2}
     - target: {fileID: 2183523851864137697, guid: f5df42739fe3e0e4f96aa2bf73f371fb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 49.7
