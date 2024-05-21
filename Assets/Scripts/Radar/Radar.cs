@@ -71,21 +71,19 @@ public class Radar : MonoBehaviour
             RaycastHit2D[] raycastHit2DArray = Physics2D.RaycastAll(transform.position, GetVectorFromAngle(sweetTransform.eulerAngles.z), radarDistance);
             foreach (RaycastHit2D raycastHit2D in raycastHit2DArray)
             {
-                if (raycastHit2D.collider != null)
+                if (raycastHit2D.collider != null && (raycastHit2D.collider.CompareTag("Enemy") || raycastHit2D.collider.CompareTag("Ore")))
                 {
                     if (!colliderList.Contains(raycastHit2D.collider))
                     {
                         colliderList.Add(raycastHit2D.collider);
-                        SpriteRenderer spriteRenderer = raycastHit2D.collider.GetComponent<SpriteRenderer>();
-                        if (spriteRenderer != null && spriteRenderer.sprite.name == "HealthIcon")
+                        RadarPing radarPing = Instantiate(pfRadarPing, raycastHit2D.point, Quaternion.identity).GetComponent<RadarPing>();
+                        if (raycastHit2D.collider.CompareTag("Enemy"))
                         {
-                            RadarPing radarPing = Instantiate(pfRadarPing, raycastHit2D.point, Quaternion.identity).GetComponent<RadarPing>();
-                            radarPing.SetColor(new Color(0, 1, 0));
+                            radarPing.SetColor(new Color(1, 0, 0));  // Rojo para enemigos
                         }
-                        if (spriteRenderer != null && spriteRenderer.sprite.name == "MinimapBorder")
+                        else if (raycastHit2D.collider.CompareTag("Ore"))
                         {
-                            RadarPing radarPing = Instantiate(pfRadarPing, raycastHit2D.point, Quaternion.identity).GetComponent<RadarPing>();
-                            radarPing.SetColor(new Color(1, 0, 0));
+                            radarPing.SetColor(new Color(0, 1, 0));  // Verde para minerales
                         }
                     }
                 }
