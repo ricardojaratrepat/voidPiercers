@@ -73,8 +73,6 @@ public class BatController : MonoBehaviour
 
             // Aplicar impulso de knockback
             ApplyKnockback(knockbackDirection);
-
-            Debug.Log("Colisionando con el jugador");
         }
     }
 
