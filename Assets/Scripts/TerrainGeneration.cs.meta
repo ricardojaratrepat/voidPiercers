@@ -3,7 +3,15 @@ guid: ae5573d143e08b64faf58ff59844e169
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - tileAtlas: {instanceID: 0}
+  - ironSpread: {instanceID: 0}
+  - coalSpread: {instanceID: 0}
+  - iceSpread: {instanceID: 0}
+  - uraniumSpread: {instanceID: 0}
+  - alfacrystalSpread: {instanceID: 0}
+  - tungstenSpread: {instanceID: 0}
+  - caveNoiseTexture: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

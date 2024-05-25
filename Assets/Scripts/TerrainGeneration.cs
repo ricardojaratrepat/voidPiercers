@@ -20,24 +20,7 @@ public class TerrainGeneration : MonoBehaviour
     public float caveFreq = 0.05f;
     public float seed;
 
-    public float coalRarity;
-    public float coalSize;
-    public float ironRarity;
-    public float ironSize;
-    public float iceRarity;
-    public float iceSize;
-    public float uraniumRarity;
-    public float uraniumSize;
-    public float alfacrystalRarity;
-    public float alfacrystalSize;
-    public float tungstenRarity;
-    public float tungstenSize;
-    public Texture2D ironSpread;
-    public Texture2D coalSpread;
-    public Texture2D iceSpread;
-    public Texture2D uraniumSpread;
-    public Texture2D alfacrystalSpread;
-    public Texture2D tungstenSpread;
+    public OreClass[] ores;
 
 
 
@@ -49,51 +32,64 @@ public class TerrainGeneration : MonoBehaviour
 
     private void OnValidate()
     {
-        if (caveNoiseTexture == null)
-        {
-            caveNoiseTexture = new Texture2D(worldSize, worldSize);
-            ironSpread = new Texture2D(worldSize, worldSize);
-            iceSpread = new Texture2D(worldSize, worldSize);
-            uraniumSpread = new Texture2D(worldSize, worldSize);
-            alfacrystalSpread = new Texture2D(worldSize, worldSize);
-            tungstenSpread = new Texture2D(worldSize, worldSize);
-            coalSpread = new Texture2D(worldSize, worldSize);
-        }
-            GenerateNoiseTexture(caveFreq, surfaceValue, caveNoiseTexture);
+        caveNoiseTexture = new Texture2D(worldSize, worldSize);
+        ores[0].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[1].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[2].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[3].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[4].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[5].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[6].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[7].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[8].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[9].spreadTexture = new Texture2D(worldSize, worldSize);
 
-            //ores
-            GenerateNoiseTexture(ironRarity, ironSize, ironSpread);
-            GenerateNoiseTexture(iceRarity, iceSize, iceSpread);
-            GenerateNoiseTexture(uraniumRarity, uraniumSize, uraniumSpread);
-            GenerateNoiseTexture(alfacrystalRarity, alfacrystalSize, alfacrystalSpread);
-            GenerateNoiseTexture(tungstenRarity, tungstenSize, tungstenSpread);
-            GenerateNoiseTexture(coalRarity, coalSize, coalSpread);
-        
+        GenerateNoiseTexture(caveFreq, surfaceValue, caveNoiseTexture);
+
+        //ores
+
+        GenerateNoiseTexture(ores[0].rarity, ores[0].size, ores[0].spreadTexture);
+        GenerateNoiseTexture(ores[1].rarity, ores[1].size, ores[1].spreadTexture);
+        GenerateNoiseTexture(ores[2].rarity, ores[2].size, ores[2].spreadTexture);
+        GenerateNoiseTexture(ores[3].rarity, ores[3].size, ores[3].spreadTexture);
+        GenerateNoiseTexture(ores[4].rarity, ores[4].size, ores[4].spreadTexture);
+        GenerateNoiseTexture(ores[5].rarity, ores[5].size, ores[5].spreadTexture);
+        GenerateNoiseTexture(ores[6].rarity, ores[6].size, ores[6].spreadTexture);
+        GenerateNoiseTexture(ores[7].rarity, ores[7].size, ores[7].spreadTexture);
+        GenerateNoiseTexture(ores[8].rarity, ores[8].size, ores[8].spreadTexture);
+        GenerateNoiseTexture(ores[9].rarity, ores[9].size, ores[9].spreadTexture);
+
     }
 
     private void Start()
     {
-        if (caveNoiseTexture == null)
-        {
-            caveNoiseTexture = new Texture2D(worldSize, worldSize);
-            ironSpread = new Texture2D(worldSize, worldSize);
-            iceSpread = new Texture2D(worldSize, worldSize);
-            uraniumSpread = new Texture2D(worldSize, worldSize);
-            alfacrystalSpread = new Texture2D(worldSize, worldSize);
-            tungstenSpread = new Texture2D(worldSize, worldSize);
-            coalSpread = new Texture2D(worldSize, worldSize);
-        }
+
+        caveNoiseTexture = new Texture2D(worldSize, worldSize);
+        ores[0].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[1].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[2].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[3].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[4].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[5].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[6].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[7].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[8].spreadTexture = new Texture2D(worldSize, worldSize);
+        ores[9].spreadTexture = new Texture2D(worldSize, worldSize);
 
         seed = Random.Range(-10000, 10000);
         GenerateNoiseTexture(caveFreq,surfaceValue,caveNoiseTexture);
 
         //ores
-        GenerateNoiseTexture(ironRarity,ironSize, ironSpread);
-        GenerateNoiseTexture(iceRarity,iceSize, iceSpread);
-        GenerateNoiseTexture(uraniumRarity,uraniumSize, uraniumSpread);
-        GenerateNoiseTexture(alfacrystalRarity,alfacrystalSize, alfacrystalSpread);
-        GenerateNoiseTexture(tungstenRarity,tungstenSize, tungstenSpread);
-        GenerateNoiseTexture(coalRarity,coalSize, coalSpread);
+        GenerateNoiseTexture(ores[0].rarity, ores[0].size, ores[0].spreadTexture);
+        GenerateNoiseTexture(ores[1].rarity, ores[1].size, ores[1].spreadTexture);
+        GenerateNoiseTexture(ores[2].rarity, ores[2].size, ores[2].spreadTexture);
+        GenerateNoiseTexture(ores[3].rarity, ores[3].size, ores[3].spreadTexture);
+        GenerateNoiseTexture(ores[4].rarity, ores[4].size, ores[4].spreadTexture);
+        GenerateNoiseTexture(ores[5].rarity, ores[5].size, ores[5].spreadTexture);
+        GenerateNoiseTexture(ores[6].rarity, ores[6].size, ores[6].spreadTexture);
+        GenerateNoiseTexture(ores[7].rarity, ores[7].size, ores[7].spreadTexture);
+        GenerateNoiseTexture(ores[8].rarity, ores[8].size, ores[8].spreadTexture);
+        GenerateNoiseTexture(ores[9].rarity, ores[9].size, ores[9].spreadTexture);
         CreateChunks();
         GenerateTerrain();
     }
@@ -119,16 +115,31 @@ public class TerrainGeneration : MonoBehaviour
                 Sprite tileSprite;
                 if (y < height - dirtLayerHeight) 
                 {
-                    if (coalSpread.GetPixel(x, y).r > 0.5f)
+                    tileSprite = tileAtlas.stone.tileSprite;
+
+                    if (ores[0].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[0].maxSpawnHeight )
                         tileSprite = tileAtlas.coal.tileSprite;
+                    if (ores[1].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[1].maxSpawnHeight)
+                        tileSprite = tileAtlas.iron.tileSprite;
+                    if (ores[2].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[2].maxSpawnHeight)
+                        tileSprite = tileAtlas.ice.tileSprite;
+                    if (ores[3].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[3].maxSpawnHeight)
+                        tileSprite = tileAtlas.alfa_crystal.tileSprite;
+                    if (ores[4].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[4].maxSpawnHeight)
+                        tileSprite = tileAtlas.cobalto.tileSprite;
+                    if (ores[5].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[5].maxSpawnHeight)
+                        tileSprite = tileAtlas.tungsten.tileSprite;
+                    if (ores[6].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[6].maxSpawnHeight)
+                        tileSprite = tileAtlas.uranio.tileSprite;
+                    if (ores[7].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[7].maxSpawnHeight)
+                        tileSprite = tileAtlas.platino.tileSprite;
+                    if (ores[8].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[8].maxSpawnHeight)
+                        tileSprite = tileAtlas.titanio.tileSprite;
+                    if (ores[9].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[9].maxSpawnHeight)
+                        tileSprite = tileAtlas.mugufin.tileSprite;
 
 
 
-
-
-
-                    else
-                        tileSprite = tileAtlas.stone.tileSprite;
                 }
                 else if (y < height - 1)
                 {
