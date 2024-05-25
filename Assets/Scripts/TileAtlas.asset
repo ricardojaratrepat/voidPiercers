@@ -16,5 +16,12 @@ MonoBehaviour:
   grass: {fileID: 11400000, guid: fcf954db318d21c4fa7c86e16ecafc08, type: 2}
   stone: {fileID: 11400000, guid: 7c52ad66bb5af274385d4cd3a9bcc8b2, type: 2}
   coal: {fileID: 11400000, guid: 269417e4bb925fc4b997cb0bac5f2b92, type: 2}
-  iron: {fileID: 0}
-  ice: {fileID: 0}
+  iron: {fileID: 11400000, guid: c0950d4db3e52c441b153d951f1a9127, type: 2}
+  ice: {fileID: 11400000, guid: f3ae6e62ccbff8d40994da43c9403c4f, type: 2}
+  mugufin: {fileID: 11400000, guid: 8dfec1d90f2aba04a8bd60eea68c0c8a, type: 2}
+  platino: {fileID: 11400000, guid: 1af2c418d8fb4c64fb8e3e4c7b1e2524, type: 2}
+  cobalto: {fileID: 11400000, guid: cd336543021d3ed4fb4a918498f08227, type: 2}
+  alfa_crystal: {fileID: 11400000, guid: 6900c6a6e8262e5479de5ec9ae2d55c8, type: 2}
+  titanio: {fileID: 11400000, guid: 9f550eaad765a5b439646d991f00b3b1, type: 2}
+  tungsten: {fileID: 11400000, guid: c4a02fd0e8c745249ad2e08d4731cb02, type: 2}
+  uranio: {fileID: 11400000, guid: edf0bbe2427383845806eb950dec6ef4, type: 2}
