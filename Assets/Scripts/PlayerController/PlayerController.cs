@@ -10,12 +10,20 @@ public class PlayerController : MonoBehaviour
     public float maxRotationAngle = 45f;
     private InventoryManager inventoryManager;
 
+    // Texto temporal
     public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
+
+    public CaveLighting caveLighting;
+    public float surfaceValue = 0.25f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
+        if (caveLighting == null)
+        {
+            Debug.LogError("CaveLighting no encontrado en la escena!");
+        }
     }   
 
     private void OnTriggerStay2D(Collider2D col)
@@ -100,6 +108,15 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.velocity = movement;
+
+        if (transform.position.y < surfaceValue)
+        {
+            caveLighting.SetCaveStatus(true);
+        }
+        else
+        {
+            caveLighting.SetCaveStatus(false);
+        }
         
         float zRotation = transform.rotation.eulerAngles.z;
         if (zRotation > maxRotationAngle && zRotation < 360 - maxRotationAngle)
