@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
 
     public CaveLighting caveLighting;
-    public float surfaceValue = 0.25f;
+    public float surfaceValue = 110;
 
     void Start()
     {
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.velocity = movement;
-
+        Debug.Log(transform.position.y);
         if (transform.position.y < surfaceValue)
         {
             caveLighting.SetCaveStatus(true);

@@ -183,22 +183,28 @@ public class TerrainGeneration : MonoBehaviour
     {
         GameObject newTile = new GameObject();
 
-
         int chunkCoord = Mathf.RoundToInt(x / chunkSize) * chunkSize;
         chunkCoord /= chunkSize;
         newTile.transform.parent = worldChunks[(int) chunkCoord].transform;
-        
-        
+
         newTile.AddComponent<SpriteRenderer>();
+        newTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
 
         newTile.AddComponent<BoxCollider2D>();
         newTile.GetComponent<BoxCollider2D>().size = Vector2.one;
-        newTile.tag = "Ground";
-        newTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
-        newTile.name = tileSprite.name;
-        newTile.transform.position = new Vector2(x + 0.5f, y+0.5f);
 
-        
+        newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
 
+        // Asigna el tag "Ore" si el sprite es el de carbón
+        if (tileSprite == tileAtlas.coal.tileSprite || tileSprite == tileAtlas.iron.tileSprite || tileSprite == tileAtlas.ice.tileSprite || tileSprite == tileAtlas.alfa_crystal.tileSprite || tileSprite == tileAtlas.cobalto.tileSprite || tileSprite == tileAtlas.tungsten.tileSprite || tileSprite == tileAtlas.uranio.tileSprite || tileSprite == tileAtlas.platino.tileSprite || tileSprite == tileAtlas.titanio.tileSprite || tileSprite == tileAtlas.mugufin.tileSprite)
+        {
+            newTile.tag = "Ore";
+        }
+        else
+        {
+            newTile.tag = "Ground";  // O cualquier otro tag apropiado para otros tipos de tiles
+        }
+
+        newTile.name = tileSprite.name;  // Este es opcional, pero ayuda en la organización y debugging
     }
 }
