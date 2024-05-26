@@ -31,9 +31,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5165647208235101738}
   - {fileID: 3427169842844181315}
   - {fileID: 4765143196560081838}
-  - {fileID: 5165647208235101738}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -95,8 +95,16 @@ MonoBehaviour:
   quantity: 0
   itemSprite: {fileID: 0}
   isFull: 0
+  itemDescription: 
+  emptySprite: {fileID: 21300000, guid: 329642d752fd903529db47f2692e59b5, type: 3}
+  maxNumberOfItems: 50
   quantityText: {fileID: 4671548554873425711}
   itemImage: {fileID: 5979499354713977180}
+  itemDescriptionImage: {fileID: 5979499354713977180}
+  itemDescriptionNameText: {fileID: 0}
+  itemDescriptionText: {fileID: 0}
+  selecredShader: {fileID: 5118289098173598156}
+  thisItemSelected: 0
 --- !u!1 &5118289098173598156
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +245,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 329642d752fd903529db47f2692e59b5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

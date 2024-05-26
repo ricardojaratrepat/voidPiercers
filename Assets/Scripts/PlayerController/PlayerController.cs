@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public float maxRotationAngle = 45f;
     private InventoryManager inventoryManager;
 
+    public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -55,10 +57,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log(hit.collider.gameObject.name);
             
-            if (hit.collider.gameObject.name != "Tierra pasto grande" && hit.collider.gameObject.name != "dirt")
-            {
-                inventoryManager.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite);
-            }
+            inventoryManager.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
 
             Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 1.5f);
             if (hit.collider.gameObject.CompareTag("Ground"))
