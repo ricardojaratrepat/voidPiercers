@@ -15,6 +15,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public string itemDescription;
     public Sprite emptySprite;
 
+    [SerializeField]
+    private int maxNumberOfItems;
+
     // ------------- Item Slot -----------------
     [SerializeField]
     private TMP_Text quantityText;
@@ -40,13 +43,18 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public void AddItem(string itemName, int quantity, Sprite itemSprite, string itemDescription)
     {
         this.itemName = itemName;
-        this.quantity = quantity;
         this.itemSprite = itemSprite;
         this.itemDescription = itemDescription;
-        isFull = true;
 
+        this.quantity += quantity;
         quantityText.text = this.quantity.ToString();
         quantityText.enabled = true;
+
+        if (this.quantity >= maxNumberOfItems)
+        {
+            isFull = true;
+        }
+
         itemImage.sprite = itemSprite;
     }
 
