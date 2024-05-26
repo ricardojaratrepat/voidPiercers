@@ -15,11 +15,14 @@ public class TerrainGeneration : MonoBehaviour
     public float heightMultiplier = 4f;
     public int heightAddition = 25;
     
+    
+
+
 
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;
     public float seed;
-
+    public GameObject redBlockPrefab; 
     public OreClass[] ores;
 
 
@@ -155,6 +158,16 @@ public class TerrainGeneration : MonoBehaviour
                     {
                         PlaceTile(tileSprite, x , y);
                     }
+                    else
+                    {  
+                        // Aca cambiar el bloque por un enemigo de cueva
+                        int random = RandomNumber();
+                        if (random < 1)
+                        {
+                            Vector3 position = new Vector3(x, y, 0);
+                            Instantiate(redBlockPrefab, position, Quaternion.identity);
+                        }
+                    }
                 }
                 else 
                 {
@@ -162,6 +175,11 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
+    }
+
+    private int RandomNumber()
+    {
+        return Random.Range(0, 100);
     }
     public void GenerateNoiseTexture(float frequency,float limit,Texture2D noiseTexture )
     {

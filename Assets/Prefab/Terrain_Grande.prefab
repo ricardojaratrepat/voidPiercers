@@ -58,7 +58,7 @@ MonoBehaviour:
   ores:
   - name: Coal
     rarity: 0.13
-    size: 0.7
+    size: 0.75
     maxSpawnHeight: 5
     spreadTexture: {fileID: 0}
   - name: Iron
