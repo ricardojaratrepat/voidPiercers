@@ -38,12 +38,7 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < itemSlot.Length; i++)
         {
-            if (itemSlot[i].itemName == itemName && itemSlot[i].isFull == false)
-            {
-                itemSlot[i].AddItem(itemName, quantity, itemSprite);
-                return;
-            }
-            else if (itemSlot[i].isFull == false)
+            if (itemSlot[i].isFull == false)
             {
                 itemSlot[i].AddItem(itemName, quantity, itemSprite);
                 return;

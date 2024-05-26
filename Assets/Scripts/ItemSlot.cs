@@ -22,25 +22,13 @@ public class ItemSlot : MonoBehaviour
 
     public void AddItem(string itemName, int quantity, Sprite itemSprite)
     {
-        if (this.quantity > 0)
-        {
-            this.quantity += quantity;
-            quantityText.text = this.quantity.ToString();
-            return;
-        }
-        
         this.itemName = itemName;
         this.quantity = quantity;
         this.itemSprite = itemSprite;
+        isFull = true;
 
         quantityText.text = this.quantity.ToString();
         quantityText.enabled = true;
         itemImage.sprite = itemSprite;
-        itemImage.enabled = true;
-
-        if (this.quantity >= 100)
-        {
-            isFull = true;
-        }
     }
 }
