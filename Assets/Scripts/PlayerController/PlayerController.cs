@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
             inventoryManager.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
 
             Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 1.5f);
-            if (hit.collider.gameObject.CompareTag("Ground"))
+            if (hit.collider.gameObject.CompareTag("Ground") || hit.collider.gameObject.CompareTag("Ore"))
             {
                 Destroy(hit.collider.gameObject);
             }
