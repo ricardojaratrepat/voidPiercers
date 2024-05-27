@@ -56,7 +56,7 @@ namespace Laser
                 {
                     targetEndPosition = hit.point;
                     // Destroy(hit.collider.gameObject);
-                    hit.collider.gameObject.GetComponent<EnemyHealth>().TakeDamage(0.1f);
+                    hit.collider.gameObject.GetComponent<EnemyHealth>().TakeDamage(0.5f);
                 }
             }
 

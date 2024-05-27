@@ -158,33 +158,40 @@ public class PlayerController : MonoBehaviour
         }
 
         // Handle digging
-        if (Time.time - lastDigTime >= digCooldown)
+        bool isDigging = false;
+
+        if (Input.GetKey(KeyCode.S) && Time.time - lastDigTime >= digCooldown)
         {
-            if (Input.GetKey(KeyCode.S))
-            {
-                DestroyBlock(Vector2.down);
-                lastDigTime = Time.time;
-                float angle = transform.localScale.x > 0 ? -90f : 90; // Ajustar el ángulo basado en la dirección
-                transform.rotation = Quaternion.Euler(0f, 0f, angle); // Rotar la nave 90 grados hacia abajo
-            }
-            if (Input.GetKey(KeyCode.W))
+            DestroyBlock(Vector2.down);
+            lastDigTime = Time.time;
+            float angle = transform.localScale.x > 0 ? -90f : 90; // Ajustar el ángulo basado en la dirección
+            transform.rotation = Quaternion.Euler(0f, 0f, angle); // Rotar la nave 90 grados hacia abajo
+            isDigging = true;
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            if (onGround || isDigging) // Verificar si está en el suelo o ya está excavando
             {
                 DestroyBlock(Vector2.up);
                 rb.velocity = new Vector2(rb.velocity.x, digJumpForce); // Aplicar un pequeño salto
                 lastDigTime = Time.time;
                 float angle = transform.localScale.x > 0 ? 90f : -90f; // Ajustar el ángulo basado en la dirección
                 transform.rotation = Quaternion.Euler(0f, 0f, angle); // Rotar la nave 90 grados hacia arriba
+                isDigging = true;
             }
-            if (Input.GetKey(KeyCode.A))
-            {
-                DestroyBlock(Vector2.left);
-                lastDigTime = Time.time;
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                DestroyBlock(Vector2.right);
-                lastDigTime = Time.time;
-            }
+        }
+
+        if (Input.GetKey(KeyCode.A) && Time.time - lastDigTime >= digCooldown)
+        {
+            DestroyBlock(Vector2.left);
+            lastDigTime = Time.time;
+        }
+
+        if (Input.GetKey(KeyCode.D) && Time.time - lastDigTime >= digCooldown)
+        {
+            DestroyBlock(Vector2.right);
+            lastDigTime = Time.time;
         }
 
         // Fix the rotation to ensure the player stays horizontal when not digging
