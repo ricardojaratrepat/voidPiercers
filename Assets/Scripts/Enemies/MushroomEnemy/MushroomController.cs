@@ -15,7 +15,7 @@ namespace Mushroom
         private readonly float chaseSpeed = 5f;
         private readonly float minChaseDistance = 15f;
 
-        private readonly float explotionRadius = 2f;
+        private readonly float explotionRadius = 3f;
         private float distanceToPlayer;
         private float localScaleFactor;
         private CapsuleCollider2D capsuleCollider;
@@ -87,7 +87,7 @@ namespace Mushroom
 
         public void ProduceDamage()
         {
-             if (distanceToPlayer < minChaseDistance)
+             if (distanceToPlayer < explotionRadius)
             {
                 FindFirstObjectByType<HealthController>().TakeDamage(damage);
             }
