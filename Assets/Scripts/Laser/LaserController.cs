@@ -2,34 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserController : MonoBehaviour
+
+namespace Laser
 {
-    private LineRenderer lineRenderer;
-    private float maxDistance = 10f;
-    private Vector3 currentEndPosition;
-    public LayerMask layerMask; // Añadir una variable para la máscara de capa
-
-    private bool isFiring = false; // Variable para rastrear si el láser está siendo disparado
-
-    void Start()
+    public class LaserController : MonoBehaviour
     {
-        lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.positionCount = 2;
-        currentEndPosition = transform.position + Vector3.right * maxDistance; // Inicializar con alguna dirección
-    }
+        private LineRenderer lineRenderer;
+        private readonly float maxDistance = 10f;
+        private Vector3 currentEndPosition;
+        public LayerMask layerMask; // Añadir una variable para la máscara de capa
 
-    void Update()
-    {
-        if (Input.GetMouseButton(0)) // Verifica si el botón izquierdo del mouse está siendo presionado
+        void Start()
         {
-            isFiring = true; // El láser está siendo disparado
-        }
-        else
-        {
-            isFiring = false; // El láser no está siendo disparado
+            lineRenderer = GetComponent<LineRenderer>();
+            lineRenderer.positionCount = 2;
+            currentEndPosition = transform.position + Vector3.right * maxDistance; // Inicializar con alguna dirección
         }
 
-        if (isFiring) // Si el láser está siendo disparado
+        void Update()
+        {
+            if (Input.GetMouseButton(0)) // Verifica si el botón izquierdo del mouse está siendo presionado
+            {
+                if (LaserState.currentDuration < LaserState.maxDuration)
+                {
+                    LaserState.currentDuration += Time.deltaTime;
+                    StartLaser();
+                }
+                else
+                {
+                    StopLaser();
+                }
+            }
+            else
+            {
+                StopLaser();
+            }
+            Debug.Log(LaserState.currentDuration);
+
+        }
+
+        void StartLaser()
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0f; // Asegúrate de que la posición Z sea 0 ya que estamos en 2D
@@ -57,9 +69,11 @@ public class LaserController : MonoBehaviour
             lineRenderer.SetPosition(0, transform.position); // Posición inicial del láser
             lineRenderer.SetPosition(1, currentEndPosition); // Posición final del láser con retraso suave o punto de impacto
         }
-        else
+
+        void StopLaser()
         {
             lineRenderer.enabled = false; // Ocultar el láser
         }
     }
+
 }

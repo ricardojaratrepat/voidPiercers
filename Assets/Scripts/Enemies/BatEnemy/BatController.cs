@@ -13,15 +13,15 @@ public class BatController : MonoBehaviour
     public float minChaseDistance = 15f;
 
     public float knockbackForce = 5f;
-    public float knockbackDuration = 0.5f; // Duración del knockback en segundos
+    public float knockbackDuration = 0.5f; 
 
-    private bool isKnockbackActive = false; // Variable para controlar si el knockback está activo
+    private bool isKnockbackActive = false; 
 
     private float damage = 10f;
 
     void Start()
     {
-        Player = GameObject.FindObjectOfType<PlayerController>().gameObject;
+        Player = FindObjectOfType<PlayerController>().gameObject;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -65,18 +65,15 @@ public class BatController : MonoBehaviour
     {
         if (collision.gameObject == Player)
         {
-            // // Player.GetComponent<HealthController>().TakeDamage(damage);
             FindFirstObjectByType<HealthController>().TakeDamage(damage);
-            // Calcular dirección de knockback
-            Vector2 knockbackDirection = transform.position - Player.transform.position;
-            knockbackDirection.Normalize(); // Normalizar para una fuerza consistente
 
-            // Aplicar impulso de knockback
+            Vector2 knockbackDirection = transform.position - Player.transform.position;
+            knockbackDirection.Normalize();
+
             ApplyKnockback(knockbackDirection);
         }
     }
 
-    // Función para aplicar el knockback
     void ApplyKnockback(Vector2 knockbackDirection)
     {
         if (!isKnockbackActive)
@@ -84,16 +81,14 @@ public class BatController : MonoBehaviour
             isKnockbackActive = true;
             rb.velocity = knockbackDirection * knockbackForce;
 
-            // Iniciar temporizador para desactivar el knockback después de cierto tiempo
             StartCoroutine(DisableKnockbackAfterDelay());
         }
     }
 
-    // Coroutine para desactivar el knockback después de cierto tiempo
     IEnumerator DisableKnockbackAfterDelay()
     {
         yield return new WaitForSeconds(knockbackDuration);
         isKnockbackActive = false;
-        rb.velocity = Vector2.zero; // Reiniciar la velocidad después del knockback
+        rb.velocity = Vector2.zero;
     }
 }

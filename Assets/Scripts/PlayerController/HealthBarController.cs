@@ -8,16 +8,13 @@ public class HealthController : MonoBehaviour
     // Start is called before the first frame update
     public float maxHealth = 100f;
     public float currentHealth;
-
-    private GameObject healthBar;
     private Slider slider;
     public Gradient gradient;
     public Image fill;
 
     void Start()
     {
-        healthBar = GameObject.Find("HealthBar");
-        slider = healthBar.GetComponent<Slider>();
+        slider = GetComponent<Slider>();
         slider.maxValue = maxHealth;
         slider.value = maxHealth;
         currentHealth = maxHealth;
@@ -26,11 +23,6 @@ public class HealthController : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
@@ -38,7 +30,7 @@ public class HealthController : MonoBehaviour
         {
             currentHealth = 0;
         }
-        healthBar.GetComponent<Slider>().value = currentHealth;
+        slider.value = currentHealth;
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
 }
