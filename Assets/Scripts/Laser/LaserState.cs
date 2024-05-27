@@ -6,7 +6,7 @@ namespace Laser
 {
     public static class LaserState
     {
-        public static float maxDuration = 3f;
+        public static float maxDuration = 300f;
         public static float currentDuration = 0f;
         
     }

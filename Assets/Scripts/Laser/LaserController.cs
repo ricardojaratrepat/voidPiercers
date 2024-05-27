@@ -37,8 +37,6 @@ namespace Laser
             {
                 StopLaser();
             }
-            Debug.Log(LaserState.currentDuration);
-
         }
 
         void StartLaser()
@@ -57,8 +55,8 @@ namespace Laser
                 if (hit.collider.CompareTag("Enemy"))
                 {
                     targetEndPosition = hit.point;
-                    Debug.Log("Hit enemy");
-                    Destroy(hit.collider.gameObject);
+                    // Destroy(hit.collider.gameObject);
+                    hit.collider.gameObject.GetComponent<EnemyHealth>().TakeDamage(0.1f);
                 }
             }
 
