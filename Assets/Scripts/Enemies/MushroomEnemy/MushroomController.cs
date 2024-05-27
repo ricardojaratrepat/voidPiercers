@@ -10,11 +10,13 @@ namespace Mushroom
         private Rigidbody2D rb;
         private Animator animator;
         private Vector2 velocity;
-        public float damage = 40f;
+        private readonly float damage = 40f;
 
-        public float chaseSpeed = 5f;
-        public float minChaseDistance = 15f;
+        private readonly float chaseSpeed = 5f;
+        private readonly float minChaseDistance = 15f;
 
+        private readonly float explotionRadius = 2f;
+        private float distanceToPlayer;
         private float localScaleFactor;
         private CapsuleCollider2D capsuleCollider;
 
@@ -30,7 +32,7 @@ namespace Mushroom
         // Update is called once per frame
         void Update()
         {
-            float distanceToPlayer = Vector3.Distance(Player.transform.position, transform.position);
+            distanceToPlayer = Vector3.Distance(Player.transform.position, transform.position);
 
             if (distanceToPlayer < minChaseDistance)
             {
@@ -80,8 +82,15 @@ namespace Mushroom
 
         public void DestroyMushroom()
         {
-            FindFirstObjectByType<HealthController>().TakeDamage(damage);
             Destroy(gameObject);
+        }
+
+        public void ProduceDamage()
+        {
+             if (distanceToPlayer < minChaseDistance)
+            {
+                FindFirstObjectByType<HealthController>().TakeDamage(damage);
+            }
         }
     }
 }
