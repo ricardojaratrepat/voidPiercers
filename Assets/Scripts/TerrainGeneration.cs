@@ -15,6 +15,8 @@ public class TerrainGeneration : MonoBehaviour
     public float heightMultiplier = 4f;
     public int heightAddition = 25;
     
+    public GameObject MushroomPrefab;
+    public GameObject BatPrefab;
     
 
 
@@ -165,7 +167,16 @@ public class TerrainGeneration : MonoBehaviour
                         if (random < 1)
                         {
                             Vector3 position = new Vector3(x, y, 0);
-                            Instantiate(redBlockPrefab, position, Quaternion.identity);
+
+                            random = Random.Range(0, 2);
+                            if (random == 0)
+                            {
+                                Instantiate(BatPrefab, position, Quaternion.identity);
+                            }
+                            else
+                            {
+                                Instantiate(MushroomPrefab, position, Quaternion.identity);
+                            }
                         }
                     }
                 }

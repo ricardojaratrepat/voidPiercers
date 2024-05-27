@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -5817123399911898968}
   m_Layer: 0
   m_Name: BatEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2260099436999903733}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.79, y: 45.84, z: -0.033215117}
+  m_LocalPosition: {x: 55.9, y: 130.3, z: -0.033215117}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -134,7 +134,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!114 &5100629974537081092
 MonoBehaviour:
@@ -149,7 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseSpeed: 5
-  minChaseDistance: 15
+  minChaseDistance: 10
+  knockbackForce: 10
+  knockbackDuration: 0.5
 --- !u!58 &-5817123399911898968
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -182,6 +184,6 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.2, y: 0}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 0.70965576
