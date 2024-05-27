@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed;
-    public float jumpForce;
+    public float moveSpeed = 5f;
+    public float jumpForce = 10f;
+    public float digJumpForce = 4f; // Nueva variable para la fuerza de salto al excavar hacia arriba
     public bool onGround;
     private Rigidbody2D rb;
-    public float maxRotationAngle = 45f;
     private InventoryManager inventoryManager;
+    private float digCooldown = 0.3f;
+    private float lastDigTime;
+    public float maxRotationAngle = 45f;
 
     // Texto temporal
     public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
@@ -20,19 +23,20 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
+        lastDigTime = -digCooldown; // Allows digging immediately at start
         if (caveLighting == null)
         {
             Debug.LogError("CaveLighting no encontrado en la escena!");
         }
-    }   
+    }
 
     private void OnTriggerStay2D(Collider2D col)
     {
         if (col.CompareTag("Ground"))
         {
             onGround = true;
+            Debug.Log("On Ground");
         }
-
     }
 
     private void OnTriggerExit2D(Collider2D col)
@@ -40,23 +44,66 @@ public class PlayerController : MonoBehaviour
         if (col.CompareTag("Ground"))
         {
             onGround = false;
+            Debug.Log("Left Ground");
         }
     }
 
-    public void DestroyBlockBelow()
+    public void DestroyBlock(Vector2 direction)
     {
         float horizontalDistance = 1f;
+        float verticalDistance = 1f;
+        Vector3 rayOriginOffset = Vector3.zero;
+        RaycastHit2D[] hits = new RaycastHit2D[7]; // Inicializar el array con 7 elementos
 
-        RaycastHit2D hitFarLeft = Physics2D.Raycast(transform.position + Vector3.left * horizontalDistance * 2, Vector2.down, 1.5f);
-        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position + Vector3.left * horizontalDistance, Vector2.down, 1.5f);
-        RaycastHit2D hitCenter = Physics2D.Raycast(transform.position, Vector2.down, 1.5f);
-        RaycastHit2D hitRight = Physics2D.Raycast(transform.position + Vector3.right * horizontalDistance, Vector2.down, 1.5f);
-        RaycastHit2D hitFarRight = Physics2D.Raycast(transform.position + Vector3.right * horizontalDistance * 2, Vector2.down, 1.5f);
-        CheckHitAndDestroy(hitFarLeft);
-        CheckHitAndDestroy(hitLeft);
-        CheckHitAndDestroy(hitCenter);
-        CheckHitAndDestroy(hitRight);
-        CheckHitAndDestroy(hitFarRight);
+        // Determinar la posición de origen de los rayos en función de la dirección
+        if (direction == Vector2.left)
+        {
+            rayOriginOffset = new Vector3(-horizontalDistance, 0, 0);
+        }
+        else if (direction == Vector2.right)
+        {
+            rayOriginOffset = new Vector3(horizontalDistance, 0, 0);
+        }
+        else if (direction == Vector2.down)
+        {
+            rayOriginOffset = new Vector3(0, -verticalDistance, 0);
+        }
+        else if (direction == Vector2.up)
+        {
+            rayOriginOffset = new Vector3(0, verticalDistance, 0);
+        }
+
+        // Ajustar las posiciones de los rayos según la dirección
+        if (direction == Vector2.left || direction == Vector2.right)
+        {
+            // Ajustar los rayos para originarse en la punta de la nave
+            Vector3 tipOffset = new Vector3(direction.x * 1.5f, 0, 0); // Mover más hacia la punta
+            hits[0] = Physics2D.Raycast(transform.position + tipOffset + (Vector3.up * verticalDistance * 1.5f), direction, horizontalDistance);
+            hits[1] = Physics2D.Raycast(transform.position + tipOffset + (Vector3.up * verticalDistance), direction, horizontalDistance);
+            hits[2] = Physics2D.Raycast(transform.position + tipOffset + (Vector3.up * verticalDistance / 2), direction, horizontalDistance);
+            hits[3] = Physics2D.Raycast(transform.position + tipOffset, direction, horizontalDistance);
+            hits[4] = Physics2D.Raycast(transform.position + tipOffset + (Vector3.down * verticalDistance / 2), direction, horizontalDistance);
+            hits[5] = Physics2D.Raycast(transform.position + tipOffset + (Vector3.down * verticalDistance), direction, horizontalDistance);
+            hits[6] = Physics2D.Raycast(transform.position + tipOffset + (Vector3.down * verticalDistance * 1.5f), direction, horizontalDistance);
+        }
+        else if (direction == Vector2.down || direction == Vector2.up)
+        {
+            hits[0] = Physics2D.Raycast(transform.position + rayOriginOffset + (Vector3.left * horizontalDistance * 1.5f), direction, verticalDistance);
+            hits[1] = Physics2D.Raycast(transform.position + rayOriginOffset + (Vector3.left * horizontalDistance), direction, verticalDistance);
+            hits[2] = Physics2D.Raycast(transform.position + rayOriginOffset + (Vector3.left * horizontalDistance / 2), direction, verticalDistance);
+            hits[3] = Physics2D.Raycast(transform.position + rayOriginOffset, direction, verticalDistance);
+            hits[4] = Physics2D.Raycast(transform.position + rayOriginOffset + (Vector3.right * horizontalDistance / 2), direction, verticalDistance);
+            hits[5] = Physics2D.Raycast(transform.position + rayOriginOffset + (Vector3.right * horizontalDistance), direction, verticalDistance);
+            hits[6] = Physics2D.Raycast(transform.position + rayOriginOffset + (Vector3.right * horizontalDistance * 1.5f), direction, verticalDistance);
+        }
+
+        // Visualizar los rayos
+        foreach (var hit in hits)
+        {
+            Vector3 rayStart = transform.position + rayOriginOffset;
+            Debug.DrawRay(rayStart, (Vector3)direction * 1.5f, Color.red, 1.5f); // Dibuja un rayo rojo en la escena
+            CheckHitAndDestroy(hit);
+        }
     }
 
     private void CheckHitAndDestroy(RaycastHit2D hit)
@@ -64,8 +111,11 @@ public class PlayerController : MonoBehaviour
         if (hit.collider != null)
         {
             Debug.Log(hit.collider.gameObject.name);
-            
-            inventoryManager.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
+
+            if (hit.collider.gameObject.name != "Tierra pasto grande" && hit.collider.gameObject.name != "dirt")
+            {
+                inventoryManager.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
+            }
 
             Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 1.5f);
             if (hit.collider.gameObject.CompareTag("Ground") || hit.collider.gameObject.CompareTag("Ore"))
@@ -75,39 +125,75 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("No se encontró terreno debajo.");
+            Debug.Log("No se encontró terreno.");
         }
     }
 
-
-
     void FixedUpdate()
     {
+        // Handle movement
         float moveHorizontal = Input.GetAxis("Horizontal");
-        float jump = Input.GetAxis("Jump");
-        float vertical = Input.GetAxisRaw("Vertical");
-        
+        bool isMovingLeft = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
+        bool isMovingRight = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
+
+        // Apply horizontal movement
         Vector2 movement = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y);
-        if (moveHorizontal < 0)
+        rb.velocity = movement;
+
+        // Apply rotation
+        if (isMovingLeft)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if (moveHorizontal > 0)
+        else if (isMovingRight)
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
-        if (vertical > 0.1f || jump > 0.1f)
+
+        // Apply jump
+        if (Input.GetKeyDown(KeyCode.Space) && onGround)
         {
-            if (onGround)
-                movement.y = jumpForce;
+            Debug.Log("Jumping");
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        // Handle digging
+        if (Time.time - lastDigTime >= digCooldown)
         {
-            DestroyBlockBelow();
+            if (Input.GetKey(KeyCode.S))
+            {
+                DestroyBlock(Vector2.down);
+                lastDigTime = Time.time;
+                float angle = transform.localScale.x > 0 ? -90f : 90; // Ajustar el ángulo basado en la dirección
+                transform.rotation = Quaternion.Euler(0f, 0f, angle); // Rotar la nave 90 grados hacia abajo
+            }
+            if (Input.GetKey(KeyCode.W))
+            {
+                DestroyBlock(Vector2.up);
+                rb.velocity = new Vector2(rb.velocity.x, digJumpForce); // Aplicar un pequeño salto
+                lastDigTime = Time.time;
+                float angle = transform.localScale.x > 0 ? 90f : -90f; // Ajustar el ángulo basado en la dirección
+                transform.rotation = Quaternion.Euler(0f, 0f, angle); // Rotar la nave 90 grados hacia arriba
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                DestroyBlock(Vector2.left);
+                lastDigTime = Time.time;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                DestroyBlock(Vector2.right);
+                lastDigTime = Time.time;
+            }
         }
 
-        rb.velocity = movement;
+        // Fix the rotation to ensure the player stays horizontal when not digging
+        if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+
+        // Cave lighting logic
         Debug.Log(transform.position.y);
         if (transform.position.y < surfaceValue)
         {
@@ -117,7 +203,8 @@ public class PlayerController : MonoBehaviour
         {
             caveLighting.SetCaveStatus(false);
         }
-        
+
+        // Limit rotation angle
         float zRotation = transform.rotation.eulerAngles.z;
         if (zRotation > maxRotationAngle && zRotation < 360 - maxRotationAngle)
         {
@@ -129,6 +216,5 @@ public class PlayerController : MonoBehaviour
             float rotationSpeed = 5.0f; // Adjust this value to change the speed of rotation
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
-
     }
 }
