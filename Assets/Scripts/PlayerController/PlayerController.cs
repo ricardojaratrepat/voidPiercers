@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
         if (col.CompareTag("Ground"))
         {
             onGround = true;
-            Debug.Log("On Ground");
         }
     }
 
@@ -44,7 +43,6 @@ public class PlayerController : MonoBehaviour
         if (col.CompareTag("Ground"))
         {
             onGround = false;
-            Debug.Log("Left Ground");
         }
     }
 
