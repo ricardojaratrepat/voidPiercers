@@ -12,7 +12,7 @@ public class CameraFollow : MonoBehaviour
         if (target != null)
         {
             // Calcula la posición deseada de la cámara
-            Vector3 desiredPosition = new Vector3(target.position.x + offset.x, target.position.y + offset.y, transform.position.z);
+            Vector3 desiredPosition = new Vector3(target.position.x + offset.x, target.position.y + offset.y, -2);
             
             // Aplica suavizado al movimiento de la cámara
             Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
