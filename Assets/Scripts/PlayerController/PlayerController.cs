@@ -151,7 +151,6 @@ public class PlayerController : MonoBehaviour
         // Apply jump
         if (Input.GetKeyDown(KeyCode.Space) && onGround)
         {
-            Debug.Log("Jumping");
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
@@ -199,7 +198,6 @@ public class PlayerController : MonoBehaviour
         }
 
         // Cave lighting logic
-        Debug.Log(transform.position.y);
         if (transform.position.y < surfaceValue)
         {
             caveLighting.SetCaveStatus(true);
