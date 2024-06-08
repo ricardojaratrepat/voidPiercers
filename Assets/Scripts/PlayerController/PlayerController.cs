@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
     public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
 
     public CaveLighting caveLighting;
-    public float surfaceValue = 110;
 
     void Start()
     {
@@ -27,6 +26,10 @@ public class PlayerController : MonoBehaviour
         if (caveLighting == null)
         {
             Debug.LogError("CaveLighting no encontrado en la escena!");
+        }
+        else 
+        {
+            caveLighting.SetCaveStatus(true);
         }
     }
 
@@ -195,16 +198,6 @@ public class PlayerController : MonoBehaviour
         if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
         {
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-        }
-
-        // Cave lighting logic
-        if (transform.position.y < surfaceValue)
-        {
-            caveLighting.SetCaveStatus(true);
-        }
-        else
-        {
-            caveLighting.SetCaveStatus(false);
         }
 
         // Limit rotation angle
