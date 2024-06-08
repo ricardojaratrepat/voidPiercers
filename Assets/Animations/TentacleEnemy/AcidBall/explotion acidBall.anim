@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!74 &7400000
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: explotion acidBall
+  serializedVersion: 7
+  m_Legacy: 0
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves: []
+  m_PPtrCurves:
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: 21300000, guid: 0f24471c23ed5d74fb67b9e3e7f881f1, type: 3}
+    - time: 0.083333336
+      value: {fileID: 21300000, guid: fb559aa64085f1f4abc88853cce74de1, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: bdc7de9cd06af4643bab48216ed5e726, type: 3}
+    - time: 0.25
+      value: {fileID: 21300000, guid: bf403ec87882c1547905fbc62242adf5, type: 3}
+    - time: 0.33333334
+      value: {fileID: 21300000, guid: 37fc5e785d1bc2346b1060e2ae40070f, type: 3}
+    - time: 0.41666666
+      value: {fileID: 21300000, guid: 53132250929607a43a7b332f91aecae2, type: 3}
+    - time: 0.5
+      value: {fileID: 21300000, guid: 1137de21fc81e884e99c6b2d1e148679, type: 3}
+    - time: 0.5833333
+      value: {fileID: 21300000, guid: 342abcf0da3e25d439a6e071e7f91d9b, type: 3}
+    - time: 0.6666667
+      value: {fileID: 21300000, guid: f9d74c4ebb0cf13488c37a75febe0325, type: 3}
+    - time: 0.75
+      value: {fileID: 21300000, guid: 424899ff3f5003d4a8633451a56db9e3, type: 3}
+    - time: 0.8333333
+      value: {fileID: 21300000, guid: b0e38e11405ce7540a5748ef5c945c61, type: 3}
+    - time: 0.9166667
+      value: {fileID: 21300000, guid: 09b23bd602d79c54b96daabb462a6c41, type: 3}
+    - time: 1
+      value: {fileID: 21300000, guid: b3e44d19addc61d45b1836ae1143f18e, type: 3}
+    - time: 1.0833334
+      value: {fileID: 21300000, guid: 3814ef7a4024f90488b755d0503aa452, type: 3}
+    attribute: m_Sprite
+    path: 
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
+  m_SampleRate: 12
+  m_WrapMode: 0
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_ClipBindingConstant:
+    genericBindings:
+    - serializedVersion: 2
+      path: 0
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: 21300000, guid: 0f24471c23ed5d74fb67b9e3e7f881f1, type: 3}
+    - {fileID: 21300000, guid: fb559aa64085f1f4abc88853cce74de1, type: 3}
+    - {fileID: 21300000, guid: bdc7de9cd06af4643bab48216ed5e726, type: 3}
+    - {fileID: 21300000, guid: bf403ec87882c1547905fbc62242adf5, type: 3}
+    - {fileID: 21300000, guid: 37fc5e785d1bc2346b1060e2ae40070f, type: 3}
+    - {fileID: 21300000, guid: 53132250929607a43a7b332f91aecae2, type: 3}
+    - {fileID: 21300000, guid: 1137de21fc81e884e99c6b2d1e148679, type: 3}
+    - {fileID: 21300000, guid: 342abcf0da3e25d439a6e071e7f91d9b, type: 3}
+    - {fileID: 21300000, guid: f9d74c4ebb0cf13488c37a75febe0325, type: 3}
+    - {fileID: 21300000, guid: 424899ff3f5003d4a8633451a56db9e3, type: 3}
+    - {fileID: 21300000, guid: b0e38e11405ce7540a5748ef5c945c61, type: 3}
+    - {fileID: 21300000, guid: 09b23bd602d79c54b96daabb462a6c41, type: 3}
+    - {fileID: 21300000, guid: b3e44d19addc61d45b1836ae1143f18e, type: 3}
+    - {fileID: 21300000, guid: 3814ef7a4024f90488b755d0503aa452, type: 3}
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
+    m_StartTime: 0
+    m_StopTime: 1.1666667
+    m_OrientationOffsetY: 0
+    m_Level: 0
+    m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
+    m_LoopTime: 1
+    m_LoopBlend: 0
+    m_LoopBlendOrientation: 0
+    m_LoopBlendPositionY: 0
+    m_LoopBlendPositionXZ: 0
+    m_KeepOriginalOrientation: 0
+    m_KeepOriginalPositionY: 1
+    m_KeepOriginalPositionXZ: 0
+    m_HeightFromFeet: 0
+    m_Mirror: 0
+  m_EditorCurves: []
+  m_EulerEditorCurves: []
+  m_HasGenericRootTransform: 0
+  m_HasMotionFloatCurves: 0
+  m_Events:
+  - time: 1.0833334
+    functionName: DestroyAcidBall
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

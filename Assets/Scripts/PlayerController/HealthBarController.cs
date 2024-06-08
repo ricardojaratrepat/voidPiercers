@@ -33,4 +33,21 @@ public class HealthController : MonoBehaviour
         slider.value = currentHealth;
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
+
+    public void StartContinuousDamage(float damagePerSecond, float duration)
+    {
+        StartCoroutine(ApplyDamageOverTime(damagePerSecond, duration));
+    }
+
+    private IEnumerator ApplyDamageOverTime(float damagePerSecond, float duration)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            TakeDamage(damagePerSecond);
+            elapsed += 1f;
+            yield return new WaitForSeconds(1f);
+        }
+    }
 }
