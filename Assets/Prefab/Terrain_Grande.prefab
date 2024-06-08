@@ -49,62 +49,75 @@ MonoBehaviour:
   chunkSize: 20
   generateCaves: 1
   surfaceValue: 0.25
-  worldSize: 100
+  worldSize: 200
   heightMultiplier: 25
-  heightAddition: 100
+  heightAddition: 150
+  MushroomPrefab: {fileID: 6697065792217245716, guid: f390b7c09559eb24bb664691fa51592a, type: 3}
+  BatPrefab: {fileID: 2260099436999903733, guid: d2d97912d8e40e1499dd946f59d86de3, type: 3}
   terrainFreq: 0.04
-  caveFreq: 0.08
+  caveFreq: 0.0589
   seed: 567
+  redBlockPrefab: {fileID: 4748300391876488803, guid: 3c942194c38f8624ba0af873a2371ebf, type: 3}
   ores:
   - name: Coal
-    rarity: 0.13
-    size: 0.75
-    maxSpawnHeight: 5
+    rarity: 0.1
+    size: 0.78
+    profundidadMinima: 10
+    profundidadMaxima: 30
     spreadTexture: {fileID: 0}
   - name: Iron
-    rarity: 0.08
-    size: 0.8
-    maxSpawnHeight: 20
+    rarity: 0.095
+    size: 0.788
+    profundidadMinima: 20
+    profundidadMaxima: 50
     spreadTexture: {fileID: 0}
   - name: Ice
-    rarity: 0.12
-    size: 0.704
-    maxSpawnHeight: 20
+    rarity: 0.096
+    size: 0.835
+    profundidadMinima: 60
+    profundidadMaxima: 80
     spreadTexture: {fileID: 0}
   - name: Alfa crystal
-    rarity: 0.251
-    size: 0.804
-    maxSpawnHeight: 5
+    rarity: 0.172
+    size: 0.906
+    profundidadMinima: 5
+    profundidadMaxima: 0
     spreadTexture: {fileID: 0}
   - name: Cobalto
-    rarity: 0.256
-    size: 0.759
-    maxSpawnHeight: 35
+    rarity: 0.095
+    size: 0.788
+    profundidadMinima: 70
+    profundidadMaxima: 100
     spreadTexture: {fileID: 0}
   - name: Tungsten
-    rarity: 0.178
-    size: 0.799
-    maxSpawnHeight: 50
+    rarity: 0.095
+    size: 0.88
+    profundidadMinima: 70
+    profundidadMaxima: 100
     spreadTexture: {fileID: 0}
   - name: Uranio
-    rarity: 0.279
-    size: 0.724
-    maxSpawnHeight: 35
+    rarity: 0.096
+    size: 0.835
+    profundidadMinima: 110
+    profundidadMaxima: 130
     spreadTexture: {fileID: 0}
   - name: Platino
-    rarity: 0.228
-    size: 0.795
-    maxSpawnHeight: 50
+    rarity: 0.095
+    size: 0.788
+    profundidadMinima: 120
+    profundidadMaxima: 150
     spreadTexture: {fileID: 0}
   - name: Titanio
-    rarity: 0.215
-    size: 0.773
-    maxSpawnHeight: 50
+    rarity: 0.095
+    size: 0.88
+    profundidadMinima: 120
+    profundidadMaxima: 150
     spreadTexture: {fileID: 0}
   - name: Mugufin
-    rarity: 0.283
-    size: 0.847
-    maxSpawnHeight: 65
+    rarity: 0.172
+    size: 0.906
+    profundidadMinima: 140
+    profundidadMaxima: 0
     spreadTexture: {fileID: 0}
   caveNoiseTexture: {fileID: 0}
   isSolid: 1

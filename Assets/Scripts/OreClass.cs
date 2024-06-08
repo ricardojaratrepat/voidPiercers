@@ -8,6 +8,7 @@ public class OreClass
     public float rarity;
     [Range(0, 1)]
     public float size;
-    public int maxSpawnHeight;
+    public int profundidadMinima;
+    public int profundidadMaxima;
     public Texture2D spreadTexture;
 }
