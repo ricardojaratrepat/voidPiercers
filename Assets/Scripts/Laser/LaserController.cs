@@ -34,7 +34,7 @@ namespace Laser
                 else
                 {
                     StopLaser();
-                    string removeMsg = inventoryManager.RemoveItem("Carbon", 2);
+                    string removeMsg = inventoryManager.RemoveItem("Carbon", 12);
 
                     if (removeMsg == "removed")
                     {
