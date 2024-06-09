@@ -34,6 +34,18 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public bool IsAvailable(string itemName, int quantity)
+    {
+        for (int i = 0; i < itemSlot.Length; i++)
+        {
+            if (itemSlot[i].itemName == itemName && itemSlot[i].quantity >= quantity)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void AddItem(string itemName, int quantity, Sprite itemSprite, string itemDescription)
     {
         for (int i = 0; i < itemSlot.Length; i++)
@@ -44,6 +56,27 @@ public class InventoryManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public string RemoveItem(string itemName, int quantity)
+    {
+        bool IsItemAvailable = IsAvailable(itemName, quantity);
+
+        if (!IsItemAvailable)
+        {
+            return "Not enough items!";
+        }
+
+        for (int i = 0; i < itemSlot.Length; i++)
+        {
+            if (itemSlot[i].itemName == itemName)
+            {
+                itemSlot[i].RemoveItem(itemName, quantity);
+                break;
+            }
+        }
+
+        return "removed";
     }
 
     public void DeselectAllSlots()

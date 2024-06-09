@@ -12,8 +12,11 @@ namespace Laser
         private Vector3 currentEndPosition;
         public LayerMask layerMask; // Añadir una variable para la máscara de capa
 
+        private InventoryManager inventoryManager;
+
         void Start()
         {
+            inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
             lineRenderer = GetComponent<LineRenderer>();
             lineRenderer.positionCount = 2;
             currentEndPosition = transform.position + Vector3.right * maxDistance; // Inicializar con alguna dirección
@@ -31,6 +34,16 @@ namespace Laser
                 else
                 {
                     StopLaser();
+                    string removeMsg = inventoryManager.RemoveItem("Carbon", 2);
+
+                    if (removeMsg == "removed")
+                    {
+                        LaserState.currentDuration = 0.0f;   
+                    }
+                    else
+                    {
+                        Debug.Log(removeMsg);
+                    }
                 }
             }
             else

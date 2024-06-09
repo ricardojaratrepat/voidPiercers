@@ -52,10 +52,31 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
         if (this.quantity >= maxNumberOfItems)
         {
-            isFull = true;
+            this.isFull = true;
         }
 
         itemImage.sprite = itemSprite;
+    }
+
+    public void RemoveItem(string itemName, int quantity)
+    {
+        this.quantity -= quantity;
+        quantityText.text = this.quantity.ToString();
+
+        if (this.quantity < maxNumberOfItems)
+        {
+            this.isFull = false;
+        }
+
+        if (this.quantity == 0)
+        {
+            quantityText.enabled = false;
+            Sprite invisibleItemSprite = Resources.Load<Sprite>("invisible");
+            this.itemName = "";
+            this.itemSprite = invisibleItemSprite;
+            itemImage.sprite = invisibleItemSprite;
+            this.itemDescription = "";
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
