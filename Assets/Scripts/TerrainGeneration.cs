@@ -121,26 +121,30 @@ public class TerrainGeneration : MonoBehaviour
                 if (y < height - dirtLayerHeight) 
                 {
                     tileSprite = tileAtlas.stone.tileSprite;
+                    if (height - y > ores[1].profundidadMaxima)
+                        tileSprite = tileAtlas.stone2.tileSprite;
+                    if (height - y > ores[4].profundidadMaxima)
+                        tileSprite = tileAtlas.stone3.tileSprite;
 
-                    if (ores[0].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[0].maxSpawnHeight )
+                    if (ores[0].spreadTexture.GetPixel(x, y).r > 0.5f && (height - y > ores[0].profundidadMinima && height - y < ores[0].profundidadMaxima))
                         tileSprite = tileAtlas.coal.tileSprite;
-                    if (ores[1].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[1].maxSpawnHeight)
+                    if (ores[1].spreadTexture.GetPixel(x, y).r > 0.5f && (height - y > ores[1].profundidadMinima && height - y < ores[1].profundidadMaxima))
                         tileSprite = tileAtlas.iron.tileSprite;
-                    if (ores[2].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[2].maxSpawnHeight)
+                    if (ores[2].spreadTexture.GetPixel(x, y).r > 0.5f && (height - y > ores[2].profundidadMinima && height - y < ores[2].profundidadMaxima))
                         tileSprite = tileAtlas.ice.tileSprite;
-                    if (ores[3].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[3].maxSpawnHeight)
+                    if (ores[3].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[3].profundidadMinima)
                         tileSprite = tileAtlas.alfa_crystal.tileSprite;
-                    if (ores[4].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[4].maxSpawnHeight)
+                    if (ores[4].spreadTexture.GetPixel(x, y).r > 0.5f && (height - y > ores[4].profundidadMinima && height - y < ores[4].profundidadMaxima))
                         tileSprite = tileAtlas.cobalto.tileSprite;
-                    if (ores[5].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[5].maxSpawnHeight)
+                    if (ores[5].spreadTexture.GetPixel(x, y).r > 0.5f && (height - y > ores[5].profundidadMinima && height - y < ores[5].profundidadMaxima))
                         tileSprite = tileAtlas.tungsten.tileSprite;
-                    if (ores[6].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[6].maxSpawnHeight)
+                    if (ores[6].spreadTexture.GetPixel(x, y).r > 0.5f && (height - y > ores[6].profundidadMinima && height - y < ores[6].profundidadMaxima))
                         tileSprite = tileAtlas.uranio.tileSprite;
-                    if (ores[7].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[7].maxSpawnHeight)
+                    if (ores[7].spreadTexture.GetPixel(x, y).r > 0.5f && (height - y > ores[7].profundidadMinima && height - y < ores[7].profundidadMaxima))
                         tileSprite = tileAtlas.platino.tileSprite;
-                    if (ores[8].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[8].maxSpawnHeight)
+                    if (ores[8].spreadTexture.GetPixel(x, y).r > 0.5f && (height - y > ores[8].profundidadMinima && height - y < ores[8].profundidadMaxima))
                         tileSprite = tileAtlas.titanio.tileSprite;
-                    if (ores[9].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[9].maxSpawnHeight)
+                    if (ores[9].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[9].profundidadMinima)
                         tileSprite = tileAtlas.mugufin.tileSprite;
 
 
