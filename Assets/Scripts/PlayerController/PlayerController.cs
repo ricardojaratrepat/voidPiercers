@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
             }
 
             Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 1.5f);
-            if (hit.collider.gameObject.CompareTag("Ground") || hit.collider.gameObject.CompareTag("Ore"))
+            if (hit.collider.gameObject.CompareTag("Ground") || hit.collider.gameObject.CompareTag("Ore basic") || hit.collider.gameObject.CompareTag("Ore medium") || hit.collider.gameObject.CompareTag("Ore rare"))
             {
                 Destroy(hit.collider.gameObject);
             }

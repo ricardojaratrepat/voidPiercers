@@ -6,7 +6,9 @@ TagManager:
   tags:
   - Ground
   - Enemy
-  - Ore
+  - Ore basic
+  - Ore medium
+  - Ore rare
   layers:
   - Default
   - TransparentFX

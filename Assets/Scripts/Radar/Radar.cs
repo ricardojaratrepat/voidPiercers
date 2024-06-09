@@ -15,11 +15,24 @@ public class Radar : MonoBehaviour
     public float cooldown = 7.0f;  // Tiempo de enfriamiento del radar
     private float cooldownTimer;  // Temporizador de enfriamiento
     public Text cooldownText;  // Texto en la UI para mostrar el temporizador
+    public InventoryManager inventoryManager;
+
+    private bool textCooldownActive = false;
+
 
     private static Vector3 GetVectorFromAngle(float angle)
     {
         float angleRad = angle * (Mathf.PI / 180f);
         return new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+    }
+
+    private IEnumerator ShowItemNeededMessage(string neededItems, float delay)
+    {
+        textCooldownActive = true;
+        cooldownText.text = neededItems;
+        yield return new WaitForSeconds(delay);
+        cooldownText.text = "";
+        textCooldownActive = false;
     }
 
     private void Start()
@@ -47,13 +60,67 @@ public class Radar : MonoBehaviour
         }
         else
         {
-            cooldownText.text = "Ready to use!";
-            cooldownText.fontSize = 20;  // Tamaño de fuente cuando el radar está listo
+            if (!textCooldownActive)
+            {
+                cooldownText.text = "Ready to use!";
+                cooldownText.fontSize = 20;  // Tamaño de fuente cuando el radar está listo
+            }
             if (Input.GetKeyDown(KeyCode.F) && !isRotating)  // Activar el radar con la tecla F
             {
-                isRotating = true;
-                sweetTransform.gameObject.SetActive(true); // Activar el objeto del radar
-                cooldownTimer = cooldown;
+                // Comprobar si los materiales están disponibles
+                bool isStoneAvailable = inventoryManager.IsAvailable("Piedra", 50);
+                bool isCarbonAvailable = inventoryManager.IsAvailable("Carbon", 10);
+                bool isIronAvailable = inventoryManager.IsAvailable("Iron", 5);
+                bool isAlfaCrystalAvailable = inventoryManager.IsAvailable("Alfa Crystals", 1);
+
+                if (isStoneAvailable && isCarbonAvailable)
+                {
+                    // Consumir los materiales
+                    string stoneResult = inventoryManager.RemoveItem("Piedra", 50);
+                    string carbonResult = inventoryManager.RemoveItem("Carbon", 10);
+
+                    if (stoneResult == "removed" && carbonResult == "removed") 
+                    {
+                        isRotating = true;
+                        sweetTransform.gameObject.SetActive(true); // Activar el objeto del radar
+                        cooldownTimer = cooldown;
+                    }
+                }
+                else if (isStoneAvailable && isIronAvailable)
+                {
+                    // Consumir los materiales
+                    string stoneResult = inventoryManager.RemoveItem("Piedra", 50);
+                    string ironResult = inventoryManager.RemoveItem("Iron", 5);
+
+                    if (stoneResult == "removed" && ironResult == "removed") 
+                    {
+                        isRotating = true;
+                        sweetTransform.gameObject.SetActive(true); // Activar el objeto del radar
+                        cooldownTimer = cooldown;
+                    }
+                }
+                else if (isStoneAvailable && isAlfaCrystalAvailable)
+                {
+                    // Consumir los materiales
+                    string stoneResult = inventoryManager.RemoveItem("Piedra", 50);
+                    string alfaCrystalResult = inventoryManager.RemoveItem("Alfa Crystals", 1);
+
+                    if (stoneResult == "removed" && alfaCrystalResult == "removed") 
+                    {
+                        isRotating = true;
+                        sweetTransform.gameObject.SetActive(true); // Activar el objeto del radar
+                        cooldownTimer = cooldown;
+                    }
+                }
+                else
+                {
+                    string neededItems = "";
+                    if (!isStoneAvailable) neededItems += "Piedra 50, ";
+                    if (!isCarbonAvailable && !isIronAvailable) neededItems += "Carbon 10, Iron 5 or Alfa Crystals 1, ";
+                    neededItems = neededItems.TrimEnd(',', ' ');
+
+                    StartCoroutine(ShowItemNeededMessage(neededItems, 2.0f));
+                }
             }
         }
         if (isRotating)
@@ -71,19 +138,32 @@ public class Radar : MonoBehaviour
             RaycastHit2D[] raycastHit2DArray = Physics2D.RaycastAll(transform.position, GetVectorFromAngle(sweetTransform.eulerAngles.z), radarDistance);
             foreach (RaycastHit2D raycastHit2D in raycastHit2DArray)
             {
-                if (raycastHit2D.collider != null && (raycastHit2D.collider.CompareTag("Enemy") || raycastHit2D.collider.CompareTag("Ore")))
+                if (raycastHit2D.collider != null)
                 {
-                    if (!colliderList.Contains(raycastHit2D.collider))
+                    string tag = raycastHit2D.collider.tag;
+                    if (tag == "Enemy" || tag.StartsWith("Ore"))
                     {
-                        colliderList.Add(raycastHit2D.collider);
-                        RadarPing radarPing = Instantiate(pfRadarPing, raycastHit2D.point, Quaternion.identity).GetComponent<RadarPing>();
-                        if (raycastHit2D.collider.CompareTag("Enemy"))
+                        if (!colliderList.Contains(raycastHit2D.collider))
                         {
-                            radarPing.SetColor(new Color(1, 0, 0));  // Rojo para enemigos
-                        }
-                        else if (raycastHit2D.collider.CompareTag("Ore"))
-                        {
-                            radarPing.SetColor(new Color(0, 1, 0));  // Verde para minerales
+                            colliderList.Add(raycastHit2D.collider);
+                            RadarPing radarPing = Instantiate(pfRadarPing, raycastHit2D.point, Quaternion.identity).GetComponent<RadarPing>();
+                            Color pingColor = Color.white;  // Color por defecto
+                            switch (tag)
+                            {
+                                case "Enemy":
+                                    pingColor = Color.red;
+                                    break;
+                                case "Ore basic":
+                                    pingColor = Color.green;
+                                    break;
+                                case "Ore medium":
+                                    pingColor = Color.blue;
+                                    break;
+                                case "Ore rare":
+                                    pingColor = Color.yellow;
+                                    break;
+                            }
+                            radarPing.SetColor(pingColor);
                         }
                     }
                 }

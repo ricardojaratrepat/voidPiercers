@@ -229,9 +229,17 @@ public class TerrainGeneration : MonoBehaviour
         newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
 
         // Asigna el tag "Ore" si el sprite es el de carbón
-        if (tileSprite == tileAtlas.coal.tileSprite || tileSprite == tileAtlas.iron.tileSprite || tileSprite == tileAtlas.ice.tileSprite || tileSprite == tileAtlas.alfa_crystal.tileSprite || tileSprite == tileAtlas.tungsten.tileSprite || tileSprite == tileAtlas.uranio.tileSprite || tileSprite == tileAtlas.platino.tileSprite || tileSprite == tileAtlas.titanio.tileSprite || tileSprite == tileAtlas.mugufin.tileSprite)
+        if (tileSprite == tileAtlas.coal.tileSprite || tileSprite == tileAtlas.iron.tileSprite)
         {
-            newTile.tag = "Ore";
+            newTile.tag = "Ore basic";
+        }
+        else if (tileSprite == tileAtlas.ice.tileSprite || tileSprite == tileAtlas.tungsten.tileSprite || tileSprite == tileAtlas.cobalto.tileSprite)
+        {
+            newTile.tag = "Ore medium";
+        }
+        else if (tileSprite == tileAtlas.alfa_crystal.tileSprite || tileSprite == tileAtlas.uranio.tileSprite || tileSprite == tileAtlas.platino.tileSprite || tileSprite == tileAtlas.titanio.tileSprite || tileSprite == tileAtlas.mugufin.tileSprite)
+        {
+            newTile.tag = "Ore rare";
         }
         else
         {
