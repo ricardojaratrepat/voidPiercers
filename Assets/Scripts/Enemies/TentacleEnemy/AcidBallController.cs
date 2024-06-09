@@ -34,11 +34,15 @@ namespace AcidBall
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject == player)
+            if (!collision.gameObject.CompareTag("Enemy"))
             {
                 circleCollider.enabled = false;
-                animator.SetBool("touchPlayer", true);
+                animator.SetBool("explode", true);
                 rb.velocity = Vector2.zero;
+            }
+          
+            if (collision.gameObject == player)
+            {
                 FindFirstObjectByType<HealthController>().StartContinuousDamage(damagePerSecond, damageDuration);
             }
         }

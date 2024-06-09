@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HealthController : MonoBehaviour
@@ -29,6 +30,7 @@ public class HealthController : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
+            Die();
         }
         slider.value = currentHealth;
         fill.color = gradient.Evaluate(slider.normalizedValue);
@@ -49,5 +51,20 @@ public class HealthController : MonoBehaviour
             elapsed += 1f;
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Player died");
+        StartCoroutine(RestartLevel());
+    }
+
+    private IEnumerator RestartLevel()
+    {
+        // Espera un segundo antes de recargar la escena (opcional)
+        yield return new WaitForSeconds(1f);
+        
+        // Recarga la escena actual
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

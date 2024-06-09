@@ -51,7 +51,7 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1101 &-1699136948398814632
+--- !u!1101 &-1562057657485584963
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,7 +60,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: touchPlayer
+    m_ConditionEvent: explode
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3142407182936510980}
@@ -85,7 +85,7 @@ AnimatorController:
   m_Name: AcidBall
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: touchPlayer
+  - m_Name: explode
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -115,7 +115,7 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
-  - {fileID: -1699136948398814632}
+  - {fileID: -1562057657485584963}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
