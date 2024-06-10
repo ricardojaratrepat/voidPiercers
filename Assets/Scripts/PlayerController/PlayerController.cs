@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public bool onGround;
     private Rigidbody2D rb;
     private InventoryManager inventoryManager;
+    private HealthController healthController; // Añade una referencia a HealthController
     private float digCooldown = 0.3f;
     private float lastDigTime;
     public float maxRotationAngle = 45f;
@@ -21,7 +22,18 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
+        inventoryManager = GameObject.Find("InventoryCanvas")?.GetComponent<InventoryManager>();
+        healthController = GetComponent<HealthController>(); // Inicializa la referencia a HealthController
+
+        if (inventoryManager == null)
+        {
+            Debug.LogError("InventoryManager not found!");
+        }
+        if (healthController == null)
+        {
+            Debug.LogError("HealthController not found!");
+        }
+
         lastDigTime = -digCooldown; // Allows digging immediately at start
         if (caveLighting == null)
         {
@@ -115,7 +127,7 @@ public class PlayerController : MonoBehaviour
 
             if (hit.collider.gameObject.name != "Tierra" && hit.collider.gameObject.name != "Pasto")
             {
-                inventoryManager.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
+                inventoryManager?.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
             }
 
             Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 1.5f);

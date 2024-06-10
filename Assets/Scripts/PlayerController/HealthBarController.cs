@@ -1,26 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HealthController : MonoBehaviour
 {
-    // Start is called before the first frame update
     public float maxHealth = 100f;
     public float currentHealth;
-    private Slider slider;
+    public Slider slider;
     public Gradient gradient;
     public Image fill;
+    private GameOverManager gameOverManager; // Referencia al GameOverManager
 
     void Start()
     {
-        slider = GetComponent<Slider>();
+        if (slider == null)
+        {
+            slider = GetComponent<Slider>();
+        }
         slider.maxValue = maxHealth;
         slider.value = maxHealth;
         currentHealth = maxHealth;
-        
+
+        gameOverManager = FindObjectOfType<GameOverManager>(); // Inicializa la referencia
         fill.color = gradient.Evaluate(1f);
-        
     }
 
     public void TakeDamage(float damage)
@@ -29,8 +31,14 @@ public class HealthController : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
+            Die();
         }
         slider.value = currentHealth;
         fill.color = gradient.Evaluate(slider.normalizedValue);
+    }
+
+    private void Die()
+    {
+        gameOverManager.GameOver(); // Mostrar la pantalla de Game Over
     }
 }
