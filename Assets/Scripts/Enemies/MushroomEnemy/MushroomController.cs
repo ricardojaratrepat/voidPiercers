@@ -22,16 +22,23 @@ namespace Mushroom
 
         void Start()
         {
-            Player = FindObjectOfType<PlayerController>().gameObject;
+            Player = FindObjectOfType<PlayerController>()?.gameObject;
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             capsuleCollider = GetComponent<CapsuleCollider2D>();
             localScaleFactor = transform.localScale.x;
+
+            if (Player == null)
+            {
+                Debug.LogError("Player not found!");
+            }
         }
 
         // Update is called once per frame
         void Update()
         {
+            if (Player == null) return;
+
             distanceToPlayer = Vector3.Distance(Player.transform.position, transform.position);
 
             if (distanceToPlayer < minChaseDistance)
@@ -59,12 +66,12 @@ namespace Mushroom
                 velocity.x = 0f;
                 animator.SetBool("chasingPlayer", false);
             }
-
-
         }
 
         void FixedUpdate()
         {
+            if (Player == null) return;
+
             Vector2 newVelocity = rb.velocity;
             newVelocity.x = velocity.x;
             rb.velocity = newVelocity;
@@ -87,9 +94,20 @@ namespace Mushroom
 
         public void ProduceDamage()
         {
-             if (distanceToPlayer < explotionRadius)
+            if (Player == null) return;
+
+            if (distanceToPlayer < explotionRadius)
             {
-                FindFirstObjectByType<HealthController>().TakeDamage(damage);
+                HealthController healthController = Player.GetComponent<HealthController>();
+
+                if (healthController != null)
+                {
+                    healthController.TakeDamage(damage); // Cambiado para usar GetComponent
+                }
+                else
+                {
+                    Debug.LogError("HealthController not found on Player!");
+                }
             }
         }
     }

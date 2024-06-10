@@ -65,12 +65,20 @@ public class BatController : MonoBehaviour
     {
         if (collision.gameObject == Player)
         {
-            FindFirstObjectByType<HealthController>().TakeDamage(damage);
+            Player.GetComponent<HealthController>().TakeDamage(damage); // Cambiado para usar GetComponent
 
             Vector2 knockbackDirection = transform.position - Player.transform.position;
             knockbackDirection.Normalize();
 
             ApplyKnockback(knockbackDirection);
+        }
+    }
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject == Player)
+        {
+            Vector2 pushDirection = new Vector2(1f, 0f);
+            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(pushDirection, ForceMode2D.Impulse);
         }
     }
 
