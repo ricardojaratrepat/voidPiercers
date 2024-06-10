@@ -73,14 +73,6 @@ public class BatController : MonoBehaviour
             ApplyKnockback(knockbackDirection);
         }
     }
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.gameObject == Player)
-        {
-            Vector2 pushDirection = new Vector2(1f, 0f);
-            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(pushDirection, ForceMode2D.Impulse);
-        }
-    }
 
     void OnCollisionStay2D(Collision2D collision)
     {

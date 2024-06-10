@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public bool onGround;
     private Rigidbody2D rb;
     private InventoryManager inventoryManager;
-    private HealthController healthController; // Añade una referencia a HealthController
+    public HealthController healthController; // Añade una referencia a HealthController
     private float digCooldown = 0.3f;
     private float lastDigTime;
     public float maxRotationAngle = 45f;
