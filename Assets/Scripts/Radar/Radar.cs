@@ -37,6 +37,7 @@ public class Radar : MonoBehaviour
 
     private void Start()
     {
+        inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
         sweetTransform.gameObject.SetActive(false); // Desactivar el objeto del radar al inicio
         cooldownTimer = 0;
     }
