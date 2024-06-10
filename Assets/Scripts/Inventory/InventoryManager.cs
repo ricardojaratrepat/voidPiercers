@@ -5,32 +5,31 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public GameObject InventoryMenu;
-    private bool menuActivared;
+    public bool menuActivated;
     public ItemSlot[] itemSlot;
 
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Inventory") && menuActivared)
+        if(Input.GetButtonDown("Inventory") && menuActivated)
         {
             // Resumes the game
             Time.timeScale = 1;
 
             InventoryMenu.SetActive(false);
-            menuActivared = false;
+            menuActivated = false;
         }
-        else if(Input.GetButtonDown("Inventory") && !menuActivared)
+        else if(Input.GetButtonDown("Inventory") && !menuActivated)
         {
             // Stops the game. (This can create problems if there is any animaiton in the manu)
             Time.timeScale = 0;
             InventoryMenu.SetActive(true);
-            menuActivared = true;
+            menuActivated = true;
         }
     }
 

@@ -24,7 +24,7 @@ namespace Laser
 
         void Update()
         {
-            if (Input.GetMouseButton(0)) // Verifica si el botón izquierdo del mouse está siendo presionado
+            if (Input.GetMouseButton(0) && !inventoryManager.menuActivated) // Verifica si el botón izquierdo del mouse está siendo presionado
             {
                 if (LaserState.currentDuration < LaserState.maxDuration)
                 {
