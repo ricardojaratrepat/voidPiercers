@@ -63,7 +63,7 @@ public class Radar : MonoBehaviour
         {
             if (!textCooldownActive)
             {
-                cooldownText.text = "Ready to use!";
+                cooldownText.text = "Listo para usar!";
                 cooldownText.fontSize = 20;  // Tamaño de fuente cuando el radar está listo
             }
             if (Input.GetKeyDown(KeyCode.F) && !isRotating)  // Activar el radar con la tecla F
