@@ -1,6 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class FuelController : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class FuelController : MonoBehaviour
     public Slider slider;
     public Gradient gradient;
     public Image fill;
+    public InventoryManager inventoryManager;
+    public Button FillFuelButton;
+    public AlertController alertController;
 
     void Start()
     {
@@ -25,6 +29,11 @@ public class FuelController : MonoBehaviour
 
         // Configura el color inicial del fill
         fill.color = gradient.Evaluate(1f);
+
+        if (FillFuelButton != null)
+        {
+            FillFuelButton.onClick.AddListener(FillFuelTank);
+        }
     }
 
     public void ConsumeFuel(float amount)
@@ -55,6 +64,27 @@ public class FuelController : MonoBehaviour
             ConsumeFuel(consumptionPerSecond);
             elapsed += 1f;
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    void FillFuelTank()
+    {
+        bool carbon = inventoryManager.IsAvailable("Carbon", 30);
+        bool cobalto = inventoryManager.IsAvailable("Cobalto", 15);
+
+        if (carbon && cobalto)
+        {
+            currentFuel = maxFuel;
+            inventoryManager.RemoveItem("Carbon", 30);
+            inventoryManager.RemoveItem("Cobalto", 15);
+            slider.value = currentFuel;
+            fill.color = gradient.Evaluate(slider.normalizedValue);
+            Debug.Log("Current fuel: " + currentFuel);
+            alertController.ShowGreenAlert("Fuel tank filled!");
+        }
+        else
+        {
+            alertController.ShowRedAlert("Not enough resources!");
         }
     }
 }
