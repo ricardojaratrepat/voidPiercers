@@ -13,6 +13,7 @@ public class FuelController : MonoBehaviour
     public InventoryManager inventoryManager;
     public Button FillFuelButton;
     public AlertController alertController;
+    public GameOverManager gameOverManager;
 
     void Start()
     {
@@ -42,6 +43,8 @@ public class FuelController : MonoBehaviour
         if (currentFuel <= 0)
         {
             currentFuel = 0;
+            gameOverManager.GameOver();
+            alertController.ShowRedAlert("Fuel tank empty!");
             // Aquí puedes manejar lo que sucede cuando el combustible se agota
         }
         slider.value = currentFuel;
