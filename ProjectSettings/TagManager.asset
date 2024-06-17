@@ -9,6 +9,7 @@ TagManager:
   - Ore basic
   - Ore medium
   - Ore rare
+  - Bedrock
   layers:
   - Default
   - TransparentFX
