@@ -25,7 +25,7 @@ public class CameraFollow : MonoBehaviour
             // Calcula la posición deseada de la cámara
             float desiredX = target.position.x + offset.x;
             float orthoSize = Camera.main.orthographicSize; // Asume que estás usando una cámara ortográfica
-            desiredX = Mathf.Clamp(desiredX, 0 + orthoSize, worldSize - orthoSize);
+            desiredX = Mathf.Clamp(desiredX, 0 + (orthoSize * 1.8f), worldSize - (orthoSize * 1.8f));
             Vector3 desiredPosition = new Vector3(desiredX, target.position.y + offset.y, -2);
             Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
             transform.position = smoothedPosition;

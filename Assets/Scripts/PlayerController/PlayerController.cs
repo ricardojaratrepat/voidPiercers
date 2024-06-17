@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("CaveLighting no encontrado en la escena!");
         }
-        else 
+        else
         {
             caveLighting.SetCaveStatus(true);
         }
@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log(hit.collider.gameObject.name);
 
-            if (hit.collider.gameObject.name != "Tierra" && hit.collider.gameObject.name != "Pasto")
+            if ((hit.collider.gameObject.CompareTag("Ore basic") || hit.collider.gameObject.CompareTag("Ore medium") || hit.collider.gameObject.CompareTag("Ore rare") || hit.collider.gameObject.CompareTag("Ground")) && hit.collider.gameObject.name != "Tierra" && hit.collider.gameObject.name != "Pasto")
             {
                 inventoryManager?.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
             }
