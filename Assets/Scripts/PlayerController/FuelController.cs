@@ -23,7 +23,6 @@ public class FuelController : MonoBehaviour
         }
 
         // Configura la orientación del slider a vertical
-        slider.direction = Slider.Direction.BottomToTop;
         slider.maxValue = maxFuel;
         slider.value = maxFuel;
         currentFuel = maxFuel;
