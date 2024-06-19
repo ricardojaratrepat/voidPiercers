@@ -7,6 +7,7 @@ public class PulseEffect : MonoBehaviour
     public float stepSize = 0.05f;  // Tamaño del paso para el cambio de escala
 
     private Vector3 originalScale;  // Escala original para usar como base
+    public float scaleFactor = 1f;  // Factor de escala adicional
 
     void Start()
     {
@@ -16,6 +17,6 @@ public class PulseEffect : MonoBehaviour
     void Update()
     {
         float scale = Mathf.Round((1 + Mathf.Sin(Time.time * pulseSpeed) * pulseMagnitude) / stepSize) * stepSize;
-        transform.localScale = originalScale * scale;  // Aplica la nueva escala basada en el tiempo y el tamaño del paso
+        transform.localScale = originalScale * scale * scaleFactor;  // Aplica la nueva escala basada en el tiempo, el tamaño del paso y el factor de escala adicional
     }
 }
