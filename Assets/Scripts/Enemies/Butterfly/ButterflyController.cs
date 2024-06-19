@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ButterflyController : MonoBehaviour
 {
@@ -22,11 +23,14 @@ public class ButterflyController : MonoBehaviour
         directionChangeTimer = changeDirectionInterval;
         ChangeDirection();
         
-        // Obtener el componente DarkCircleController del darkCircle
-        darkCircleController = darkCircle.GetComponent<DarkCircleController>();
-        if (darkCircleController == null)
+        GameObject darkCircle = Resources.FindObjectsOfTypeAll<GameObject>().FirstOrDefault(go => go.name == "DarkCircle");
+        if (darkCircle != null)
         {
-            Debug.LogError("No se encontró el componente DarkCircleController en el darkCircle.");
+            darkCircleController = darkCircle.GetComponent<DarkCircleController>();
+        }
+        else
+        {
+            Debug.LogError("DarkCircle object not found in the scene");
         }
     }
 

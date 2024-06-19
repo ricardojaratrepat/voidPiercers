@@ -437,6 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4771fd43bf7532141bdbff83ae334aa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  darkCircle: {fileID: 0}
   flightSpeed: 6
   changeDirectionInterval: 7
 --- !u!114 &74651856332770190
