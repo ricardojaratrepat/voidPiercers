@@ -23,4 +23,6 @@ public class TileAtlas : ScriptableObject
     public TileClass titanio;
     public TileClass tungsten;
     public TileClass uranio;
+    public TileClass bedrock;
+    public TileClass invisible;
 }

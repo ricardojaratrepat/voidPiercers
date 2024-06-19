@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TerrainGeneration : MonoBehaviour
 {
-    
+
     public TileAtlas tileAtlas;
-    
+
     public int dirtLayerHeight = 5;
     public int chunkSize = 20;
     public bool generateCaves = true;
@@ -14,18 +14,19 @@ public class TerrainGeneration : MonoBehaviour
     public int worldSize = 100;
     public float heightMultiplier = 4f;
     public int heightAddition = 25;
-    
+
     public GameObject MushroomPrefab;
     public GameObject BatPrefab;
     public GameObject TentaclePrefab;
-    
+    public GameObject ButterflyPrefab;
+
 
 
 
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;
     public float seed;
-    public GameObject redBlockPrefab; 
+    public GameObject redBlockPrefab;
     public OreClass[] ores;
 
 
@@ -39,63 +40,41 @@ public class TerrainGeneration : MonoBehaviour
     private void OnValidate()
     {
         caveNoiseTexture = new Texture2D(worldSize, worldSize);
-        ores[0].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[1].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[2].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[3].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[4].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[5].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[6].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[7].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[8].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[9].spreadTexture = new Texture2D(worldSize, worldSize);
+
+        // Inicializar las texturas de spread para todos los ores
+        for (int i = 0; i < ores.Length; i++)
+        {
+            ores[i].spreadTexture = new Texture2D(worldSize, worldSize);
+        }
 
         GenerateNoiseTexture(caveFreq, surfaceValue, caveNoiseTexture);
 
-        //ores
-
-        GenerateNoiseTexture(ores[0].rarity, ores[0].size, ores[0].spreadTexture);
-        GenerateNoiseTexture(ores[1].rarity, ores[1].size, ores[1].spreadTexture);
-        GenerateNoiseTexture(ores[2].rarity, ores[2].size, ores[2].spreadTexture);
-        GenerateNoiseTexture(ores[3].rarity, ores[3].size, ores[3].spreadTexture);
-        GenerateNoiseTexture(ores[4].rarity, ores[4].size, ores[4].spreadTexture);
-        GenerateNoiseTexture(ores[5].rarity, ores[5].size, ores[5].spreadTexture);
-        GenerateNoiseTexture(ores[6].rarity, ores[6].size, ores[6].spreadTexture);
-        GenerateNoiseTexture(ores[7].rarity, ores[7].size, ores[7].spreadTexture);
-        GenerateNoiseTexture(ores[8].rarity, ores[8].size, ores[8].spreadTexture);
-        GenerateNoiseTexture(ores[9].rarity, ores[9].size, ores[9].spreadTexture);
-
+        // Generar texturas de ruido para todos los ores
+        for (int i = 0; i < ores.Length; i++)
+        {
+            GenerateNoiseTexture(ores[i].rarity, ores[i].size, ores[i].spreadTexture);
+        }
     }
 
     private void Start()
     {
-
         caveNoiseTexture = new Texture2D(worldSize, worldSize);
-        ores[0].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[1].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[2].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[3].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[4].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[5].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[6].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[7].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[8].spreadTexture = new Texture2D(worldSize, worldSize);
-        ores[9].spreadTexture = new Texture2D(worldSize, worldSize);
+
+        // Inicializar las texturas de spread para todos los ores
+        for (int i = 0; i < ores.Length; i++)
+        {
+            ores[i].spreadTexture = new Texture2D(worldSize, worldSize);
+        }
 
         seed = Random.Range(-10000, 10000);
-        GenerateNoiseTexture(caveFreq,surfaceValue,caveNoiseTexture);
+        GenerateNoiseTexture(caveFreq, surfaceValue, caveNoiseTexture);
 
-        //ores
-        GenerateNoiseTexture(ores[0].rarity, ores[0].size, ores[0].spreadTexture);
-        GenerateNoiseTexture(ores[1].rarity, ores[1].size, ores[1].spreadTexture);
-        GenerateNoiseTexture(ores[2].rarity, ores[2].size, ores[2].spreadTexture);
-        GenerateNoiseTexture(ores[3].rarity, ores[3].size, ores[3].spreadTexture);
-        GenerateNoiseTexture(ores[4].rarity, ores[4].size, ores[4].spreadTexture);
-        GenerateNoiseTexture(ores[5].rarity, ores[5].size, ores[5].spreadTexture);
-        GenerateNoiseTexture(ores[6].rarity, ores[6].size, ores[6].spreadTexture);
-        GenerateNoiseTexture(ores[7].rarity, ores[7].size, ores[7].spreadTexture);
-        GenerateNoiseTexture(ores[8].rarity, ores[8].size, ores[8].spreadTexture);
-        GenerateNoiseTexture(ores[9].rarity, ores[9].size, ores[9].spreadTexture);
+        // Generar texturas de ruido para todos los ores
+        for (int i = 0; i < ores.Length; i++)
+        {
+            GenerateNoiseTexture(ores[i].rarity, ores[i].size, ores[i].spreadTexture);
+        }
+
         CreateChunks();
         GenerateTerrain();
     }
@@ -119,9 +98,16 @@ public class TerrainGeneration : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 Sprite tileSprite;
-                if (y < height - dirtLayerHeight) 
+
+                // Condición para las posiciones laterales y la fila inferior del terreno
+                if (x == 0 || x == worldSize - 1 || y == 0)
+                {
+                    tileSprite = tileAtlas.bedrock.tileSprite;
+                }
+                else if (y < height - dirtLayerHeight)
                 {
                     tileSprite = tileAtlas.stone.tileSprite;
+
                     if (height - y > ores[1].profundidadMaxima)
                         tileSprite = tileAtlas.stone2.tileSprite;
                     if (height - y > ores[4].profundidadMaxima)
@@ -147,9 +133,6 @@ public class TerrainGeneration : MonoBehaviour
                         tileSprite = tileAtlas.titanio.tileSprite;
                     if (ores[9].spreadTexture.GetPixel(x, y).r > 0.5f && height - y > ores[9].profundidadMinima)
                         tileSprite = tileAtlas.mugufin.tileSprite;
-
-
-
                 }
                 else if (y < height - 1)
                 {
@@ -157,39 +140,52 @@ public class TerrainGeneration : MonoBehaviour
                 }
                 else
                 {
-                    tileSprite = tileAtlas.grass.tileSprite;   
+                    tileSprite = tileAtlas.grass.tileSprite;
                 }
+
                 if (generateCaves)
                 {
                     if (caveNoiseTexture.GetPixel(x, y).r > 0.5f)
                     {
-                        PlaceTile(tileSprite, x , y);
+                        PlaceTile(tileSprite, x, y);
                     }
                     else
-                    {  
-                        // Aca cambiar el bloque por un enemigo de cueva
-                        int random = RandomNumber();
-                        if (random < 1)
+                    {
+                        if (x == 0 || x == worldSize - 1 || y == 0)
                         {
-                            Vector3 position = new Vector3(x, y, 0);
+                            PlaceTile(tileAtlas.bedrock.tileSprite, x, y);
+                        }
+                        else
+                        {
+                            // Aca cambiar el bloque por un enemigo de cueva
+                            int random = RandomNumber();
+                            if (random < 1)
+                            {
+                                Vector3 position = new Vector3(x, y, 0);
 
-                            random = Random.Range(0, 3);
-                            if (random == 0)
-                            {
-                                Instantiate(BatPrefab, position, Quaternion.identity);
+                                random = Random.Range(0, 4);
+                                if (random == 0)
+                                {
+                                    Instantiate(BatPrefab, position, Quaternion.identity);
+                                }
+                                else if (random == 1)
+                                {
+                                    Instantiate(MushroomPrefab, position, Quaternion.identity);
+                                }
+                                else if (random == 2)
+                                {
+                                    Instantiate(ButterflyPrefab, position, Quaternion.identity);
+                                }
+                                else
+                                {
+                                    Instantiate(TentaclePrefab, position, Quaternion.identity);
+                                }
                             }
-                            else if (random == 1)
-                            {
-                                Instantiate(MushroomPrefab, position, Quaternion.identity);
-                            }
-                            else
-                            {
-                                Instantiate(TentaclePrefab, position, Quaternion.identity);
-                            }
+
                         }
                     }
                 }
-                else 
+                else
                 {
                     PlaceTile(tileSprite, x, y);
                 }
@@ -197,19 +193,20 @@ public class TerrainGeneration : MonoBehaviour
         }
     }
 
+
     private int RandomNumber()
     {
         return Random.Range(0, 100);
     }
-    public void GenerateNoiseTexture(float frequency,float limit,Texture2D noiseTexture )
+    public void GenerateNoiseTexture(float frequency, float limit, Texture2D noiseTexture)
     {
         for (int x = 0; x < noiseTexture.width; x++)
         {
             for (int y = 0; y < noiseTexture.height; y++)
             {
-                float v = Mathf.PerlinNoise((x + seed) * frequency, (y + seed)* frequency);
+                float v = Mathf.PerlinNoise((x + seed) * frequency, (y + seed) * frequency);
                 if (v > limit)
-                noiseTexture.SetPixel(x, y, Color.white);
+                    noiseTexture.SetPixel(x, y, Color.white);
                 else
                     noiseTexture.SetPixel(x, y, Color.black);
             }
@@ -217,13 +214,13 @@ public class TerrainGeneration : MonoBehaviour
         noiseTexture.Apply();
     }
 
-    public void PlaceTile (Sprite tileSprite, int x, int y)
+    public void PlaceTile(Sprite tileSprite, int x, int y)
     {
         GameObject newTile = new GameObject();
 
         int chunkCoord = Mathf.RoundToInt(x / chunkSize) * chunkSize;
         chunkCoord /= chunkSize;
-        newTile.transform.parent = worldChunks[(int) chunkCoord].transform;
+        newTile.transform.parent = worldChunks[(int)chunkCoord].transform;
 
         newTile.AddComponent<SpriteRenderer>();
         newTile.GetComponent<SpriteRenderer>().sprite = tileSprite;
@@ -245,6 +242,10 @@ public class TerrainGeneration : MonoBehaviour
         else if (tileSprite == tileAtlas.alfa_crystal.tileSprite || tileSprite == tileAtlas.uranio.tileSprite || tileSprite == tileAtlas.platino.tileSprite || tileSprite == tileAtlas.titanio.tileSprite || tileSprite == tileAtlas.mugufin.tileSprite)
         {
             newTile.tag = "Ore rare";
+        }
+        else if (tileSprite == tileAtlas.bedrock.tileSprite)
+        {
+            newTile.tag = "Bedrock";
         }
         else
         {

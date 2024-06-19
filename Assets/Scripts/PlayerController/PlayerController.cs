@@ -10,10 +10,13 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private InventoryManager inventoryManager;
     public HealthController healthController; // Añade una referencia a HealthController
+    public FuelController fuelController; // Añadir la referencia al FuelController
+
     private float digCooldown = 0.3f;
     private float lastDigTime;
     public float maxRotationAngle = 45f;
 
+    public float fuelConsumptionRate = 1.0f; // Tasa de consumo de combustible
     // Texto temporal
     public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
 
@@ -24,6 +27,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         inventoryManager = GameObject.Find("InventoryCanvas")?.GetComponent<InventoryManager>();
         healthController = GetComponent<HealthController>(); // Inicializa la referencia a HealthController
+        fuelController = GetComponent<FuelController>(); // Inicializa la referencia al FuelController
 
         if (inventoryManager == null)
         {
@@ -33,13 +37,17 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("HealthController not found!");
         }
+        if (fuelController == null)
+        {
+            Debug.LogError("FuelController not found!");
+        }
 
         lastDigTime = -digCooldown; // Allows digging immediately at start
         if (caveLighting == null)
         {
             Debug.LogError("CaveLighting no encontrado en la escena!");
         }
-        else 
+        else
         {
             caveLighting.SetCaveStatus(true);
         }
@@ -52,7 +60,6 @@ public class PlayerController : MonoBehaviour
             onGround = true;
         }
     }
-
     private void OnTriggerExit2D(Collider2D col)
     {
         if (col.CompareTag("Ground"))
@@ -125,7 +132,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log(hit.collider.gameObject.name);
 
-            if (hit.collider.gameObject.name != "Tierra" && hit.collider.gameObject.name != "Pasto")
+            if ((hit.collider.gameObject.CompareTag("Ore basic") || hit.collider.gameObject.CompareTag("Ore medium") || hit.collider.gameObject.CompareTag("Ore rare") || hit.collider.gameObject.CompareTag("Ground")) && hit.collider.gameObject.name != "Tierra" && hit.collider.gameObject.name != "Pasto")
             {
                 inventoryManager?.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
             }
@@ -152,6 +159,11 @@ public class PlayerController : MonoBehaviour
         // Apply horizontal movement
         Vector2 movement = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y);
         rb.velocity = movement;
+        if (IsMoving)
+        {
+            // Consumir combustible mientras se mueve
+            fuelController?.ConsumeFuel(fuelConsumptionRate * Time.deltaTime);
+        }
 
         // Apply rotation
         if (isMovingLeft)
@@ -223,6 +235,13 @@ public class PlayerController : MonoBehaviour
             // Interpolate between current rotation and target rotation
             float rotationSpeed = 5.0f; // Adjust this value to change the speed of rotation
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
+    }
+    public bool IsMoving
+    {
+        get
+        {
+            return rb.velocity != Vector2.zero;
         }
     }
 }

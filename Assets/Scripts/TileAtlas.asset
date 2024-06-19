@@ -27,3 +27,4 @@ MonoBehaviour:
   titanio: {fileID: 11400000, guid: 9f550eaad765a5b439646d991f00b3b1, type: 2}
   tungsten: {fileID: 11400000, guid: c4a02fd0e8c745249ad2e08d4731cb02, type: 2}
   uranio: {fileID: 11400000, guid: edf0bbe2427383845806eb950dec6ef4, type: 2}
+  bedrock: {fileID: 11400000, guid: 111ae507ec98b734b817eec5a69f83f0, type: 2}
