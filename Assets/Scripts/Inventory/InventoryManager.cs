@@ -15,36 +15,46 @@ public class InventoryManager : MonoBehaviour
     {
         Bar.enabled = true;
         GameOver.enabled = true;
-
     }
 
     // Update is called once per frame
-        void Update()
+    void Update()
+    {
+        if (Input.GetButtonDown("Inventory"))
         {
-            if (Input.GetButtonDown("Inventory"))
-            {
-                if (menuActivated)
-                {
-                    // Resumes the game
-                    Time.timeScale = 1;
-
-                    InventoryMenu.SetActive(false);
-                    Bar.enabled = true;
-                    GameOver.enabled = true;
-                    menuActivated = false;
-                }
-                else
-                {
-                    // Stops the game (This can create problems if there is any animation in the menu)
-                    Time.timeScale = 0;
-
-                    InventoryMenu.SetActive(true);
-                    Bar.enabled = false;
-                    GameOver.enabled = false;
-                    menuActivated = true;
-                }
-            }
+            ToggleInventory();
         }
+    }
+
+    public void ToggleInventory()
+    {
+        if (menuActivated)
+        {
+            CloseInventory();
+        }
+        else
+        {
+            OpenInventory();
+        }
+    }
+
+    public void OpenInventory()
+    {
+        Time.timeScale = 0;
+        InventoryMenu.SetActive(true);
+        Bar.enabled = false;
+        GameOver.enabled = false;
+        menuActivated = true;
+    }
+
+    public void CloseInventory()
+    {
+        Time.timeScale = 1;
+        InventoryMenu.SetActive(false);
+        Bar.enabled = true;
+        GameOver.enabled = true;
+        menuActivated = false;
+    }
 
     public bool IsAvailable(string itemName, int quantity)
     {

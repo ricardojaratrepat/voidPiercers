@@ -9,33 +9,18 @@ public class BenchController : MonoBehaviour
     private bool playerInRange;
     private Canvas canvas;
     private GameObject canvasContent; // The GameObject holding all the content inside the Canvas
+    private InventoryManager inventoryManager; // Reference to InventoryManager
 
     // Start is called before the first frame update
     void Start()
     {
-        // Busca el componente TextMeshPro dentro del prefab
-        KeyText = GetComponentInChildren<TextMeshPro>(true);
-        canvas = GetComponentInChildren<Canvas>(true);
-        if (canvas != null)
-        {
-            canvasContent = canvas.transform.GetChild(0).gameObject;
-            Debug.Log("Canvas component found within the prefab.");
-            canvasContent.SetActive(false); // Hide canvas content initially
-        }
-        else
-        {
-            Debug.LogError("Canvas component not found within the prefab.");
-        }
+        KeyText = GetComponentInChildren<TextMeshPro>();
+        canvas = GameObject.Find("BenchCanvas").GetComponent<Canvas>();
+        canvasContent = canvas.transform.GetChild(0).gameObject; // Get the first child of the canvas
+        canvasContent.SetActive(false); // Hide canvas content initially
 
-        if (KeyText != null)
-        {
-            Debug.Log("KeyText component found within the prefab.");
-            KeyText.text = "";
-        }
-        else
-        {
-            Debug.LogError("KeyText component not found within the prefab.");
-        }
+        // Find the InventoryManager in the scene and get its Canvas
+        inventoryManager = FindObjectOfType<InventoryManager>();
     }
 
     // Update is called once per frame
@@ -43,17 +28,31 @@ public class BenchController : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.C))
         {
-            if (canvasContent != null)
+            ToggleBenchCanvas();
+        }
+    }
+
+    private void ToggleBenchCanvas()
+    {
+        if (canvasContent.activeSelf)
+        {
+            canvasContent.SetActive(false); // Hide canvas content if it is already active
+        }
+        else
+        {
+            canvasContent.SetActive(true); // Show canvas content if player is in range and it is not active
+
+            // Check if inventoryManager is not null before calling CloseInventory
+            if (inventoryManager != null && inventoryManager.menuActivated)
             {
-                canvasContent.SetActive(!canvasContent.activeSelf); // Toggle the canvas content
-                Debug.Log("Canvas content active: " + canvasContent.activeSelf);
+                inventoryManager.CloseInventory(); // Close the inventory menu
+            }
+            else
+            {
+                Debug.LogWarning("InventoryManager reference is not set in BenchController.");
             }
         }
-        if (!playerInRange && canvasContent.activeSelf)
-        {
-            canvasContent.SetActive(false); // Hide canvas content if player is not in range
-            Debug.Log("Canvas content active: " + canvasContent.activeSelf);
-        }
+        Debug.Log("Canvas content active: " + canvasContent.activeSelf);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -62,10 +61,7 @@ public class BenchController : MonoBehaviour
         {
             Debug.Log("Player has collided with the object");
             playerInRange = true;
-            if (KeyText != null)
-            {
-                KeyText.text = "C";
-            }
+            KeyText.text = "C";
         }
     }
 
@@ -78,6 +74,10 @@ public class BenchController : MonoBehaviour
             if (KeyText != null)
             {
                 KeyText.text = "";
+            }
+            if (canvasContent.activeSelf)
+            {
+                canvasContent.SetActive(false); // Hide canvas content when player exits the trigger area
             }
         }
     }
