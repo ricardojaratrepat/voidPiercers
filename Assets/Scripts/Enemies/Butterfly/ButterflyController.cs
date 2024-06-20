@@ -43,7 +43,6 @@ public class ButterflyController : MonoBehaviour
             directionChangeTimer = changeDirectionInterval;
         }
 
-        animator.SetBool("flying", true);
 
         if (velocity.x < 0)
         {
