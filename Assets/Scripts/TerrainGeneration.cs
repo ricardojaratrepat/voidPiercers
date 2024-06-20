@@ -168,23 +168,23 @@ public class TerrainGeneration : MonoBehaviour
                                 random = Random.Range(0, 5);
                                 if (random == 0)
                                 {
-                                    Instantiate(BatPrefab, position, Quaternion.identity);
+                                    Instantiate(BatPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 }
                                 else if (random == 1)
                                 {
-                                    Instantiate(MushroomPrefab, position, Quaternion.identity);
+                                    Instantiate(MushroomPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 }
                                 else if (random == 2)
                                 {
-                                    Instantiate(ButterflyPrefab, position, Quaternion.identity);
+                                    Instantiate(ButterflyPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 }
                                 else if (random == 3)
                                 {
-                                    Instantiate(BenchPrefab, position, Quaternion.identity);
+                                    Instantiate(BenchPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 }
                                 else
                                 {
-                                    Instantiate(TentaclePrefab, position, Quaternion.identity);
+                                    Instantiate(TentaclePrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 }
                             }
 
