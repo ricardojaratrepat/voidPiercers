@@ -22,17 +22,11 @@ public class TerrainGeneration : MonoBehaviour
 
     public GameObject BenchPrefab;
 
-
-
-
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;
     public float seed;
     public GameObject redBlockPrefab;
     public OreClass[] ores;
-
-
-
 
     public Texture2D caveNoiseTexture;
     private GameObject[] worldChunks;
@@ -80,6 +74,7 @@ public class TerrainGeneration : MonoBehaviour
         CreateChunks();
         GenerateTerrain();
     }
+
     public void CreateChunks()
     {
         int numChuncks = worldSize / chunkSize;
@@ -92,6 +87,7 @@ public class TerrainGeneration : MonoBehaviour
             worldChunks[i] = newChunk;
         }
     }
+
     public void GenerateTerrain()
     {
         for (int x = 0; x < worldSize; x++)
@@ -180,14 +176,30 @@ public class TerrainGeneration : MonoBehaviour
                                 }
                                 else if (random == 3)
                                 {
-                                    Instantiate(BenchPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+                                    Vector3 positionB = new Vector3(x, y, 0);
+                                    bool placedBench = false;
+
+                                    for (int i = y; i >= 0; i--)
+                                    {
+                                        if (caveNoiseTexture.GetPixel(x, i).r > 0.5f)
+                                        {
+                                            positionB = new Vector3(x, i + 1, 0); // Ajusta la posición justo arriba del primer bloque no vacío encontrado
+                                            placedBench = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (placedBench)
+                                    {
+                                        Instantiate(BenchPrefab, positionB + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+                                    }
                                 }
+
                                 else
                                 {
                                     Instantiate(TentaclePrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 }
                             }
-
                         }
                     }
                 }
@@ -199,11 +211,11 @@ public class TerrainGeneration : MonoBehaviour
         }
     }
 
-
     private int RandomNumber()
     {
         return Random.Range(0, 100);
     }
+
     public void GenerateNoiseTexture(float frequency, float limit, Texture2D noiseTexture)
     {
         for (int x = 0; x < noiseTexture.width; x++)
