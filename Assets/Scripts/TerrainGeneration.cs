@@ -73,6 +73,7 @@ public class TerrainGeneration : MonoBehaviour
 
         CreateChunks();
         GenerateTerrain();
+        Time.timeScale = 1;
     }
 
     public void CreateChunks()

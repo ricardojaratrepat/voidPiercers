@@ -173,7 +173,7 @@ public class BenchController : MonoBehaviour
         {
             foreach (var req in requirements)
             {
-                //inventoryManager.RemoveItem(req.Key, req.Value);
+                inventoryManager.RemoveItem(req.Key, req.Value);
             }
             alertController?.ShowGreenAlert("Fuel tank filled!");
             isBenchUsed = true;

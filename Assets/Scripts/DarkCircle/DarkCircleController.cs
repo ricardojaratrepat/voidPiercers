@@ -48,7 +48,6 @@ public class DarkCircleController : MonoBehaviour
                 // Esperar 1 segundo
                 yield return new WaitForSeconds(1f);
 
-                Debug.Log("Tiempo restante: " + waitTime);
                 // Reducir el tiempo de espera
                 waitTime--;
             }
