@@ -169,7 +169,7 @@ public class BenchController : MonoBehaviour
         var requirements = GetUpgradeRequirements(level);
         if (requirements == null) return;
 
-        if (true) //inventoryManager.HasItems(requirements))
+        if (requirements.All(req => inventoryManager.IsAvailable(req.Key, req.Value)))
         {
             foreach (var req in requirements)
             {
