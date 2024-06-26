@@ -7,9 +7,9 @@ namespace Pathfinding
     {
         public int width;
         public int height;
-        public float density = 1f; // Densidad de la cuadrícula
         public Node[,] grid;
-
+        public GameObject redDotPrefab;
+        
         // Intervalo de tiempo para la actualización del grid
         public float updateInterval = 3f;
         private float timer = 0f;
@@ -32,7 +32,7 @@ namespace Pathfinding
 
         void CreateGrid()
         {
-            grid = new Node[Mathf.FloorToInt(width * density), Mathf.FloorToInt(height * density)];
+            grid = new Node[Mathf.FloorToInt(width) + 1 , Mathf.FloorToInt(height) + 1];
 
             for (int x = 0; x < grid.GetLength(0); x++)
             {
@@ -41,6 +41,10 @@ namespace Pathfinding
                     Vector2 position = GridToWorldPosition(new Vector2Int(x, y));
                     bool isWalkable = IsPositionWalkable(position);
                     grid[x, y] = new Node(new Vector2Int(x, y), isWalkable);
+
+                    GameObject redDot = Instantiate(redDotPrefab, position, Quaternion.identity);
+                    redDot.transform.parent = transform;
+
                 }
             }
         }
@@ -85,16 +89,11 @@ namespace Pathfinding
 
         public Vector2 GridToWorldPosition(Vector2Int gridPosition)
         {
-            float x = gridPosition.x / density;
-            float y = gridPosition.y / density;
+            // float x = gridPosition.x + 0.5f;
+            // float y = gridPosition.y + 0.5f;
+            float x = gridPosition.x;
+            float y = gridPosition.y;
             return new Vector2(x, y);
-        }
-
-        public Vector2Int WorldToGridPosition(Vector2 worldPosition)
-        {
-            int x = Mathf.FloorToInt(worldPosition.x * density);
-            int y = Mathf.FloorToInt(worldPosition.y * density);
-            return new Vector2Int(x, y);
         }
     }
 }

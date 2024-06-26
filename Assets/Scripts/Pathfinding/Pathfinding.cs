@@ -86,27 +86,34 @@ namespace Pathfinding
         {
             List<Node> neighbors = new List<Node>();
 
-            for (int x = -1; x <= 1; x++)
+            int x = Mathf.FloorToInt(node.Position.x);
+            int y = Mathf.FloorToInt(node.Position.y);
+
+            // Define las posiciones de los vecinos
+            Vector2Int[] neighborPositions = new Vector2Int[]
             {
-                for (int y = -1; y <= 1; y++)
+                new Vector2Int(x - 1, y), // Izquierda
+                new Vector2Int(x + 1, y), // Derecha
+                new Vector2Int(x, y - 1), // Abajo
+                new Vector2Int(x, y + 1), // Arriba
+                new Vector2Int(x - 1, y - 1), // Abajo-Izquierda
+                new Vector2Int(x + 1, y - 1), // Abajo-Derecha
+                new Vector2Int(x - 1, y + 1), // Arriba-Izquierda
+                new Vector2Int(x + 1, y + 1)  // Arriba-Derecha
+            };
+
+            // Recorre las posiciones de los vecinos y añádelos si están dentro de los límites del grid
+            foreach (var pos in neighborPositions)
+            {
+                if (pos.x >= 0 && pos.x < gridManager.grid.GetLength(0) && pos.y >= 0 && pos.y < gridManager.grid.GetLength(1))
                 {
-                    if (x == 0 && y == 0)
-                    {
-                        continue;
-                    }
-
-                    int checkX = Mathf.FloorToInt(node.Position.x) + x;
-                    int checkY = Mathf.FloorToInt(node.Position.y) + y;
-
-                    if (checkX >= 0 && checkX < gridManager.grid.GetLength(0) && checkY >= 0 && checkY < gridManager.grid.GetLength(1))
-                    {
-                        neighbors.Add(gridManager.grid[checkX, checkY]);
-                    }
+                    neighbors.Add(gridManager.grid[pos.x, pos.y]);
                 }
             }
 
             return neighbors;
         }
+
 
         int GetDistance(Node nodeA, Node nodeB)
         {
@@ -139,8 +146,8 @@ namespace Pathfinding
         {
             try
             {
-                int x = Mathf.FloorToInt(position.x * gridManager.density);
-                int y = Mathf.FloorToInt(position.y * gridManager.density);
+                int x = Mathf.FloorToInt(position.x);
+                int y = Mathf.FloorToInt(position.y);
                 return gridManager.grid[x, y];
             }
             catch
