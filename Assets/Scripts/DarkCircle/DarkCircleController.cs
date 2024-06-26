@@ -9,7 +9,6 @@ public class DarkCircleController : MonoBehaviour
     private Image lightBulbImage;
     private float timer;
     private Text timerText;
-    private bool timerActive = false;
 
     void Start()
     {

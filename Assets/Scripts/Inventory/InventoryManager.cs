@@ -9,7 +9,6 @@ public class InventoryManager : MonoBehaviour
     public ItemSlot[] itemSlot;
     public Canvas Bar;
     public Canvas GameOver;
-    public GameObject BenchCanvas;
 
     // Start is called before the first frame update
     void Start()
@@ -23,10 +22,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Inventory"))
         {
-            if (BenchCanvas.activeSelf)
-            {
-                BenchCanvas.SetActive(false);
-            }
             ToggleInventory();
         }
     }

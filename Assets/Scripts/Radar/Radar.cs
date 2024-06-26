@@ -142,7 +142,7 @@ public class Radar : MonoBehaviour
                 if (raycastHit2D.collider != null)
                 {
                     string tag = raycastHit2D.collider.tag;
-                    if (tag == "Enemy" || tag.StartsWith("Ore"))
+                    if (tag == "Enemy" || tag.StartsWith("Ore") || tag == "Bench")
                     {
                         if (!colliderList.Contains(raycastHit2D.collider))
                         {
@@ -162,6 +162,9 @@ public class Radar : MonoBehaviour
                                     break;
                                 case "Ore rare":
                                     pingColor = Color.yellow;
+                                    break;
+                                case "Bench":
+                                    pingColor = Color.cyan;
                                     break;
                             }
                             radarPing.SetColor(pingColor);
