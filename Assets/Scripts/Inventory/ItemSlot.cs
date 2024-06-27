@@ -60,6 +60,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void RemoveItem(string itemName, int quantity)
     {
+        if (itemName == null)
+        {
+            Debug.LogError("Item name is null.");
+            return;
+        }
         this.quantity -= quantity;
         quantityText.text = this.quantity.ToString();
 
