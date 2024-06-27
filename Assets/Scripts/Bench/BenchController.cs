@@ -27,19 +27,24 @@ public class BenchController : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.C) && !isBenchUsed)
+        if (playerInRange && Input.GetKeyDown(KeyCode.C))
         {
-            canvasContent = benchCanvas.transform.GetChild(0).gameObject;
-            ToggleCanvasContent();
+            if (!isBenchUsed)
+            {
+                if (benchCanvas != null && benchCanvas.transform.childCount > 0)
+                {
+                    canvasContent = benchCanvas.transform.GetChild(0).gameObject;
+                    ToggleCanvasContent();
+                }
+            }
+            else
+            {
+                alertController?.ShowRedAlert("This bench has already been upgraded.");
+            }
         }
-        else if (playerInRange && Input.GetKeyDown(KeyCode.C) && isBenchUsed)
-        {
-            alertController?.ShowRedAlert("This bench has already been upgraded.");
-        }
-
 
         // Check if the inventory is opened and close the canvasContent if it is
-        if (inventoryManager.menuActivated && canvasContent.activeSelf)
+        if (inventoryManager != null && inventoryManager.menuActivated && canvasContent != null && canvasContent.activeSelf)
         {
             CloseCanvasContent();
         }

@@ -30,6 +30,7 @@ public class Cheats : MonoBehaviour
     public GameObject MushroomPrefab;
     public GameObject BatPrefab;
     public GameObject TentaclePrefab;
+    public GameObject OvenPrefab;
 
     private bool isPlayerDead = false;
 
@@ -264,6 +265,14 @@ public class Cheats : MonoBehaviour
                 caveLighting.lightCircle.SetActive(true);
                 caveLighting.darkCircle.SetActive(true);
             }
+        }
+    }
+    public void SpawnOven()
+    {
+        if (player != null)
+        {
+            Vector3 spawnPosition = new Vector3(player.transform.position.x + 3, player.transform.position.y, player.transform.position.z);
+            Instantiate(OvenPrefab, spawnPosition, Quaternion.identity);
         }
     }
 }
