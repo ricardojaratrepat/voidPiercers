@@ -29,6 +29,7 @@ public class BenchController : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.C) && !isBenchUsed)
         {
+            canvasContent = benchCanvas.transform.GetChild(0).gameObject;
             ToggleCanvasContent();
         }
         else if (playerInRange && Input.GetKeyDown(KeyCode.C) && isBenchUsed)
