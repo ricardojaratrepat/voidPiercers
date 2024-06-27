@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Agregar esta directiva para usar Slider
 
 public class Cheats : MonoBehaviour
 {
@@ -25,8 +26,6 @@ public class Cheats : MonoBehaviour
     public Sprite TungstenoSprite;
     public Sprite emptySprite;
 
-
-
     private Laser.LaserBarController laserBarController;
     public GameObject MushroomPrefab;
     public GameObject BatPrefab;
@@ -34,10 +33,12 @@ public class Cheats : MonoBehaviour
 
     private bool isPlayerDead = false;
 
-
     void Start()
     {
-        laserBarController = laser.GetComponent<Laser.LaserBarController>();
+        if (laser != null)
+        {
+            laserBarController = laser.GetComponent<Laser.LaserBarController>();
+        }
     }
 
     void Update()
@@ -89,91 +90,180 @@ public class Cheats : MonoBehaviour
 
     public void FillFuel()
     {
-        player.GetComponent<FuelController>().currentFuel = player.GetComponent<FuelController>().maxFuel;
+        if (player != null)
+        {
+            var fuelController = player.GetComponent<FuelController>();
+            if (fuelController != null)
+            {
+                fuelController.currentFuel = fuelController.maxFuel;
+            }
+        }
     }
 
     public void MaxLaser()
     {
-        Debug.Log("Max Laser, agregar código aquí");
+        // Resetea la duración actual del láser
+        Laser.LaserState.currentDuration = 0;
+
+        // Llama al método de actualización del slider en el LaserBarController
+        if (laserBarController != null)
+        {
+            laserBarController.SendMessage("Update");
+        }
+
+        Debug.Log("Max Laser recargado");
     }
+
+
     public void maxHealth()
     {
-        player.GetComponent<HealthController>().currentHealth = player.GetComponent<HealthController>().maxHealth;
-        player.GetComponent<HealthController>().slider.value = player.GetComponent<HealthController>().currentHealth;
+        if (player != null)
+        {
+            var healthController = player.GetComponent<HealthController>();
+            if (healthController != null)
+            {
+                healthController.currentHealth = healthController.maxHealth;
+                healthController.slider.value = healthController.currentHealth;
+            }
+        }
     }
+
     public void Radar()
     {
-        inventory.GetComponent<InventoryManager>().AddItem("Carbon", 30, CarbonSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Piedra", 50, PiedraSprite, null);
+        if (inventory != null)
+        {
+            var inventoryManager = inventory.GetComponent<InventoryManager>();
+            if (inventoryManager != null)
+            {
+                inventoryManager.AddItem("Carbon", 30, CarbonSprite, null);
+                inventoryManager.AddItem("Piedra", 50, PiedraSprite, null);
+            }
+        }
     }
 
     public void SpawnRandomEnemy()
     {
-        int random = Random.Range(0, 3);
-        switch (random)
+        if (player != null)
         {
-            case 0:
-                Instantiate(MushroomPrefab, new Vector3(player.transform.position.x + 3, player.transform.position.y, player.transform.position.z), Quaternion.identity);
-                break;
-            case 1:
-                Instantiate(BatPrefab, new Vector3(player.transform.position.x + 3, player.transform.position.y, player.transform.position.z), Quaternion.identity);
-                break;
-            case 2:
-                Instantiate(TentaclePrefab, new Vector3(player.transform.position.x + 3, player.transform.position.y, player.transform.position.z), Quaternion.identity);
-                break;
+            int random = Random.Range(0, 3);
+            Vector3 spawnPosition = new Vector3(player.transform.position.x + 3, player.transform.position.y, player.transform.position.z);
+            switch (random)
+            {
+                case 0:
+                    Instantiate(MushroomPrefab, spawnPosition, Quaternion.identity);
+                    break;
+                case 1:
+                    Instantiate(BatPrefab, spawnPosition, Quaternion.identity);
+                    break;
+                case 2:
+                    Instantiate(TentaclePrefab, spawnPosition, Quaternion.identity);
+                    break;
+            }
         }
     }
+
     public void Die()
     {
-        player.GetComponent<HealthController>().Die();
-        isPlayerDead = true;
+        if (player != null)
+        {
+            var healthController = player.GetComponent<HealthController>();
+            if (healthController != null)
+            {
+                healthController.Die();
+                isPlayerDead = true;
+            }
+        }
     }
+
     public void Invincible()
     {
-        player.GetComponent<HealthController>().currentHealth = 10000;
-        player.GetComponent<HealthController>().slider.value = player.GetComponent<HealthController>().currentHealth;
+        if (player != null)
+        {
+            var healthController = player.GetComponent<HealthController>();
+            if (healthController != null)
+            {
+                healthController.currentHealth = 10000;
+                healthController.slider.value = healthController.currentHealth;
+            }
+        }
     }
+
     public void TpTop()
     {
-        player.transform.position = new Vector3(player.transform.position.x, Terrain.GetComponent<TerrainGeneration>().heightAddition + 20, player.transform.position.z);
+        if (player != null && Terrain != null)
+        {
+            var terrainGen = Terrain.GetComponent<TerrainGeneration>();
+            if (terrainGen != null)
+            {
+                player.transform.position = new Vector3(player.transform.position.x, terrainGen.heightAddition + 20, player.transform.position.z);
+            }
+        }
     }
+
     public void AddAllItems()
     {
-        inventory.GetComponent<InventoryManager>().AddItem("Carbon", 30, CarbonSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Piedra", 50, PiedraSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Alfa Crystals", 10, AlfaSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Cobalto", 10, CobaltoSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Ice", 10, IceSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Iron", 10, IronSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Mugufin", 10, MugufinSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Platino", 10, PlatinoSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Titanio", 10, TitanioSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Uranio", 10, UranioSprite, null);
-        inventory.GetComponent<InventoryManager>().AddItem("Tungsteno", 10, TungstenoSprite, null);
+        if (inventory != null)
+        {
+            var inventoryManager = inventory.GetComponent<InventoryManager>();
+            if (inventoryManager != null)
+            {
+                inventoryManager.AddItem("Carbon", 30, CarbonSprite, null);
+                inventoryManager.AddItem("Piedra", 50, PiedraSprite, null);
+                inventoryManager.AddItem("Alfa Crystals", 10, AlfaSprite, null);
+                inventoryManager.AddItem("Cobalto", 10, CobaltoSprite, null);
+                inventoryManager.AddItem("Ice", 10, IceSprite, null);
+                inventoryManager.AddItem("Iron", 10, IronSprite, null);
+                inventoryManager.AddItem("Mugufin", 10, MugufinSprite, null);
+                inventoryManager.AddItem("Platino", 10, PlatinoSprite, null);
+                inventoryManager.AddItem("Titanio", 10, TitanioSprite, null);
+                inventoryManager.AddItem("Uranio", 10, UranioSprite, null);
+                inventoryManager.AddItem("Tungsteno", 10, TungstenoSprite, null);
+            }
+        }
     }
+
     public void CleanInventory()
     {
-        InventoryManager inventoryManager = inventory.GetComponent<InventoryManager>();
-        if (inventoryManager != null)
+        if (inventory != null)
         {
-            foreach (ItemSlot slot in inventoryManager.itemSlot)
+            var inventoryManager = inventory.GetComponent<InventoryManager>();
+            if (inventoryManager != null)
             {
-                if (slot.quantity > 0)
+                foreach (ItemSlot slot in inventoryManager.itemSlot)
                 {
-                    slot.RemoveItem(slot.itemName, slot.quantity);
+                    if (slot.quantity > 0)
+                    {
+                        slot.RemoveItem(slot.itemName, slot.quantity);
+                    }
                 }
             }
         }
     }
+
     public void HideDarkCircle()
     {
-        DarkCircle.GetComponent<CaveLighting>().lightCircle.SetActive(false);
-        DarkCircle.GetComponent<CaveLighting>().darkCircle.SetActive(false);
-        Debug.Log("Hide Dark Circle");
+        if (DarkCircle != null)
+        {
+            var caveLighting = DarkCircle.GetComponent<CaveLighting>();
+            if (caveLighting != null)
+            {
+                caveLighting.lightCircle.SetActive(false);
+                caveLighting.darkCircle.SetActive(false);
+                Debug.Log("Hide Dark Circle");
+            }
+        }
     }
+
     public void ShowDarkCircle()
     {
-        DarkCircle.GetComponent<CaveLighting>().lightCircle.SetActive(true);
-        DarkCircle.GetComponent<CaveLighting>().darkCircle.SetActive(true);
+        if (DarkCircle != null)
+        {
+            var caveLighting = DarkCircle.GetComponent<CaveLighting>();
+            if (caveLighting != null)
+            {
+                caveLighting.lightCircle.SetActive(true);
+                caveLighting.darkCircle.SetActive(true);
+            }
+        }
     }
 }
