@@ -15,25 +15,27 @@ public class BenchController : MonoBehaviour
     private AlertController alertController;
     public bool isBenchUsed = false; // State of the bench
     private Button[] upgradeButtons;
+    private Animator animationController;
 
     void Start()
     {
         InitializeComponents();
         canvasContent.SetActive(false);
         AssignButtonListeners();
+        animationController = GetComponent<Animator>();
     }
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.C))
+        if (playerInRange && Input.GetKeyDown(KeyCode.C) && !isBenchUsed)
         {
             ToggleCanvasContent();
         }
-
-        if (isBenchUsed)
+        else if (playerInRange && Input.GetKeyDown(KeyCode.C) && isBenchUsed)
         {
-            Destroy(gameObject);
+            alertController?.ShowRedAlert("This bench has already been upgraded.");
         }
+
 
         // Check if the inventory is opened and close the canvasContent if it is
         if (inventoryManager.menuActivated && canvasContent.activeSelf)
@@ -133,10 +135,15 @@ public class BenchController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") && !isBenchUsed)
         {
             playerInRange = true;
             keyText.text = "C";
+        }
+        else if (other.gameObject.CompareTag("Player") && isBenchUsed)
+        {
+            playerInRange = true;
+            keyText.text = "";
         }
     }
 
@@ -177,6 +184,8 @@ public class BenchController : MonoBehaviour
             }
             alertController?.ShowGreenAlert("Fuel tank filled!");
             isBenchUsed = true;
+            animationController.SetBool("IsDetroyed", true);
+            canvasContent.SetActive(false);
         }
         else
         {
