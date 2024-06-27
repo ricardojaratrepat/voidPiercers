@@ -91,6 +91,8 @@ public class TerrainGeneration : MonoBehaviour
 
     public void GenerateTerrain()
     {
+        bool[] benchPlacedInLevel = new bool[3]; // Para rastrear si se ha colocado un BenchPrefab en cada nivel
+
         for (int x = 0; x < worldSize; x++)
         {
             float height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier + heightAddition;
@@ -108,9 +110,15 @@ public class TerrainGeneration : MonoBehaviour
                     tileSprite = tileAtlas.stone.tileSprite;
 
                     if (height - y > ores[1].profundidadMaxima)
+                    {
                         tileSprite = tileAtlas.stone2.tileSprite;
+                        benchPlacedInLevel[1] = false; // Restablecer el indicador de colocación para este nivel
+                    }
                     if (height - y > ores[4].profundidadMaxima)
+                    {
                         tileSprite = tileAtlas.stone3.tileSprite;
+                        benchPlacedInLevel[2] = false; // Restablecer el indicador de colocación para este nivel
+                    }
 
                     if (ores[0].spreadTexture.GetPixel(x, y).r > 0.5f && (height - y > ores[0].profundidadMinima && height - y < ores[0].profundidadMaxima))
                         tileSprite = tileAtlas.coal.tileSprite;
@@ -175,27 +183,21 @@ public class TerrainGeneration : MonoBehaviour
                                 {
                                     Instantiate(ButterflyPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 }
-                                else if (random == 3)
+                                else if (random == 3 && !benchPlacedInLevel[0])
                                 {
-                                    Vector3 positionB = new Vector3(x, y, 0);
-                                    bool placedBench = false;
-
-                                    for (int i = y; i >= 0; i--)
-                                    {
-                                        if (caveNoiseTexture.GetPixel(x, i).r > 0.5f)
-                                        {
-                                            positionB = new Vector3(x, i + 1, 0); // Ajusta la posición justo arriba del primer bloque no vacío encontrado
-                                            placedBench = true;
-                                            break;
-                                        }
-                                    }
-
-                                    if (placedBench)
-                                    {
-                                        Instantiate(BenchPrefab, positionB + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-                                    }
+                                    InstantiateBenchInCave(x, y, 0);
+                                    benchPlacedInLevel[0] = true; // Indicar que el BenchPrefab se ha colocado en este nivel
                                 }
-
+                                else if (random == 3 && !benchPlacedInLevel[1])
+                                {
+                                    InstantiateBenchInCave(x, y, 1);
+                                    benchPlacedInLevel[1] = true; // Indicar que el BenchPrefab se ha colocado en este nivel
+                                }
+                                else if (random == 3 && !benchPlacedInLevel[2])
+                                {
+                                    InstantiateBenchInCave(x, y, 2);
+                                    benchPlacedInLevel[2] = true; // Indicar que el BenchPrefab se ha colocado en este nivel
+                                }
                                 else
                                 {
                                     Instantiate(TentaclePrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
@@ -210,6 +212,20 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void InstantiateBenchInCave(int x, int y, int level)
+    {
+        Vector3 position = new Vector3(x, y, 0);
+        for (int i = y; i >= 0; i--)
+        {
+            if (caveNoiseTexture.GetPixel(x, i).r > 0.5f)
+            {
+                position = new Vector3(x, i + 1, 0); // Ajusta la posición justo arriba del primer bloque no vacío encontrado
+                break;
+            }
+        }
+        Instantiate(BenchPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
     }
 
     private int RandomNumber()

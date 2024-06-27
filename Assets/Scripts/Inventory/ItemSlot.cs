@@ -71,10 +71,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         if (this.quantity == 0)
         {
             quantityText.enabled = false;
-            Sprite invisibleItemSprite = Resources.Load<Sprite>("invisible");
             this.itemName = "";
-            this.itemSprite = invisibleItemSprite;
-            itemImage.sprite = invisibleItemSprite;
+            this.itemSprite = inventoryManager.invisible;
+            itemImage.sprite = inventoryManager.invisible;
             this.itemDescription = "";
         }
     }
