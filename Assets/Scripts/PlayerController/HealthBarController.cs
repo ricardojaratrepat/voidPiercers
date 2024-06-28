@@ -38,7 +38,7 @@ public class HealthController : MonoBehaviour
         fill.color = gradient.Evaluate(slider.normalizedValue);
     }
 
-    private void Die()
+    public void Die()
     {
         gameOverManager.GameOver(); // Mostrar la pantalla de Game Over
     }

@@ -4,13 +4,23 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public float acceleration = 30f;
+    public float deceleration = 20f;
     public float jumpForce = 10f;
-    public float digJumpForce = 4f; // Nueva variable para la fuerza de salto al excavar hacia arriba
+    public float digJumpForce = 4f;
+    public float airControlFactor = 0.5f;
+    public float coyoteTime = 0.1f;
     public bool onGround;
+    private float lastGroundedTime;
+    private float lastJumpTime;
+    private bool isJumping;
+    private float moveHorizontal;
+
     private Rigidbody2D rb;
     private InventoryManager inventoryManager;
     public HealthController healthController; // Añade una referencia a HealthController
     public FuelController fuelController; // Añadir la referencia al FuelController
+    public float jetpackForce = 5f;
 
     private float digCooldown = 0.3f;
     private float lastDigTime;
@@ -21,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
 
     public CaveLighting caveLighting;
+    private Animator animator;
 
     void Start()
     {
@@ -28,6 +39,7 @@ public class PlayerController : MonoBehaviour
         inventoryManager = GameObject.Find("InventoryCanvas")?.GetComponent<InventoryManager>();
         healthController = GetComponent<HealthController>(); // Inicializa la referencia a HealthController
         fuelController = GetComponent<FuelController>(); // Inicializa la referencia al FuelController
+        animator = GetComponent<Animator>();
 
         if (inventoryManager == null)
         {
@@ -53,11 +65,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     private void OnTriggerStay2D(Collider2D col)
     {
         if (col.CompareTag("Ground"))
         {
             onGround = true;
+            lastGroundedTime = Time.time;
         }
     }
     private void OnTriggerExit2D(Collider2D col)
@@ -67,6 +81,7 @@ public class PlayerController : MonoBehaviour
             onGround = false;
         }
     }
+
 
     public void DestroyBlock(Vector2 direction)
     {
@@ -148,7 +163,6 @@ public class PlayerController : MonoBehaviour
             Debug.Log("No se encontró terreno.");
         }
     }
-
     void FixedUpdate()
     {
         // Handle movement
@@ -156,14 +170,18 @@ public class PlayerController : MonoBehaviour
         bool isMovingLeft = Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A);
         bool isMovingRight = Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D);
 
-        // Apply horizontal movement
-        Vector2 movement = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y);
-        rb.velocity = movement;
-        if (IsMoving)
+        // Apply horizontal movement with acceleration and deceleration
+        float targetSpeed = moveHorizontal * moveSpeed;
+        float speedDiff = targetSpeed - rb.velocity.x;
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
+        float movement = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, 0.96f) * Mathf.Sign(speedDiff);
+
+        if (!onGround)
         {
-            // Consumir combustible mientras se mueve
-            fuelController?.ConsumeFuel(fuelConsumptionRate * Time.deltaTime);
+            movement *= airControlFactor; // Reduce air control
         }
+
+        rb.AddForce(movement * Vector2.right);
 
         // Apply rotation
         if (isMovingLeft)
@@ -175,10 +193,11 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         }
 
-        // Apply jump
-        if (Input.GetKeyDown(KeyCode.Space) && onGround)
+        // Apply jump with coyote time
+        if (Input.GetKey(KeyCode.Space) && Time.time - lastGroundedTime <= coyoteTime)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            lastGroundedTime = -coyoteTime; // Reset coyote time
         }
 
         // Handle digging
@@ -221,7 +240,8 @@ public class PlayerController : MonoBehaviour
         // Fix the rotation to ensure the player stays horizontal when not digging
         if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
         {
-            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            Quaternion targetRotation = Quaternion.Euler(0f, 0f, 0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 10f);
         }
 
         // Limit rotation angle
@@ -234,9 +254,40 @@ public class PlayerController : MonoBehaviour
 
             // Interpolate between current rotation and target rotation
             float rotationSpeed = 5.0f; // Adjust this value to change the speed of rotation
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
+
+        // Consume fuel while moving
+        if (IsMoving)
+        {
+            fuelController?.ConsumeFuel(fuelConsumptionRate * Time.deltaTime);
         }
     }
+    void Update()
+    {
+        moveHorizontal = Input.GetAxisRaw("Horizontal");
+
+        // Gestionar el salto
+        if (Input.GetButtonDown("Jump"))
+        {
+            lastJumpTime = Time.time;
+        }
+
+        // Gestionar el jetpack
+        if (Input.GetKey(KeyCode.Space))
+        {
+            animator.SetBool("jetpack", true);
+            rb.AddForce(Vector2.up * jetpackForce, ForceMode2D.Force);
+        }
+        else
+        {
+            animator.SetBool("jetpack", false);
+        }
+
+    }
+
+
+
     public bool IsMoving
     {
         get

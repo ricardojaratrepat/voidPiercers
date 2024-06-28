@@ -60,8 +60,16 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void RemoveItem(string itemName, int quantity)
     {
+        if (itemName == null)
+        {
+            Debug.LogError("Item name is null.");
+            return;
+        }
         this.quantity -= quantity;
-        quantityText.text = this.quantity.ToString();
+        if (quantityText != null)
+        {
+            quantityText.text = this.quantity.ToString();
+        }
 
         if (this.quantity < maxNumberOfItems)
         {
@@ -70,11 +78,19 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
         if (this.quantity == 0)
         {
-            quantityText.enabled = false;
-            Sprite invisibleItemSprite = Resources.Load<Sprite>("invisible");
+            if (quantityText != null)
+            {
+                quantityText.enabled = false;
+            }
             this.itemName = "";
-            this.itemSprite = invisibleItemSprite;
-            itemImage.sprite = invisibleItemSprite;
+            if (inventoryManager != null && inventoryManager.invisible != null)
+            {
+                this.itemSprite = inventoryManager.invisible;
+                if (itemImage != null)
+                {
+                    itemImage.sprite = inventoryManager.invisible;
+                }
+            }
             this.itemDescription = "";
         }
     }
@@ -94,7 +110,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnLeftClick()
     {
-        inventoryManager.DeselectAllSlots();        
+        inventoryManager.DeselectAllSlots();
         selecredShader.SetActive(true);
         thisItemSelected = true;
 
