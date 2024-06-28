@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private InventoryManager inventoryManager;
     public HealthController healthController; // Añade una referencia a HealthController
     public FuelController fuelController; // Añadir la referencia al FuelController
+    public float jetpackForce = 5f;
 
     private float digCooldown = 0.3f;
     private float lastDigTime;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
 
     public CaveLighting caveLighting;
+    private Animator animator;
 
     void Start()
     {
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
         inventoryManager = GameObject.Find("InventoryCanvas")?.GetComponent<InventoryManager>();
         healthController = GetComponent<HealthController>(); // Inicializa la referencia a HealthController
         fuelController = GetComponent<FuelController>(); // Inicializa la referencia al FuelController
+        animator = GetComponent<Animator>();
 
         if (inventoryManager == null)
         {
@@ -148,7 +151,6 @@ public class PlayerController : MonoBehaviour
             Debug.Log("No se encontró terreno.");
         }
     }
-
     void FixedUpdate()
     {
         // Handle movement
@@ -237,6 +239,21 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            animator.SetBool("jetpack", true);
+            rb.velocity = new Vector2(rb.velocity.x, jetpackForce); // Aplicar la fuerza del jetpack
+        }
+        else
+        {
+            animator.SetBool("jetpack", false);
+        }
+    }
+
+
+
     public bool IsMoving
     {
         get
