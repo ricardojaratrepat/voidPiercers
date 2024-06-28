@@ -4,12 +4,26 @@ using System.Collections;
 
 public class AlertController : MonoBehaviour
 {
+    public static AlertController Instance { get; private set; }
+
     public TextMeshProUGUI alertText; // Referencia al TextMeshProUGUI dentro del Canvas
     public float fadeDuration = 2f; // Duración de la transición de desvanecimiento
 
     private Coroutine fadeCoroutine;
 
     // Función para mostrar un mensaje de alerta en rojo
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     public void ShowRedAlert(string message)
     {
         alertText.color = Color.red;

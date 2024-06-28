@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    public static InventoryManager Instance { get; private set; }
     public GameObject InventoryMenu;
     public bool menuActivated;
     public ItemSlot[] itemSlot;
@@ -17,6 +18,20 @@ public class InventoryManager : MonoBehaviour
         Bar.enabled = true;
         GameOver.enabled = true;
     }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    public bool MenuActivated => menuActivated;
+
 
     // Update is called once per frame
     void Update()
@@ -56,6 +71,7 @@ public class InventoryManager : MonoBehaviour
         GameOver.enabled = true;
         menuActivated = false;
     }
+
 
     public bool IsAvailable(string itemName, int quantity)
     {
