@@ -3005,7 +3005,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c630d83544e6f548aa21bb2a8a29eec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBenchUsed: 0
+  keyText: {fileID: 0}
+  benchCanvas: {fileID: 0}
+  canvasContent: {fileID: 0}
+  upgradeButtons: []
 --- !u!1 &8065345105365710017
 GameObject:
   m_ObjectHideFlags: 0

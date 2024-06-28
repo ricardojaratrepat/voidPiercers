@@ -32,6 +32,13 @@ public class TerrainGeneration : MonoBehaviour
     private GameObject[] worldChunks;
 
     public bool isSolid = true;
+    private bool[] benchPlacedInLevel = new bool[3];
+    private List<Vector2Int> potentialBenchPositions = new List<Vector2Int>();
+    public int minBenchesPerLevel = 3; // Número mínimo de benches por nivel
+    public int maxBenchesPerLevel = 4;
+    public float minBenchDistance = 20f;
+    private List<Vector2Int> placedBenches = new List<Vector2Int>();
+
 
     private void OnValidate()
     {
@@ -91,8 +98,7 @@ public class TerrainGeneration : MonoBehaviour
 
     public void GenerateTerrain()
     {
-        bool[] benchPlacedInLevel = new bool[3]; // Para rastrear si se ha colocado un BenchPrefab en cada nivel
-
+        potentialBenchPositions.Clear();
         for (int x = 0; x < worldSize; x++)
         {
             float height = Mathf.PerlinNoise((x + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier + heightAddition;
@@ -164,44 +170,26 @@ public class TerrainGeneration : MonoBehaviour
                         }
                         else
                         {
-                            // Aca cambiar el bloque por un enemigo de cueva
+                            // Almacenar posiciones potenciales para BenchPrefabs
+                            if (IsSuitableForBench(x, y))
+                            {
+                                potentialBenchPositions.Add(new Vector2Int(x, y));
+                            }
+
+                            // Generar otros enemigos de cueva como antes
                             int random = RandomNumber();
                             if (random < 1)
                             {
                                 Vector3 position = new Vector3(x, y, 0);
-
-                                random = Random.Range(0, 5);
+                                random = Random.Range(0, 4);
                                 if (random == 0)
-                                {
                                     Instantiate(BatPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-                                }
                                 else if (random == 1)
-                                {
                                     Instantiate(MushroomPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-                                }
                                 else if (random == 2)
-                                {
                                     Instantiate(ButterflyPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-                                }
-                                else if (random == 3 && !benchPlacedInLevel[0])
-                                {
-                                    InstantiateBenchInCave(x, y, 0);
-                                    benchPlacedInLevel[0] = true; // Indicar que el BenchPrefab se ha colocado en este nivel
-                                }
-                                else if (random == 3 && !benchPlacedInLevel[1])
-                                {
-                                    InstantiateBenchInCave(x, y, 1);
-                                    benchPlacedInLevel[1] = true; // Indicar que el BenchPrefab se ha colocado en este nivel
-                                }
-                                else if (random == 3 && !benchPlacedInLevel[2])
-                                {
-                                    InstantiateBenchInCave(x, y, 2);
-                                    benchPlacedInLevel[2] = true; // Indicar que el BenchPrefab se ha colocado en este nivel
-                                }
                                 else
-                                {
                                     Instantiate(TentaclePrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-                                }
                             }
                         }
                     }
@@ -212,21 +200,103 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
+        Debug.Log($"Posiciones potenciales para benches: {potentialBenchPositions.Count}");
+        PlaceBenchPrefabs();
     }
-
-    private void InstantiateBenchInCave(int x, int y, int level)
+    private bool IsSuitableForBench(int x, int y)
     {
-        Vector3 position = new Vector3(x, y, 0);
-        for (int i = y; i >= 0; i--)
+        // Verificar si la posición es adecuada para un bench (en el suelo de una cueva)
+        bool suitable = caveNoiseTexture.GetPixel(x, y).r <= 0.5f &&
+                        caveNoiseTexture.GetPixel(x, y - 1).r > 0.5f;
+
+        if (suitable)
         {
-            if (caveNoiseTexture.GetPixel(x, i).r > 0.5f)
+            Debug.Log($"Posición adecuada para bench encontrada en ({x}, {y})");
+        }
+
+        return suitable;
+    }
+    private void PlaceBenchPrefabs()
+    {
+        Debug.Log("Iniciando colocación de benches");
+        placedBenches.Clear();
+
+        // Colocar benches en cada nivel
+        for (int level = 0; level < 3; level++)
+        {
+            int benchesToPlace = Random.Range(minBenchesPerLevel, maxBenchesPerLevel + 1);
+            PlaceBenchesInLevel(level, benchesToPlace);
+        }
+
+        Debug.Log($"Total de benches colocados: {placedBenches.Count}");
+    }
+    private void PlaceBenchInLevel(int level)
+    {
+        int minY = level == 0 ? 0 : (level == 1 ? ores[1].profundidadMinima : ores[4].profundidadMinima);
+        int maxY = level == 0 ? ores[1].profundidadMaxima : (level == 1 ? ores[4].profundidadMaxima : worldSize);
+
+        List<Vector2Int> levelPositions = potentialBenchPositions.FindAll(pos => pos.y >= minY && pos.y < maxY);
+
+        Debug.Log($"Intentando colocar bench en nivel {level}. Posiciones disponibles: {levelPositions.Count}");
+
+        if (levelPositions.Count > 0)
+        {
+            Vector2Int benchPos = levelPositions[Random.Range(0, levelPositions.Count)];
+            Vector3 position = new Vector3(benchPos.x, benchPos.y + 1, 0);
+            Instantiate(BenchPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+            potentialBenchPositions.Remove(benchPos);
+            Debug.Log($"Bench colocado en nivel {level} en posición {position}");
+        }
+        else
+        {
+            Debug.Log($"No se pudo colocar bench en nivel {level}. No hay posiciones disponibles.");
+        }
+    }
+    private void PlaceBenchesInLevel(int level, int count)
+    {
+        int minY = level == 0 ? 0 : (level == 1 ? ores[1].profundidadMinima : ores[4].profundidadMinima);
+        int maxY = level == 0 ? ores[1].profundidadMaxima : (level == 1 ? ores[4].profundidadMaxima : worldSize);
+
+        List<Vector2Int> levelPositions = potentialBenchPositions.FindAll(pos => pos.y >= minY && pos.y < maxY);
+
+        Debug.Log($"Intentando colocar {count} benches en nivel {level}. Posiciones disponibles: {levelPositions.Count}");
+
+        int benchesPlaced = 0;
+        int attempts = 0;
+        int maxAttempts = levelPositions.Count * 2; // Limitamos los intentos para evitar bucles infinitos
+
+        while (benchesPlaced < count && attempts < maxAttempts && levelPositions.Count > 0)
+        {
+            Vector2Int benchPos = levelPositions[Random.Range(0, levelPositions.Count)];
+
+            if (IsFarEnoughFromOtherBenches(benchPos))
             {
-                position = new Vector3(x, i + 1, 0); // Ajusta la posición justo arriba del primer bloque no vacío encontrado
-                break;
+                Vector3 position = new Vector3(benchPos.x, benchPos.y + 1, 0);
+                Instantiate(BenchPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+                placedBenches.Add(benchPos);
+                potentialBenchPositions.Remove(benchPos);
+                levelPositions.Remove(benchPos);
+                benchesPlaced++;
+                Debug.Log($"Bench colocado en nivel {level} en posición {position}");
+            }
+
+            attempts++;
+        }
+
+        Debug.Log($"Se colocaron {benchesPlaced} benches en el nivel {level} después de {attempts} intentos");
+    }
+    private bool IsFarEnoughFromOtherBenches(Vector2Int newPos)
+    {
+        foreach (Vector2Int placedBench in placedBenches)
+        {
+            if (Vector2Int.Distance(newPos, placedBench) < minBenchDistance)
+            {
+                return false;
             }
         }
-        Instantiate(BenchPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+        return true;
     }
+
 
     private int RandomNumber()
     {

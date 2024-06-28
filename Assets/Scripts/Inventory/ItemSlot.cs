@@ -66,7 +66,10 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             return;
         }
         this.quantity -= quantity;
-        quantityText.text = this.quantity.ToString();
+        if (quantityText != null)
+        {
+            quantityText.text = this.quantity.ToString();
+        }
 
         if (this.quantity < maxNumberOfItems)
         {
@@ -75,10 +78,19 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
         if (this.quantity == 0)
         {
-            quantityText.enabled = false;
+            if (quantityText != null)
+            {
+                quantityText.enabled = false;
+            }
             this.itemName = "";
-            this.itemSprite = inventoryManager.invisible;
-            itemImage.sprite = inventoryManager.invisible;
+            if (inventoryManager != null && inventoryManager.invisible != null)
+            {
+                this.itemSprite = inventoryManager.invisible;
+                if (itemImage != null)
+                {
+                    itemImage.sprite = inventoryManager.invisible;
+                }
+            }
             this.itemDescription = "";
         }
     }
@@ -98,7 +110,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnLeftClick()
     {
-        inventoryManager.DeselectAllSlots();        
+        inventoryManager.DeselectAllSlots();
         selecredShader.SetActive(true);
         thisItemSelected = true;
 
