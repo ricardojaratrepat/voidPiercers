@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerVisibility : MonoBehaviour
 {
     public float visibilityRadius = 5f; // Set the visibility radius
+    public Color shadowColor = new Color(0, 0, 0, 0.5f); // Color for shadowed blocks
 
     private void Update()
     {
@@ -12,25 +13,30 @@ public class PlayerVisibility : MonoBehaviour
 
         foreach (Collider2D col in colliders)
         {
-            if (col.CompareTag("Ore basic") || col.CompareTag("Ore medium") || col.CompareTag("Ore rare") || col.CompareTag("Ground"))
+            if (IsBlock(col))
             {
-                col.GetComponent<SpriteRenderer>().enabled = true;
+                col.GetComponent<SpriteRenderer>().color = Color.white; // Normal visibility
             }
         }
 
-        HideDistantObjects();
+        ApplyShadowToDistantBlocks();
     }
 
-    private void HideDistantObjects()
+    private void ApplyShadowToDistantBlocks()
     {
-        Collider2D[] allColliders = Physics2D.OverlapCircleAll(transform.position, visibilityRadius * 2); // Check a larger area to turn off distant blocks
+        Collider2D[] allColliders = Physics2D.OverlapCircleAll(transform.position, visibilityRadius * 2);
 
         foreach (Collider2D col in allColliders)
         {
-            if ((col.CompareTag("Ore basic") || col.CompareTag("Ore medium") || col.CompareTag("Ore rare") || col.CompareTag("Ground")) && Vector2.Distance(transform.position, col.transform.position) > visibilityRadius)
+            if (IsBlock(col) && Vector2.Distance(transform.position, col.transform.position) > visibilityRadius)
             {
-                col.GetComponent<SpriteRenderer>().enabled = false;
+                col.GetComponent<SpriteRenderer>().color = shadowColor; // Shadow effect
             }
         }
+    }
+
+    private bool IsBlock(Collider2D col)
+    {
+        return col.CompareTag("Ore basic") || col.CompareTag("Ore medium") || col.CompareTag("Ore rare") || col.CompareTag("Ground");
     }
 }
