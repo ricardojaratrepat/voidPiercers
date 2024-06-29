@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
 
     public CaveLighting caveLighting;
     private Animator animator;
+    public int ExcavationLevel = 1;
 
     void Start()
     {
