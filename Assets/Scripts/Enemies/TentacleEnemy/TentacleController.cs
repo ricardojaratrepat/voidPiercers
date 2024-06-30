@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Pathfinding;
 using UnityEngine;
 
 
@@ -14,6 +15,7 @@ namespace Tentacle
         private bool isShooting = false;
         private GameObject player;
         private Animator animator;
+        private EnemyMovementRangedAI enemyMovementRangedAI;
 
         public GameObject acidBallPrefab;
 

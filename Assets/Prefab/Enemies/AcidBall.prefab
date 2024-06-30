@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6805161723275634008}
   - component: {fileID: 3829837047479890409}
-  - component: {fileID: 168819832979793545}
   - component: {fileID: 7435550611194013590}
   - component: {fileID: -5302546866741974598}
   - component: {fileID: 8823162079299146535}
+  - component: {fileID: 4577425711425632396}
   m_Layer: 2
   m_Name: AcidBall
   m_TagString: Untagged
@@ -88,27 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &168819832979793545
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4483104156164953368}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 05cd6677edbe53f4b9516557230d1795, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!50 &7435550611194013590
 Rigidbody2D:
   serializedVersion: 4
@@ -183,3 +162,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc165149825ed9a4eabdfddbdfffafc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &4577425711425632396
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4483104156164953368}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 05cd6677edbe53f4b9516557230d1795, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

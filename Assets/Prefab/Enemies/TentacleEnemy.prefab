@@ -331,6 +331,7 @@ GameObject:
   - component: {fileID: 3910207446048878163}
   - component: {fileID: 7255948361152881151}
   - component: {fileID: 1176574859360706357}
+  - component: {fileID: -5897593115365146003}
   m_Layer: 6
   m_Name: TentacleEnemy
   m_TagString: Enemy
@@ -516,6 +517,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-5897593115365146003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7314853835808972697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3218cbde515ca34438906425bd47d58e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  minDistanceToActivatePathfinding: 15
+  maxDistanceFromPlayer: 10
+  velocity: 5
+  periodPerRecalculation: 1
 --- !u!1 &7397604949793328912
 GameObject:
   m_ObjectHideFlags: 0
