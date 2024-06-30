@@ -277,6 +277,7 @@ public class PlayerController : MonoBehaviour
         // Gestionar el jetpack
         if (Input.GetKey(KeyCode.Space))
         {
+            Debug.Log("Jetpack activated");
             animator.SetBool("jetpack", true);
             rb.AddForce(Vector2.up * jetpackForce, ForceMode2D.Force);
         }

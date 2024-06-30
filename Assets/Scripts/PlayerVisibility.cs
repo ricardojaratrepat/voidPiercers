@@ -26,7 +26,7 @@ public class PlayerVisibility : MonoBehaviour
 
     private void ApplyShadowToDistantBlocks()
     {
-        Collider2D[] allColliders = Physics2D.OverlapCircleAll(transform.position, visibilityRadius * 10);
+        Collider2D[] allColliders = Physics2D.OverlapCircleAll(transform.position, 42);
 
         foreach (Collider2D col in allColliders)
         {
@@ -47,8 +47,8 @@ public class PlayerVisibility : MonoBehaviour
         if (spriteRenderer != null)
         {
             string spriteName = spriteRenderer.sprite.name;
-            return !IsGrassOrDirt(spriteName) &&
-                (col.CompareTag("Ore basic") || col.CompareTag("Ore medium") || 
+            return
+                (col.CompareTag("Ore basic") || col.CompareTag("Ore medium") ||
                     col.CompareTag("Ore rare") || col.CompareTag("Ground"));
         }
         return false;

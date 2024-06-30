@@ -13,27 +13,20 @@ public class ButterflyController : MonoBehaviour
     private float directionChangeTimer;
     private VisibilityController visibilityController;
 
-    public float temporaryVisibilityRadius = 10f;
     public float visibilityDuration = 3f;
 
     private Coroutine visibilityCoroutine;
+    private HealthController healthController;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         directionChangeTimer = changeDirectionInterval;
+        healthController = FindObjectOfType<HealthController>();
         ChangeDirection();
 
-        GameObject visibilityControllerObject = GameObject.Find("VisibilityController");
-        if (visibilityControllerObject != null)
-        {
-            visibilityController = visibilityControllerObject.GetComponent<VisibilityController>();
-        }
-        else
-        {
-            Debug.LogError("VisibilityController object not found in the scene.");
-        }
+        visibilityController = FindObjectOfType<VisibilityController>();
     }
 
     void Update()
@@ -72,20 +65,10 @@ public class ButterflyController : MonoBehaviour
         velocity = -velocity;
     }
 
-    void OnDisable()
+    void OnDestroy()
     {
-        if (visibilityController != null && visibilityCoroutine == null)
-        {
-            // visibilityCoroutine = StartCoroutine(TemporaryVisibility());
-        }
-    }
-
-    private IEnumerator TemporaryVisibility()
-    {
-        float originalRadius = visibilityController.playerVisibility.visibilityRadius;
-        visibilityController.SetNewVisibilityRadius(temporaryVisibilityRadius);
-        yield return new WaitForSeconds(visibilityDuration);
-        visibilityController.SetNewVisibilityRadius(originalRadius);
-        visibilityCoroutine = null;
+        healthController.currentHealth += 15;
+        healthController.slider.value = healthController.currentHealth;
+        healthController.fill.color = healthController.gradient.Evaluate(healthController.slider.normalizedValue);
     }
 }
