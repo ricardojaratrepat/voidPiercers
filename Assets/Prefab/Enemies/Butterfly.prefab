@@ -265,8 +265,8 @@ GameObject:
   - component: {fileID: 4996528152915088521}
   - component: {fileID: 5450079645892765166}
   - component: {fileID: 1689627610247104359}
-  - component: {fileID: 6345954425569307668}
   - component: {fileID: 74651856332770190}
+  - component: {fileID: 4978467511787120646}
   m_Layer: 6
   m_Name: Butterfly
   m_TagString: Enemy
@@ -425,21 +425,6 @@ CircleCollider2D:
   m_Offset: {x: 0.019065559, y: 0}
   serializedVersion: 2
   m_Radius: 0.81594056
---- !u!114 &6345954425569307668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4888170355462039680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4771fd43bf7532141bdbff83ae334aa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  darkCircle: {fileID: 0}
-  flightSpeed: 6
-  changeDirectionInterval: 7
 --- !u!114 &74651856332770190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,8 +437,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 495370c7ccc8fe543b0fcaab50019f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
+  maxHealth: 100
   currentHealth: 0
+--- !u!114 &4978467511787120646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4888170355462039680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4771fd43bf7532141bdbff83ae334aa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flightSpeed: 2
+  changeDirectionInterval: 3
 --- !u!1 &7715100572028020131
 GameObject:
   m_ObjectHideFlags: 0

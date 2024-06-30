@@ -11,7 +11,6 @@ public class Cheats : MonoBehaviour
     public GameObject inventory;
     public GameObject CheatMenu;
     public GameObject Terrain;
-    public GameObject DarkCircle;
     public bool isCheating;
     public Sprite CarbonSprite;
     public Sprite PiedraSprite;
@@ -241,32 +240,6 @@ public class Cheats : MonoBehaviour
         }
     }
 
-    public void HideDarkCircle()
-    {
-        if (DarkCircle != null)
-        {
-            var caveLighting = DarkCircle.GetComponent<CaveLighting>();
-            if (caveLighting != null)
-            {
-                caveLighting.lightCircle.SetActive(false);
-                caveLighting.darkCircle.SetActive(false);
-                Debug.Log("Hide Dark Circle");
-            }
-        }
-    }
-
-    public void ShowDarkCircle()
-    {
-        if (DarkCircle != null)
-        {
-            var caveLighting = DarkCircle.GetComponent<CaveLighting>();
-            if (caveLighting != null)
-            {
-                caveLighting.lightCircle.SetActive(true);
-                caveLighting.darkCircle.SetActive(true);
-            }
-        }
-    }
     public void SpawnOven()
     {
         if (player != null)
