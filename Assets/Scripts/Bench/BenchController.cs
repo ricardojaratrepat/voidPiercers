@@ -216,8 +216,8 @@ public class BenchController : MonoBehaviour
         return level switch
         {
             UpgradeLevel.Level1 => new Dictionary<string, int> { { "Carbon", 50 }, { "Iron", 30 }, { "Piedra", 60 }, { "Alfa Crystals", 3 } },
-            UpgradeLevel.Level2 => new Dictionary<string, int> { { "Carbon", 70 }, { "Iron", 50 }, { "Piedra Compacta", 80 }, { "Alfa Crystals", 5 }, { "Tungsteno", 20 }, { "Ice", 50 }, { "Cobalto", 30 } },
-            UpgradeLevel.Level3 => new Dictionary<string, int> { { "Titanio", 30 }, { "Platino", 50 }, { "Piedra Dura", 200 }, { "Alfa Crystals", 8 }, { "Tungsteno", 20 }, { "Ice", 70 }, { "Cobalto", 30 }, { "Uranio", 50 } },
+            UpgradeLevel.Level2 => new Dictionary<string, int> { { "Iron", 50 }, { "Piedra Compacta", 80 }, { "Alfa Crystals", 5 }, { "Tungsteno", 20 }, { "Ice", 50 }, { "Cobalto", 30 } },
+            UpgradeLevel.Level3 => new Dictionary<string, int> { { "Titanio", 30 }, { "Platino", 50 }, { "Piedra Dura", 200 }, { "Alfa Crystals", 8 }, { "Tungsteno", 20 }, { "Uranio", 50 } },
             _ => null,
         };
     }
