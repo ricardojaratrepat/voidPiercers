@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class VisibilityController : MonoBehaviour
 {
-    public PlayerVisibility playerVisibility; // Reference to the PlayerVisibility component
+    public PlayerVisibility playerVisibility; 
 
-    public float newVisibilityRadius = 10f; // Example of a new visibility radius value
+    public float newVisibilityRadius = 10f; 
 
     void Start()
     {
         if (playerVisibility == null)
         {
-            playerVisibility = GetComponent<PlayerVisibility>(); // Try to find PlayerVisibility on the same GameObject if not set
+            playerVisibility = GetComponent<PlayerVisibility>(); 
         }
 
         if (playerVisibility == null)
@@ -23,12 +23,12 @@ public class VisibilityController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.V))
         {
-            SetNewVisibilityRadius(newVisibilityRadius); // Example: Set the visibility radius when pressing a key
+            SetNewVisibilityRadius(newVisibilityRadius); 
         }
     }
 
     public void SetNewVisibilityRadius(float radius)
     {
-        playerVisibility.SetVisibilityRadius(radius); // Call the method on PlayerVisibility to set the new radius
+        playerVisibility.SetVisibilityRadius(radius); 
     }
 }
