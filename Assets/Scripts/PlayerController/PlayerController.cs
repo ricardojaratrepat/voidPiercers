@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
     // Texto temporal
     public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
 
-    public CaveLighting caveLighting;
     private Animator animator;
     public int ExcavationLevel = 1;
 
@@ -56,14 +55,6 @@ public class PlayerController : MonoBehaviour
         }
 
         lastDigTime = -digCooldown; // Allows digging immediately at start
-        if (caveLighting == null)
-        {
-            Debug.LogError("CaveLighting no encontrado en la escena!");
-        }
-        else
-        {
-            caveLighting.SetCaveStatus(true);
-        }
     }
 
 

@@ -12,28 +12,34 @@ public class InventoryManager : MonoBehaviour
     public Canvas GameOver;
     public Sprite invisible;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Bar.enabled = true;
-        GameOver.enabled = true;
-    }
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
+    void Start()
+    {
+        // Asumiendo que Bar y GameOver se asignan en el Inspector
+        if (Bar == null)
+        {
+            Debug.LogError("Bar is not assigned in the Inspector.");
+        }
+
+        if (GameOver == null)
+        {
+            Debug.LogError("GameOver is not assigned in the Inspector.");
+        }
+    }
+
     public bool MenuActivated => menuActivated;
 
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetButtonDown("Inventory"))
@@ -57,21 +63,46 @@ public class InventoryManager : MonoBehaviour
     public void OpenInventory()
     {
         Time.timeScale = 0;
-        InventoryMenu.SetActive(true);
-        Bar.enabled = false;
-        GameOver.enabled = false;
+
+        if (InventoryMenu != null)
+        {
+            InventoryMenu.SetActive(true);
+        }
+
+        if (Bar != null)
+        {
+            Bar.enabled = false;
+        }
+
+        if (GameOver != null)
+        {
+            GameOver.enabled = false;
+        }
+
         menuActivated = true;
     }
 
     public void CloseInventory()
     {
         Time.timeScale = 1;
-        InventoryMenu.SetActive(false);
-        Bar.enabled = true;
-        GameOver.enabled = true;
+
+        if (InventoryMenu != null)
+        {
+            InventoryMenu.SetActive(false);
+        }
+
+        if (Bar != null)
+        {
+            Bar.enabled = true;
+        }
+
+        if (GameOver != null)
+        {
+            GameOver.enabled = true;
+        }
+
         menuActivated = false;
     }
-
 
     public bool IsAvailable(string itemName, int quantity)
     {
@@ -89,7 +120,7 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < itemSlot.Length; i++)
         {
-            if (itemSlot[i].isFull == false && itemSlot[i].itemName == itemName || itemSlot[i].quantity == 0)
+            if (!itemSlot[i].isFull && (itemSlot[i].itemName == itemName || itemSlot[i].quantity == 0))
             {
                 itemSlot[i].AddItem(itemName, quantity, itemSprite, itemDescription);
                 return;

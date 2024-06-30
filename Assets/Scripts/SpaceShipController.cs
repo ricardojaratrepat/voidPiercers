@@ -22,8 +22,7 @@ public class SpaceShipController : MonoBehaviour
     public float maxRotationAngle = 15f;
     private Animator animator;
     public string mainMenuSceneName = "MainMenu";
-
-    public FadeController fadeController;
+    private Cheats cheats;
 
     void Start()
     {
@@ -35,7 +34,7 @@ public class SpaceShipController : MonoBehaviour
         button = canvasContent.GetComponentInChildren<Button>();
         button.onClick.AddListener(LaunchSpaceship);
         animator = GetComponent<Animator>();
-        fadeController = GameObject.FindObjectOfType<FadeController>();
+        cheats = GameObject.FindObjectOfType<Cheats>();
 
         canvasContent.SetActive(false);
     }
@@ -117,14 +116,9 @@ public class SpaceShipController : MonoBehaviour
 
     IEnumerator EndGame()
     {
+        cheats.CleanInventory();
         yield return new WaitForSeconds(5f); // Esperar 5 segundos
         AlertController.Instance?.ShowGreenAlert("Congratulations! You have successfully launched the spaceship!");
-
-        // Iniciar el fade a negro
-        fadeController.FadeToBlack();
-
-        // Esperar a que termine el fade
-        yield return new WaitForSeconds(fadeController.fadeDuration);
 
         // Cargar la escena del menú principal
         UnityEngine.SceneManagement.SceneManager.LoadScene(mainMenuSceneName);
