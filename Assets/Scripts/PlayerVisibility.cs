@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerVisibility : MonoBehaviour
 {
     public float visibilityRadius = 5f; // Set the initial visibility radius
+    // TODO: For some reason the color doesnt change anything
     public Color shadowColor = new Color(0, 0, 0, 0.5f); // Color for shadowed blocks
 
     private void Update()

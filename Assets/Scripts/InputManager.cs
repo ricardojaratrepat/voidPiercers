@@ -7,16 +7,14 @@ public class InputHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // Exit the game
             Application.Quit();
             #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false; // Stop play mode in the editor
+            UnityEditor.EditorApplication.isPlaying = false; 
             #endif
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            // Load scene 0
             SceneManager.LoadScene(0);
         }
     }
