@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class SpaceShipController : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class SpaceShipController : MonoBehaviour
     public float rotationSpeed = 10f;
     public float maxRotationAngle = 15f;
     private Animator animator;
+    public string mainMenuSceneName = "MainMenu";
+
+    public FadeController fadeController;
 
     void Start()
     {
@@ -31,6 +35,7 @@ public class SpaceShipController : MonoBehaviour
         button = canvasContent.GetComponentInChildren<Button>();
         button.onClick.AddListener(LaunchSpaceship);
         animator = GetComponent<Animator>();
+        fadeController = GameObject.FindObjectOfType<FadeController>();
 
         canvasContent.SetActive(false);
     }
@@ -74,7 +79,7 @@ public class SpaceShipController : MonoBehaviour
             isLaunching = true;
 
             animator.SetTrigger("IsLaunch");
-        
+
             // Desactivar el sprite del jugador
             if (playerController != null)
             {
@@ -85,10 +90,8 @@ public class SpaceShipController : MonoBehaviour
             // Cerrar el canvas
             canvasContent.SetActive(false);
 
-            new WaitForSeconds(10);
-            Debug.Log("gane");
-
             // Iniciar la secuencia de lanzamiento
+            StartCoroutine(EndGame());
         }
         else
         {
@@ -110,6 +113,21 @@ public class SpaceShipController : MonoBehaviour
         {
             playerController.transform.position = transform.position;
         }
+    }
+
+    IEnumerator EndGame()
+    {
+        yield return new WaitForSeconds(5f); // Esperar 5 segundos
+        AlertController.Instance?.ShowGreenAlert("Congratulations! You have successfully launched the spaceship!");
+
+        // Iniciar el fade a negro
+        fadeController.FadeToBlack();
+
+        // Esperar a que termine el fade
+        yield return new WaitForSeconds(fadeController.fadeDuration);
+
+        // Cargar la escena del menú principal
+        UnityEngine.SceneManagement.SceneManager.LoadScene(mainMenuSceneName);
     }
 
     void OnTriggerEnter2D(Collider2D other)
