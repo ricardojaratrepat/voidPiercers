@@ -204,6 +204,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             animator.SetBool("jetpack", false);
+            rb.gravityScale = 4f; 
         }
 
         // Handle digging
