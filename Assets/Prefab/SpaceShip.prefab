@@ -858,7 +858,7 @@ GameObject:
   - component: {fileID: -876062783971107268}
   m_Layer: 0
   m_Name: SpaceShip
-  m_TagString: Untagged
+  m_TagString: SpaceShip
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -988,6 +988,7 @@ MonoBehaviour:
   launchSpeed: 5
   rotationSpeed: 10
   maxRotationAngle: 15
+  mainMenuSceneName: MainMenu
 --- !u!222 &4003667028865074554
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -21,6 +21,7 @@ namespace Laser
             lineRenderer = GetComponent<LineRenderer>();
             lineRenderer.positionCount = 2;
             currentEndPosition = transform.position + Vector3.right * maxDistance; // Inicializar con alguna dirección
+            LaserState.currentDuration = 0.0f;
         }
 
         void Update()

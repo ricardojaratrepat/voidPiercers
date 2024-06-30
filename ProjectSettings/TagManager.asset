@@ -11,6 +11,7 @@ TagManager:
   - Ore rare
   - Bedrock
   - Bench
+  - Ore legendary
   layers:
   - Default
   - TransparentFX

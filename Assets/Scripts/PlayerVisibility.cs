@@ -49,7 +49,7 @@ public class PlayerVisibility : MonoBehaviour
             string spriteName = spriteRenderer.sprite.name;
             return
                 (col.CompareTag("Ore basic") || col.CompareTag("Ore medium") ||
-                    col.CompareTag("Ore rare") || col.CompareTag("Ground"));
+                    col.CompareTag("Ore rare") || col.CompareTag("Ground") || col.CompareTag("Ore legendary"));
         }
         return false;
     }
@@ -61,7 +61,7 @@ public class PlayerVisibility : MonoBehaviour
 
     private bool IsEnemy(Collider2D col)
     {
-        return col.CompareTag("Enemy") || col.CompareTag("Bench"); // Update this to match your enemy tag
+        return col.CompareTag("Enemy") || col.CompareTag("Bench") || col.CompareTag("SpaceShip"); // Update this to match your enemy tag
     }
 
     public void SetVisibilityRadius(float radius)

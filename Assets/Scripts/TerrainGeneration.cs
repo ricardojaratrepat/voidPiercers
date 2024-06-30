@@ -200,7 +200,7 @@ public class TerrainGeneration : MonoBehaviour
                             if (random < 1)
                             {
                                 Vector3 position = new Vector3(x, y, 0);
-                                random = Random.Range(0, 3);
+                                random = Random.Range(0, 4);
                                 if (random == 0)
                                     Instantiate(BatPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 else if (random == 1)
@@ -364,7 +364,7 @@ public class TerrainGeneration : MonoBehaviour
         newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
 
         // Asigna el tag "Ore" si el sprite es el de carbón
-        if (tileSprite == tileAtlas.coal.tileSprite || tileSprite == tileAtlas.iron.tileSprite)
+        if (tileSprite == tileAtlas.coal.tileSprite || tileSprite == tileAtlas.iron.tileSprite || tileSprite == tileAtlas.alfa_crystal.tileSprite)
         {
             newTile.tag = "Ore basic";
         }
@@ -372,9 +372,13 @@ public class TerrainGeneration : MonoBehaviour
         {
             newTile.tag = "Ore medium";
         }
-        else if (tileSprite == tileAtlas.alfa_crystal.tileSprite || tileSprite == tileAtlas.uranio.tileSprite || tileSprite == tileAtlas.platino.tileSprite || tileSprite == tileAtlas.titanio.tileSprite || tileSprite == tileAtlas.mugufin.tileSprite)
+        else if (tileSprite == tileAtlas.uranio.tileSprite || tileSprite == tileAtlas.platino.tileSprite || tileSprite == tileAtlas.titanio.tileSprite)
         {
             newTile.tag = "Ore rare";
+        }
+        else if(tileSprite == tileAtlas.mugufin.tileSprite)
+        {
+            newTile.tag = "Ore legendary";
         }
         else if (tileSprite == tileAtlas.bedrock.tileSprite)
         {
