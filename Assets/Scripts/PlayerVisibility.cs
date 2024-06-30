@@ -15,6 +15,10 @@ public class PlayerVisibility : MonoBehaviour
             {
                 col.GetComponent<SpriteRenderer>().color = Color.white; // Normal visibility
             }
+            else if (IsEnemy(col))
+            {
+                col.GetComponent<SpriteRenderer>().enabled = true; // Show enemies within range
+            }
         }
 
         ApplyShadowToDistantBlocks();
@@ -30,12 +34,21 @@ public class PlayerVisibility : MonoBehaviour
             {
                 col.GetComponent<SpriteRenderer>().color = shadowColor; // Shadow effect
             }
+            else if (IsEnemy(col) && Vector2.Distance(transform.position, col.transform.position) > visibilityRadius)
+            {
+                col.GetComponent<SpriteRenderer>().enabled = false; // Hide enemies outside range
+            }
         }
     }
 
     private bool IsBlock(Collider2D col)
     {
         return col.CompareTag("Ore basic") || col.CompareTag("Ore medium") || col.CompareTag("Ore rare") || col.CompareTag("Ground");
+    }
+
+    private bool IsEnemy(Collider2D col)
+    {
+        return col.CompareTag("Enemy"); // Update this to match your enemy tag
     }
 
     public void SetVisibilityRadius(float radius)
