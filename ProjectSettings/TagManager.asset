@@ -12,6 +12,7 @@ TagManager:
   - Bedrock
   - Bench
   - Ore legendary
+  - SpaceShip
   layers:
   - Default
   - TransparentFX
