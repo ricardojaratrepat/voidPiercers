@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private InventoryManager inventoryManager;
     public HealthController healthController; // Añade una referencia a HealthController
     public FuelController fuelController; // Añadir la referencia al FuelController
-    public float jetpackForce = 5f;
+    public float jetpackForce = 18.69420420f;
 
     private float digCooldown = 0.3f;
     private float lastDigTime;
@@ -185,11 +185,25 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         }
 
-        // Apply jump with coyote time
-        if (Input.GetKey(KeyCode.Space) && Time.time - lastGroundedTime <= coyoteTime)
+
+        if (Input.GetKey(KeyCode.Space))
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            lastGroundedTime = -coyoteTime; // Reset coyote time
+            Debug.Log("Jetpack activated");
+            animator.SetBool("jetpack", true);
+
+            if (rb != null)
+            {
+                rb.gravityScale = 1f; 
+                rb.AddForce(Vector2.up * jetpackForce, ForceMode2D.Force);
+            }
+            else
+            {
+                Debug.LogError("Rigidbody2D not found!");
+            }
+        }
+        else
+        {
+            animator.SetBool("jetpack", false);
         }
 
         // Handle digging
@@ -259,23 +273,8 @@ public class PlayerController : MonoBehaviour
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal");
 
-        // Gestionar el salto
-        if (Input.GetButtonDown("Jump"))
-        {
-            lastJumpTime = Time.time;
-        }
 
-        // Gestionar el jetpack
-        if (Input.GetKey(KeyCode.Space))
-        {
-            Debug.Log("Jetpack activated");
-            animator.SetBool("jetpack", true);
-            rb.AddForce(Vector2.up * jetpackForce, ForceMode2D.Force);
-        }
-        else
-        {
-            animator.SetBool("jetpack", false);
-        }
+
 
     }
 
