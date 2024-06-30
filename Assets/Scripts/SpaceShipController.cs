@@ -85,8 +85,10 @@ public class SpaceShipController : MonoBehaviour
             // Cerrar el canvas
             canvasContent.SetActive(false);
 
+            new WaitForSeconds(10);
+            Debug.Log("gane");
+
             // Iniciar la secuencia de lanzamiento
-            StartCoroutine(EndGame());
         }
         else
         {
@@ -108,13 +110,6 @@ public class SpaceShipController : MonoBehaviour
         {
             playerController.transform.position = transform.position;
         }
-    }
-
-    IEnumerator EndGame()
-    {
-        yield return new WaitForSeconds(5f); // Esperar 5 segundos
-        // Aquí puedes añadir lógica para terminar el juego, como cargar una nueva escena o mostrar un mensaje de victoria
-        Debug.Log("¡Juego terminado!");
     }
 
     void OnTriggerEnter2D(Collider2D other)
