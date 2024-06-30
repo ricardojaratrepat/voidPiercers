@@ -49,6 +49,7 @@ namespace AcidBall
 
         public void DestroyAcidBall()
         {
+            Debug.Log("Destroying acid ball");
             Destroy(gameObject);
         }
 

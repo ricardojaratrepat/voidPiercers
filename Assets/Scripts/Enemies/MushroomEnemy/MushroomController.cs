@@ -14,24 +14,23 @@ namespace Mushroom
 
         private readonly float chaseSpeed = 5f;
         private readonly float minChaseDistance = 15f;
+        public float jumpForce = 1f; // Fuerza del salto
 
         private readonly float explotionRadius = 3f;
         private float distanceToPlayer;
         private float localScaleFactor;
-        private CapsuleCollider2D capsuleCollider;
+        private CapsuleCollider2D bodyCollider;
+
+        public float jumpCooldown = 1f; // Tiempo de enfriamiento entre saltos
+        private float timeSinceLastJump = 0f;
 
         void Start()
         {
             Player = FindObjectOfType<PlayerController>()?.gameObject;
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
-            capsuleCollider = GetComponent<CapsuleCollider2D>();
+            bodyCollider = GetComponent<CapsuleCollider2D>();
             localScaleFactor = transform.localScale.x;
-
-            if (Player == null)
-            {
-                Debug.LogError("Player not found!");
-            }
         }
 
         // Update is called once per frame
@@ -40,6 +39,7 @@ namespace Mushroom
             if (Player == null) return;
 
             distanceToPlayer = Vector3.Distance(Player.transform.position, transform.position);
+            timeSinceLastJump += Time.deltaTime;
 
             if (distanceToPlayer < minChaseDistance)
             {
@@ -60,6 +60,26 @@ namespace Mushroom
                     newScale.x = localScaleFactor;
                     transform.localScale = newScale;
                 }
+
+                // Raycast para detectar obstáculos
+                Vector3 raycastPosition = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
+                Vector2 raycastDirection = new Vector2(transform.localScale.x, 0); // Dirección horizontal
+
+                // Crear una máscara que excluya la capa "IgnoreRayCast" y "Enemy"
+                int layerMask = ~LayerMask.GetMask("Ignore RayCast", "Enemy");
+
+                RaycastHit2D hit = Physics2D.Raycast(raycastPosition, raycastDirection, 2f, layerMask);
+                
+    
+
+                if (hit.collider != null && timeSinceLastJump >= jumpCooldown)
+                {
+                    Vector2 forceDirection = new Vector2(-transform.localScale.x, 1); // Dirección vertical
+                    Debug.Log(forceDirection);
+                    rb.AddForce(forceDirection * jumpForce, ForceMode2D.Impulse);
+                    timeSinceLastJump = 0f; // Reinicia el temporizador
+                }
+
             }
             else
             {
@@ -75,6 +95,7 @@ namespace Mushroom
             Vector2 newVelocity = rb.velocity;
             newVelocity.x = velocity.x;
             rb.velocity = newVelocity;
+
         }
 
         void OnCollisionEnter2D(Collision2D collision)
@@ -82,7 +103,7 @@ namespace Mushroom
             if (collision.gameObject.CompareTag("Player"))
             {   
                 animator.SetBool("touchPlayer", true);
-                capsuleCollider.enabled = false;
+                bodyCollider.enabled = false;
                 rb.gravityScale = 0;
             }
         }
@@ -102,7 +123,7 @@ namespace Mushroom
 
                 if (healthController != null)
                 {
-                    healthController.TakeDamage(damage); // Cambiado para usar GetComponent
+                    healthController.TakeDamage(damage);
                 }
                 else
                 {

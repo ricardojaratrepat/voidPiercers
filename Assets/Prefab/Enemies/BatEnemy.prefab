@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 5100629974537081092}
   - component: {fileID: -5817123399911898968}
   - component: {fileID: 5505773556992557022}
+  - component: {fileID: 4073953325824592970}
   m_Layer: 6
   m_Name: BatEnemy
   m_TagString: Enemy
@@ -314,6 +315,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+--- !u!114 &4073953325824592970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2260099436999903733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5083068fe52c9cc4e8ae6e29b0a279c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  minDistanceToActivatePathfinding: 30
+  velocity: 5
+  periodPerRecalculation: 1
 --- !u!1 &2388345813422083350
 GameObject:
   m_ObjectHideFlags: 0
