@@ -43,7 +43,20 @@ public class PlayerVisibility : MonoBehaviour
 
     private bool IsBlock(Collider2D col)
     {
-        return col.CompareTag("Ore basic") || col.CompareTag("Ore medium") || col.CompareTag("Ore rare") || col.CompareTag("Ground");
+        SpriteRenderer spriteRenderer = col.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            string spriteName = spriteRenderer.sprite.name;
+            return !IsGrassOrDirt(spriteName) &&
+                (col.CompareTag("Ore basic") || col.CompareTag("Ore medium") || 
+                    col.CompareTag("Ore rare") || col.CompareTag("Ground"));
+        }
+        return false;
+    }
+
+    private bool IsGrassOrDirt(string spriteName)
+    {
+        return spriteName == "Pasto" || spriteName == "Tierra";
     }
 
     private bool IsEnemy(Collider2D col)
