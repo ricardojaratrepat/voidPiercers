@@ -7,6 +7,7 @@ public class ImageUpgradeLevel : MonoBehaviour
 {
     public PlayerController playerController;
     public Image upgradeImage; // Referencia al componente Image que debe cambiar de sprite
+    public Sprite sprite0; // Sprite para el nivel 1
     public Sprite sprite1; // Sprite para el nivel 1
     public Sprite sprite2; // Sprite para el nivel 2
     public Sprite sprite3; // Sprite para el nivel 3
@@ -16,6 +17,10 @@ public class ImageUpgradeLevel : MonoBehaviour
         if (playerController == null) {
             Debug.LogError("PlayerController is not assigned!");
             return;
+        }
+        else
+        {
+            Debug.Log(playerController.ExcavationLevel);
         }
 
         if (upgradeImage == null) {
@@ -28,6 +33,9 @@ public class ImageUpgradeLevel : MonoBehaviour
     {
         switch(playerController.ExcavationLevel)
         {
+            case 0:
+                upgradeImage.sprite = sprite0;
+                break;
             case 1:
                 upgradeImage.sprite = sprite1;
                 break;

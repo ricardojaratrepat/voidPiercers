@@ -68,22 +68,30 @@ public class SpaceShipController : MonoBehaviour
 
     void LaunchSpaceship()
     {
-        AlertController.Instance?.ShowGreenAlert("Launching spaceship!");
-        isLaunching = true;
-        animator.SetTrigger("IsLaunch");
-        
-        // Desactivar el sprite del jugador
-        if (playerController != null)
+        if (InventoryManager.Instance.IsAvailable("Mugufin", 10))
         {
-            playerController.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            playerController.enabled = false; // Desactivar el control del jugador
+            AlertController.Instance?.ShowGreenAlert("Launching spaceship!");
+            isLaunching = true;
+
+            animator.SetTrigger("IsLaunch");
+        
+            // Desactivar el sprite del jugador
+            if (playerController != null)
+            {
+                playerController.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                playerController.enabled = false; // Desactivar el control del jugador
+            }
+
+            // Cerrar el canvas
+            canvasContent.SetActive(false);
+
+            // Iniciar la secuencia de lanzamiento
+            StartCoroutine(EndGame());
         }
-
-        // Cerrar el canvas
-        canvasContent.SetActive(false);
-
-        // Iniciar la secuencia de lanzamiento
-        StartCoroutine(EndGame());
+        else
+        {
+            AlertController.Instance?.ShowRedAlert("You need 10 Mugufins to launch the spaceship!");
+        }
     }
 
     void LaunchSequence()
