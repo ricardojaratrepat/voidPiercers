@@ -18,7 +18,7 @@ public class TerrainGeneration : MonoBehaviour
     public GameObject MushroomPrefab;
     public GameObject BatPrefab;
     public GameObject TentaclePrefab;
-    public GameObject ButterflyPrefab;
+    // public GameObject ButterflyPrefab;
 
     public GameObject BenchPrefab;
     public GameObject SpaceShipPrefab;
@@ -200,13 +200,11 @@ public class TerrainGeneration : MonoBehaviour
                             if (random < 1)
                             {
                                 Vector3 position = new Vector3(x, y, 0);
-                                random = Random.Range(0, 4);
+                                random = Random.Range(0, 3);
                                 if (random == 0)
                                     Instantiate(BatPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 else if (random == 1)
                                     Instantiate(MushroomPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-                                else if (random == 2)
-                                    Instantiate(ButterflyPrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                                 else
                                     Instantiate(TentaclePrefab, position + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
                             }
