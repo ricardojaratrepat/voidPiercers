@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameOverManager : MonoBehaviour
 {
     public GameObject gameOverScreen;
+    // public GameObject 
     public Button retryButton;
 
     void Start()
@@ -19,14 +20,14 @@ public class GameOverManager : MonoBehaviour
 
     public void GameOver()
     {
-        gameOverScreen.SetActive(true);
-        retryButton.gameObject.SetActive(true); // Show the retry button when the game is over
-        Time.timeScale = 0f; // Pause the game
+        gameOverScreen.SetActive(true); // Activate the Game Over screen
+        retryButton.gameObject.SetActive(true); // Show the retry button
+        Time.timeScale = 0f; // Pause the game by setting time scale to 0
     }
 
     void RestartLevel()
     {
-        Time.timeScale = 1f; // Restore the time scale
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1f; // Restore normal time scale
+        SceneManager.LoadScene(0); // Load the main menu scene (assuming it's at build index 0)
     }
 }
