@@ -12,6 +12,9 @@ public class HealthController : MonoBehaviour
     public Image fill;
     private GameOverManager gameOverManager; // Referencia al GameOverManager
 
+    public AudioClip hitSound; // Variable para el sonido de golpe
+    public AudioSource hitAudioSource; // Referencia explícita al AudioSource del sonido de golpe
+
     void Start()
     {
         if (slider == null)
@@ -24,6 +27,16 @@ public class HealthController : MonoBehaviour
 
         gameOverManager = FindObjectOfType<GameOverManager>(); // Inicializa la referencia
         fill.color = gradient.Evaluate(1f);
+
+        if (hitAudioSource == null)
+        {
+            Debug.LogError("HitAudioSource is not assigned in the inspector.");
+        }
+
+        if (hitSound == null)
+        {
+            Debug.LogError("HitSound is not assigned in the HealthController script.");
+        }
     }
 
     public void TakeDamage(float damage)
@@ -36,12 +49,15 @@ public class HealthController : MonoBehaviour
         }
         slider.value = currentHealth;
         fill.color = gradient.Evaluate(slider.normalizedValue);
+
+        PlayHitSound(); // Reproducir el sonido de golpe cuando se recibe daño
     }
 
     public void Die()
     {
         gameOverManager.GameOver(); // Mostrar la pantalla de Game Over
     }
+
     public void StartContinuousDamage(float damagePerSecond, float duration)
     {
         StartCoroutine(ApplyDamageOverTime(damagePerSecond, duration));
@@ -59,4 +75,16 @@ public class HealthController : MonoBehaviour
         }
     }
 
+    private void PlayHitSound()
+    {
+        if (hitAudioSource != null && hitSound != null)
+        {
+            hitAudioSource.PlayOneShot(hitSound);
+            Debug.Log("Playing hit sound");
+        }
+        else
+        {
+            Debug.LogWarning("HitAudioSource or HitSound is not assigned.");
+        }
+    }
 }

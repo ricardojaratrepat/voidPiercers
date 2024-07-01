@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
     public CaveLighting caveLighting;
     private Animator animator;
 
+    public AudioClip diggingSound; // Añadir variable para el sonido de excavación
+    private AudioSource audioSource; // Añadir variable para el AudioSource
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -40,6 +43,8 @@ public class PlayerController : MonoBehaviour
         healthController = GetComponent<HealthController>(); // Inicializa la referencia a HealthController
         fuelController = GetComponent<FuelController>(); // Inicializa la referencia al FuelController
         animator = GetComponent<Animator>();
+
+        audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
 
         if (inventoryManager == null)
         {
@@ -53,6 +58,14 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("FuelController not found!");
         }
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource is missing on the Player object.");
+        }
+        if (diggingSound == null)
+        {
+            Debug.LogError("DiggingSound is not assigned in the PlayerController script.");
+        }
 
         lastDigTime = -digCooldown; // Allows digging immediately at start
         if (caveLighting == null)
@@ -65,7 +78,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     private void OnTriggerStay2D(Collider2D col)
     {
         if (col.CompareTag("Ground"))
@@ -74,6 +86,7 @@ public class PlayerController : MonoBehaviour
             lastGroundedTime = Time.time;
         }
     }
+
     private void OnTriggerExit2D(Collider2D col)
     {
         if (col.CompareTag("Ground"))
@@ -81,7 +94,6 @@ public class PlayerController : MonoBehaviour
             onGround = false;
         }
     }
-
 
     public void DestroyBlock(Vector2 direction)
     {
@@ -163,6 +175,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("No se encontró terreno.");
         }
     }
+
     void FixedUpdate()
     {
         // Handle movement
@@ -210,6 +223,7 @@ public class PlayerController : MonoBehaviour
             float angle = transform.localScale.x > 0 ? -90f : 90; // Ajustar el ángulo basado en la dirección
             transform.rotation = Quaternion.Euler(0f, 0f, angle); // Rotar la nave 90 grados hacia abajo
             isDigging = true;
+            PlayDiggingSound();
         }
 
         if (Input.GetKey(KeyCode.W))
@@ -222,6 +236,7 @@ public class PlayerController : MonoBehaviour
                 float angle = transform.localScale.x > 0 ? 90f : -90f; // Ajustar el ángulo basado en la dirección
                 transform.rotation = Quaternion.Euler(0f, 0f, angle); // Rotar la nave 90 grados hacia arriba
                 isDigging = true;
+                PlayDiggingSound();
             }
         }
 
@@ -229,17 +244,22 @@ public class PlayerController : MonoBehaviour
         {
             DestroyBlock(Vector2.left);
             lastDigTime = Time.time;
+            isDigging = true;
+            PlayDiggingSound();
         }
 
         if (Input.GetKey(KeyCode.D) && Time.time - lastDigTime >= digCooldown)
         {
             DestroyBlock(Vector2.right);
             lastDigTime = Time.time;
+            isDigging = true;
+            PlayDiggingSound();
         }
 
         // Fix the rotation to ensure the player stays horizontal when not digging
-        if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+        if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
+            StopDiggingSound();
             Quaternion targetRotation = Quaternion.Euler(0f, 0f, 0f);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 10f);
         }
@@ -263,6 +283,7 @@ public class PlayerController : MonoBehaviour
             fuelController?.ConsumeFuel(fuelConsumptionRate * Time.deltaTime);
         }
     }
+
     void Update()
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal");
@@ -283,10 +304,34 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("jetpack", false);
         }
-
     }
 
+    private void PlayDiggingSound()
+    {
+        if (audioSource != null && diggingSound != null)
+        {
+            if (!audioSource.isPlaying)
+            {
+                audioSource.loop = true;
+                audioSource.clip = diggingSound;
+                audioSource.Play();
+                Debug.Log("Digging sound played.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource or DiggingSound is not assigned.");
+        }
+    }
 
+    private void StopDiggingSound()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+            Debug.Log("Digging sound stopped.");
+        }
+    }
 
     public bool IsMoving
     {

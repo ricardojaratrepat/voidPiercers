@@ -17,8 +17,10 @@ public class Radar : MonoBehaviour
     public Text cooldownText;  // Texto en la UI para mostrar el temporizador
     public InventoryManager inventoryManager;
 
-    private bool textCooldownActive = false;
+    public AudioClip radarSound; // Variable para el sonido del radar
+    private AudioSource audioSource; // Variable para el AudioSource
 
+    private bool textCooldownActive = false;
 
     private static Vector3 GetVectorFromAngle(float angle)
     {
@@ -40,6 +42,17 @@ public class Radar : MonoBehaviour
         inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
         sweetTransform.gameObject.SetActive(false); // Desactivar el objeto del radar al inicio
         cooldownTimer = 0;
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        if (radarSound == null)
+        {
+            Debug.LogError("RadarSound is not assigned in the Radar script.");
+        }
     }
 
     private void Awake()
@@ -82,9 +95,7 @@ public class Radar : MonoBehaviour
 
                     if (stoneResult == "removed" && carbonResult == "removed") 
                     {
-                        isRotating = true;
-                        sweetTransform.gameObject.SetActive(true); // Activar el objeto del radar
-                        cooldownTimer = cooldown;
+                        ActivateRadar();
                     }
                 }
                 else if (isStoneAvailable && isIronAvailable)
@@ -95,9 +106,7 @@ public class Radar : MonoBehaviour
 
                     if (stoneResult == "removed" && ironResult == "removed") 
                     {
-                        isRotating = true;
-                        sweetTransform.gameObject.SetActive(true); // Activar el objeto del radar
-                        cooldownTimer = cooldown;
+                        ActivateRadar();
                     }
                 }
                 else if (isStoneAvailable && isAlfaCrystalAvailable)
@@ -108,9 +117,7 @@ public class Radar : MonoBehaviour
 
                     if (stoneResult == "removed" && alfaCrystalResult == "removed") 
                     {
-                        isRotating = true;
-                        sweetTransform.gameObject.SetActive(true); // Activar el objeto del radar
-                        cooldownTimer = cooldown;
+                        ActivateRadar();
                     }
                 }
                 else
@@ -172,6 +179,26 @@ public class Radar : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private void ActivateRadar()
+    {
+        isRotating = true;
+        sweetTransform.gameObject.SetActive(true); // Activar el objeto del radar
+        cooldownTimer = cooldown;
+        PlayRadarSound();
+    }
+
+    private void PlayRadarSound()
+    {
+        if (audioSource != null && radarSound != null)
+        {
+            audioSource.PlayOneShot(radarSound);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource or RadarSound is not assigned.");
         }
     }
 }

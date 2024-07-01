@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Laser
 {
     public class LaserController : MonoBehaviour
@@ -14,12 +13,17 @@ namespace Laser
 
         private InventoryManager inventoryManager;
 
+        public AudioClip laserSound; // Añadir variable para el sonido del láser
+        private AudioSource audioSource; // Añadir variable para el AudioSource
+
         void Start()
         {
             inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
             lineRenderer = GetComponent<LineRenderer>();
             lineRenderer.positionCount = 2;
             currentEndPosition = transform.position + Vector3.right * maxDistance; // Inicializar con alguna dirección
+
+            audioSource = GetComponent<AudioSource>(); // Obtener el componente AudioSource
         }
 
         void Update()
@@ -54,6 +58,11 @@ namespace Laser
 
         void StartLaser()
         {
+            if (!audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(laserSound); // Reproducir el sonido del láser
+            }
+
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0f; // Asegúrate de que la posición Z sea 0 ya que estamos en 2D
 
@@ -83,8 +92,8 @@ namespace Laser
 
         void StopLaser()
         {
+            audioSource.Stop(); // Detener el sonido del láser
             lineRenderer.enabled = false; // Ocultar el láser
         }
     }
-
 }
