@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace Laser
 {
     public class LaserController : MonoBehaviour
@@ -15,6 +14,9 @@ namespace Laser
 
         private InventoryManager inventoryManager;
 
+        public AudioClip laserSound; // Sonido del láser
+        private AudioSource audioSource; // AudioSource para reproducir el sonido
+
         void Start()
         {
             inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
@@ -22,6 +24,10 @@ namespace Laser
             lineRenderer.positionCount = 2;
             currentEndPosition = transform.position + Vector3.right * maxDistance; // Inicializar con alguna dirección
             LaserState.currentDuration = 0.0f;
+
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.loop = false;
         }
 
         void Update()
@@ -40,7 +46,7 @@ namespace Laser
 
                     if (removeMsg == "removed")
                     {
-                        LaserState.currentDuration = 0.0f;   
+                        LaserState.currentDuration = 0.0f;
                     }
                     else
                     {
@@ -70,7 +76,6 @@ namespace Laser
                 if (hit.collider.CompareTag("Enemy"))
                 {
                     targetEndPosition = hit.point;
-                    // Destroy(hit.collider.gameObject);
                     hit.collider.gameObject.GetComponent<EnemyHealth>().TakeDamage(laserDamage);
                 }
             }
@@ -81,6 +86,12 @@ namespace Laser
             lineRenderer.enabled = true; // Mostrar el láser
             lineRenderer.SetPosition(0, transform.position); // Posición inicial del láser
             lineRenderer.SetPosition(1, currentEndPosition); // Posición final del láser con retraso suave o punto de impacto
+
+            // Reproducir el sonido del láser
+            if (audioSource != null && laserSound != null)
+            {
+                audioSource.PlayOneShot(laserSound);
+            }
         }
 
         void StopLaser()
@@ -88,5 +99,4 @@ namespace Laser
             lineRenderer.enabled = false; // Ocultar el láser
         }
     }
-
 }

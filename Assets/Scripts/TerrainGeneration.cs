@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TerrainGeneration : MonoBehaviour
 {
-
     public TileAtlas tileAtlas;
 
     public int dirtLayerHeight = 5;
@@ -24,8 +23,7 @@ public class TerrainGeneration : MonoBehaviour
     public GameObject SpaceShipPrefab;
     private bool spaceShipPlaced = false;
 
-
-
+    public AudioClip launchSound; // Sonido del lanzamiento
 
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;
@@ -43,7 +41,6 @@ public class TerrainGeneration : MonoBehaviour
     public int maxBenchesPerLevel = 4;
     public float minBenchDistance = 20f;
     private List<Vector2Int> placedBenches = new List<Vector2Int>();
-
 
     private void OnValidate()
     {
@@ -168,7 +165,8 @@ public class TerrainGeneration : MonoBehaviour
                         {
                             float floatHeight = Random.Range(3f, 5f); // La nave flotará entre 3 y 5 unidades sobre el suelo
                             Vector3 spaceShipPosition = new Vector3(x, y + 1 + floatHeight, 0);
-                            Instantiate(SpaceShipPrefab, spaceShipPosition, Quaternion.identity);
+                            GameObject spaceShip = Instantiate(SpaceShipPrefab, spaceShipPosition, Quaternion.identity);
+                            AddLaunchSound(spaceShip);
                             spaceShipPlaced = true;
                         }
                     }
@@ -225,12 +223,28 @@ public class TerrainGeneration : MonoBehaviour
             float surfaceHeight = Mathf.PerlinNoise((randomX + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier + heightAddition;
             float floatHeight = Random.Range(3f, 5f); // La nave flotará entre 3 y 5 unidades sobre el suelo
             Vector3 spaceShipPosition = new Vector3(randomX, Mathf.FloorToInt(surfaceHeight) + floatHeight, 0);
-            Instantiate(SpaceShipPrefab, spaceShipPosition, Quaternion.identity);
+            GameObject spaceShip = Instantiate(SpaceShipPrefab, spaceShipPosition, Quaternion.identity);
+            AddLaunchSound(spaceShip);
         }
 
         Debug.Log($"Posiciones potenciales para benches: {potentialBenchPositions.Count}");
         PlaceBenchPrefabs();
     }
+
+    private void AddLaunchSound(GameObject spaceShip)
+    {
+        AudioSource audioSource = spaceShip.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
+
+        SpaceShipController controller = spaceShip.GetComponent<SpaceShipController>();
+        if (controller != null)
+        {
+            controller.launchSound = launchSound;
+            controller.audioSource = audioSource;
+        }
+    }
+
     private bool IsSuitableForBench(int x, int y)
     {
         // Verificar si la posición es adecuada para un bench (en el suelo de una cueva)
@@ -244,6 +258,7 @@ public class TerrainGeneration : MonoBehaviour
 
         return suitable;
     }
+
     private void PlaceBenchPrefabs()
     {
         Debug.Log("Iniciando colocación de benches");
@@ -258,6 +273,7 @@ public class TerrainGeneration : MonoBehaviour
 
         Debug.Log($"Total de benches colocados: {placedBenches.Count}");
     }
+
     private void PlaceBenchInLevel(int level)
     {
         int minY = level == 0 ? 0 : (level == 1 ? ores[1].profundidadMinima : ores[4].profundidadMinima);
@@ -280,6 +296,7 @@ public class TerrainGeneration : MonoBehaviour
             Debug.Log($"No se pudo colocar bench en nivel {level}. No hay posiciones disponibles.");
         }
     }
+
     private void PlaceBenchesInLevel(int level, int count)
     {
         int minY = level == 0 ? 0 : (level == 1 ? ores[1].profundidadMinima : ores[4].profundidadMinima);
@@ -313,6 +330,7 @@ public class TerrainGeneration : MonoBehaviour
 
         Debug.Log($"Se colocaron {benchesPlaced} benches en el nivel {level} después de {attempts} intentos");
     }
+
     private bool IsFarEnoughFromOtherBenches(Vector2Int newPos)
     {
         foreach (Vector2Int placedBench in placedBenches)
@@ -324,7 +342,6 @@ public class TerrainGeneration : MonoBehaviour
         }
         return true;
     }
-
 
     private int RandomNumber()
     {

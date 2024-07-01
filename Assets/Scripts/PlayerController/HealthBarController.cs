@@ -12,6 +12,9 @@ public class HealthController : MonoBehaviour
     public Image fill;
     private GameOverManager gameOverManager; // Referencia al GameOverManager
 
+    public AudioClip hitSound; // Sonido del golpe
+    private AudioSource audioSource; // AudioSource para reproducir el sonido
+
     void Start()
     {
         if (slider == null)
@@ -24,6 +27,10 @@ public class HealthController : MonoBehaviour
 
         gameOverManager = FindObjectOfType<GameOverManager>(); // Inicializa la referencia
         fill.color = gradient.Evaluate(1f);
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
     }
 
     public void TakeDamage(float damage)
@@ -36,12 +43,19 @@ public class HealthController : MonoBehaviour
         }
         slider.value = currentHealth;
         fill.color = gradient.Evaluate(slider.normalizedValue);
+
+        // Reproducir el sonido del golpe
+        if (audioSource != null && hitSound != null)
+        {
+            audioSource.PlayOneShot(hitSound);
+        }
     }
 
     public void Die()
     {
         gameOverManager.GameOver(); // Mostrar la pantalla de Game Over
     }
+
     public void StartContinuousDamage(float damagePerSecond, float duration)
     {
         StartCoroutine(ApplyDamageOverTime(damagePerSecond, duration));
@@ -58,5 +72,4 @@ public class HealthController : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
     }
-
 }

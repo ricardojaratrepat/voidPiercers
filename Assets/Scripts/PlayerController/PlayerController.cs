@@ -34,6 +34,9 @@ public class PlayerController : MonoBehaviour
     public int ExcavationLevel = 1;
     private AlertController alertController;
 
+    public AudioClip digSound; // Sonido de excavación
+    private AudioSource audioSource; // AudioSource para reproducir el sonido
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -43,6 +46,9 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         alertController = FindObjectOfType<AlertController>();
 
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
 
         if (inventoryManager == null)
         {
@@ -60,7 +66,6 @@ public class PlayerController : MonoBehaviour
         lastDigTime = -digCooldown; // Allows digging immediately at start
     }
 
-
     private void OnTriggerStay2D(Collider2D col)
     {
         if (col.CompareTag("Ground"))
@@ -69,6 +74,7 @@ public class PlayerController : MonoBehaviour
             lastGroundedTime = Time.time;
         }
     }
+
     private void OnTriggerExit2D(Collider2D col)
     {
         if (col.CompareTag("Ground"))
@@ -76,7 +82,6 @@ public class PlayerController : MonoBehaviour
             onGround = false;
         }
     }
-
 
     public void DestroyBlock(Vector2 direction)
     {
@@ -195,6 +200,12 @@ public class PlayerController : MonoBehaviour
 
                 Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 1.5f);
                 Destroy(hit.collider.gameObject);
+
+                // Reproducir el sonido de excavación
+                if (audioSource != null && digSound != null)
+                {
+                    audioSource.PlayOneShot(digSound);
+                }
             }
             else if (!(hit.collider.gameObject.CompareTag("Enemy") || hit.collider.gameObject.CompareTag("Bench") || hit.collider.gameObject.CompareTag("SpaceShip")))
             {
@@ -236,7 +247,6 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
-
 
         if (Input.GetKey(KeyCode.Space))
         {
@@ -322,16 +332,11 @@ public class PlayerController : MonoBehaviour
             fuelController?.ConsumeFuel(fuelConsumptionRate * Time.deltaTime);
         }
     }
+
     void Update()
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal");
-
-
-
-
     }
-
-
 
     public bool IsMoving
     {

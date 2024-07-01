@@ -9,6 +9,8 @@ public class SpaceShipController : MonoBehaviour
 {
     public PlayerController playerController;
     public InventoryManager inventory;
+    public AudioClip launchSound; // Sonido del lanzamiento
+    public AudioSource audioSource; // AudioSource para reproducir el sonido
 
     private bool playerInside;
     private TextMeshPro textInput;
@@ -24,6 +26,8 @@ public class SpaceShipController : MonoBehaviour
     public string mainMenuSceneName = "MainMenu";
     private Cheats cheats;
 
+    private AudioSource backgroundMusic; // Referencia al AudioSource de la música de fondo
+
     void Start()
     {
         playerController = GameObject.FindObjectOfType<PlayerController>();
@@ -37,6 +41,13 @@ public class SpaceShipController : MonoBehaviour
         cheats = GameObject.FindObjectOfType<Cheats>();
 
         canvasContent.SetActive(false);
+
+        // Encontrar y almacenar la referencia al AudioSource de la música de fondo
+        GameObject backgroundMusicObject = GameObject.Find("BackgroundMusic2");
+        if (backgroundMusicObject != null)
+        {
+            backgroundMusic = backgroundMusicObject.GetComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -78,6 +89,18 @@ public class SpaceShipController : MonoBehaviour
             isLaunching = true;
 
             animator.SetTrigger("IsLaunch");
+
+            // Reproducir el sonido del lanzamiento
+            if (audioSource != null && launchSound != null)
+            {
+                audioSource.PlayOneShot(launchSound);
+            }
+
+            // Detener la música de fondo
+            if (backgroundMusic != null)
+            {
+                backgroundMusic.Stop();
+            }
 
             // Desactivar el sprite del jugador
             if (playerController != null)
@@ -121,7 +144,7 @@ public class SpaceShipController : MonoBehaviour
         AlertController.Instance?.ShowGreenAlert("Congratulations! You have successfully launched the spaceship!");
 
         // Cargar la escena del menú principal
-        UnityEngine.SceneManagement.SceneManager.LoadScene(mainMenuSceneName);
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 
     void OnTriggerEnter2D(Collider2D other)
