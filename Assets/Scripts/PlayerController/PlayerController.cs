@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
                     if (hit.collider.gameObject.CompareTag("Ore basic") ||
                         hit.collider.gameObject.CompareTag("Ore medium") ||
                         (hit.collider.gameObject.CompareTag("Ground") &&
-                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Piedra Compacta")))
+                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Piedra Compacta" || hit.collider.gameObject.name == "Tierra" || hit.collider.gameObject.name == "Pasto")))
                     {
                         canBreak = true;
                     }
@@ -168,7 +168,7 @@ public class PlayerController : MonoBehaviour
                         hit.collider.gameObject.CompareTag("Ore medium") ||
                         hit.collider.gameObject.CompareTag("Ore rare") ||
                         (hit.collider.gameObject.CompareTag("Ground") &&
-                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Piedra Compacta" || hit.collider.gameObject.name == "Piedra Dura")))
+                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Piedra Compacta" || hit.collider.gameObject.name == "Piedra Dura"|| hit.collider.gameObject.name == "Tierra" || hit.collider.gameObject.name == "Pasto")))
                     {
                         canBreak = true;
                     }
@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
                         hit.collider.gameObject.CompareTag("Ore rare") ||
                         hit.collider.gameObject.CompareTag("Ore legendary") ||
                         (hit.collider.gameObject.CompareTag("Ground") &&
-                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Piedra Compacta" || hit.collider.gameObject.name == "Piedra Dura")))
+                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Piedra Compacta" || hit.collider.gameObject.name == "Piedra Dura"|| hit.collider.gameObject.name == "Tierra" || hit.collider.gameObject.name == "Pasto")))
                     {
                         canBreak = true;
                     }
