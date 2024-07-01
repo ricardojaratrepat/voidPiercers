@@ -227,8 +227,8 @@ GameObject:
   - component: {fileID: 3498787451003720368}
   - component: {fileID: 5581547396544086481}
   - component: {fileID: 3264643501649243836}
-  - component: {fileID: 3070539971339778462}
   - component: {fileID: 4284747392469159953}
+  - component: {fileID: 4609806742099819840}
   m_Layer: 6
   m_Name: MushroomEnemy
   m_TagString: Enemy
@@ -337,6 +337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52855c3bf48ce2d48988a2cad67bd8b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpForce: 6
+  jumpCooldown: 1
 --- !u!50 &3264643501649243836
 Rigidbody2D:
   serializedVersion: 4
@@ -364,7 +366,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &3070539971339778462
+--- !u!114 &4284747392469159953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6697065792217245716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495370c7ccc8fe543b0fcaab50019f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+--- !u!70 &4609806742099819840
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -396,23 +412,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.010744095, y: 0.032222748}
-  m_Size: {x: 0.90751266, y: 1.5150528}
+  m_Offset: {x: -0.008389473, y: 0.0020980835}
+  m_Size: {x: 0.7427006, y: 1.5073242}
   m_Direction: 0
---- !u!114 &4284747392469159953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6697065792217245716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 495370c7ccc8fe543b0fcaab50019f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
 --- !u!1 &7014196469058118007
 GameObject:
   m_ObjectHideFlags: 0

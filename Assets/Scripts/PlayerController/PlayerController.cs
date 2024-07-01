@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private InventoryManager inventoryManager;
     public HealthController healthController; // Añade una referencia a HealthController
     public FuelController fuelController; // Añadir la referencia al FuelController
-    public float jetpackForce = 5f;
+    public float jetpackForce = 18.69420420f;
 
     private float digCooldown = 0.3f;
     private float lastDigTime;
@@ -30,8 +30,9 @@ public class PlayerController : MonoBehaviour
     // Texto temporal
     public string tmp_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio";
 
-    public CaveLighting caveLighting;
     private Animator animator;
+    public int ExcavationLevel = 1;
+    private AlertController alertController;
 
     void Start()
     {
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
         healthController = GetComponent<HealthController>(); // Inicializa la referencia a HealthController
         fuelController = GetComponent<FuelController>(); // Inicializa la referencia al FuelController
         animator = GetComponent<Animator>();
+        alertController = FindObjectOfType<AlertController>();
+
 
         if (inventoryManager == null)
         {
@@ -55,14 +58,6 @@ public class PlayerController : MonoBehaviour
         }
 
         lastDigTime = -digCooldown; // Allows digging immediately at start
-        if (caveLighting == null)
-        {
-            Debug.LogError("CaveLighting no encontrado en la escena!");
-        }
-        else
-        {
-            caveLighting.SetCaveStatus(true);
-        }
     }
 
 
@@ -147,15 +142,63 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log(hit.collider.gameObject.name);
 
-            if ((hit.collider.gameObject.CompareTag("Ore basic") || hit.collider.gameObject.CompareTag("Ore medium") || hit.collider.gameObject.CompareTag("Ore rare") || hit.collider.gameObject.CompareTag("Ground")) && hit.collider.gameObject.name != "Tierra" && hit.collider.gameObject.name != "Pasto")
+            bool canBreak = false;
+
+            switch (ExcavationLevel)
             {
-                inventoryManager?.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
+                case 0:
+                    if (hit.collider.gameObject.CompareTag("Ore basic") ||
+                        (hit.collider.gameObject.CompareTag("Ground") &&
+                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Tierra" || hit.collider.gameObject.name == "Pasto")))
+                    {
+                        canBreak = true;
+                    }
+                    break;
+                case 1:
+                    if (hit.collider.gameObject.CompareTag("Ore basic") ||
+                        hit.collider.gameObject.CompareTag("Ore medium") ||
+                        (hit.collider.gameObject.CompareTag("Ground") &&
+                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Piedra Compacta" || hit.collider.gameObject.name == "Tierra" || hit.collider.gameObject.name == "Pasto")))
+                    {
+                        canBreak = true;
+                    }
+                    break;
+                case 2:
+                    if (hit.collider.gameObject.CompareTag("Ore basic") ||
+                        hit.collider.gameObject.CompareTag("Ore medium") ||
+                        hit.collider.gameObject.CompareTag("Ore rare") ||
+                        (hit.collider.gameObject.CompareTag("Ground") &&
+                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Piedra Compacta" || hit.collider.gameObject.name == "Piedra Dura"|| hit.collider.gameObject.name == "Tierra" || hit.collider.gameObject.name == "Pasto")))
+                    {
+                        canBreak = true;
+                    }
+                    break;
+                case 3:
+                    if (hit.collider.gameObject.CompareTag("Ore basic") ||
+                        hit.collider.gameObject.CompareTag("Ore medium") ||
+                        hit.collider.gameObject.CompareTag("Ore rare") ||
+                        hit.collider.gameObject.CompareTag("Ore legendary") ||
+                        (hit.collider.gameObject.CompareTag("Ground") &&
+                        (hit.collider.gameObject.name == "Piedra" || hit.collider.gameObject.name == "Piedra Compacta" || hit.collider.gameObject.name == "Piedra Dura"|| hit.collider.gameObject.name == "Tierra" || hit.collider.gameObject.name == "Pasto")))
+                    {
+                        canBreak = true;
+                    }
+                    break;
             }
 
-            Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 1.5f);
-            if (hit.collider.gameObject.CompareTag("Ground") || hit.collider.gameObject.CompareTag("Ore basic") || hit.collider.gameObject.CompareTag("Ore medium") || hit.collider.gameObject.CompareTag("Ore rare"))
+            if (canBreak)
             {
+                if (!hit.collider.gameObject.name.Equals("Tierra") && !hit.collider.gameObject.name.Equals("Pasto"))
+                {
+                    inventoryManager?.AddItem(hit.collider.gameObject.name, 1, hit.collider.gameObject.GetComponent<SpriteRenderer>().sprite, tmp_text);
+                }
+
+                Debug.DrawRay(hit.point, Vector2.down * 2f, Color.red, 1.5f);
                 Destroy(hit.collider.gameObject);
+            }
+            else if (!(hit.collider.gameObject.CompareTag("Enemy") || hit.collider.gameObject.CompareTag("Bench") || hit.collider.gameObject.CompareTag("SpaceShip")))
+            {
+                alertController.ShowRedAlert("This object cannot be broken with the current excavation level.");
             }
         }
         else
@@ -163,6 +206,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("No se encontró terreno.");
         }
     }
+
     void FixedUpdate()
     {
         // Handle movement
@@ -193,11 +237,26 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         }
 
-        // Apply jump with coyote time
-        if (Input.GetKey(KeyCode.Space) && Time.time - lastGroundedTime <= coyoteTime)
+
+        if (Input.GetKey(KeyCode.Space))
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            lastGroundedTime = -coyoteTime; // Reset coyote time
+            Debug.Log("Jetpack activated");
+            animator.SetBool("jetpack", true);
+
+            if (rb != null)
+            {
+                rb.gravityScale = 1f;
+                rb.AddForce(Vector2.up * jetpackForce, ForceMode2D.Force);
+            }
+            else
+            {
+                Debug.LogError("Rigidbody2D not found!");
+            }
+        }
+        else
+        {
+            animator.SetBool("jetpack", false);
+            rb.gravityScale = 4f;
         }
 
         // Handle digging
@@ -267,22 +326,8 @@ public class PlayerController : MonoBehaviour
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal");
 
-        // Gestionar el salto
-        if (Input.GetButtonDown("Jump"))
-        {
-            lastJumpTime = Time.time;
-        }
 
-        // Gestionar el jetpack
-        if (Input.GetKey(KeyCode.Space))
-        {
-            animator.SetBool("jetpack", true);
-            rb.AddForce(Vector2.up * jetpackForce, ForceMode2D.Force);
-        }
-        else
-        {
-            animator.SetBool("jetpack", false);
-        }
+
 
     }
 

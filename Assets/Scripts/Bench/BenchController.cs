@@ -21,6 +21,7 @@ public class BenchController : MonoBehaviour
     private const string UPGRADE_KEY = "C";
 
     public bool IsBenchUsed { get; private set; }
+    public PlayerController PlayerController;
 
     private enum UpgradeLevel
     {
@@ -33,6 +34,7 @@ public class BenchController : MonoBehaviour
     {
         InitializeComponents();
         AssignButtonListeners();
+        PlayerController = FindObjectOfType<PlayerController>();
     }
 
     private void Update()
@@ -135,6 +137,7 @@ public class BenchController : MonoBehaviour
         }
         benchCanvas.gameObject.SetActive(true);
         canvasContent.SetActive(true);
+        ShowRelevantUpgradeButtons();
     }
 
     private void CloseCanvasContent()
@@ -178,30 +181,43 @@ public class BenchController : MonoBehaviour
         var requirements = GetUpgradeRequirements(level);
         if (requirements == null) return;
 
-        if (requirements.All(req => InventoryManager.Instance.IsAvailable(req.Key, req.Value)))
+        var missingItems = new List<string>();
+
+        foreach (var req in requirements)
+        {
+            if (!InventoryManager.Instance.IsAvailable(req.Key, req.Value))
+            {
+                missingItems.Add($"{req.Key} x{req.Value}");
+            }
+        }
+
+        if (missingItems.Any())
+        {
+            AlertController.Instance?.ShowRedAlert($"Not enough resources to upgrade. You are missing: {string.Join(", ", missingItems)}");
+        }
+        else
         {
             foreach (var req in requirements)
             {
                 InventoryManager.Instance.RemoveItem(req.Key, req.Value);
             }
-            AlertController.Instance?.ShowGreenAlert("Fuel tank filled!");
+            AlertController.Instance?.ShowGreenAlert("Upgrade successful!");
             IsBenchUsed = true;
             animationController.SetBool("IsDetroyed", true);
+            PlayerController.ExcavationLevel++;
+            ShowRelevantUpgradeButtons();
             CloseCanvasContent();
         }
-        else
-        {
-            AlertController.Instance?.ShowRedAlert($"Not enough resources to upgrade. You need: {string.Join(", ", requirements.Select(req => $"{req.Key} x{req.Value}"))}");
-        }
     }
+
 
     private Dictionary<string, int> GetUpgradeRequirements(UpgradeLevel level)
     {
         return level switch
         {
-            UpgradeLevel.Level1 => new Dictionary<string, int> { { "Carbon", 30 }, { "Iron", 20 }, { "Piedra", 40 }, { "Alfa Crystals", 2 } },
-            UpgradeLevel.Level2 => new Dictionary<string, int> { { "Carbon", 50 }, { "Iron", 30 }, { "Piedra", 60 }, { "Alfa Crystals", 3 } },
-            UpgradeLevel.Level3 => new Dictionary<string, int> { { "Carbon", 70 }, { "Iron", 40 }, { "Piedra", 80 }, { "Alfa Crystals", 4 } },
+            UpgradeLevel.Level1 => new Dictionary<string, int> { { "Carbon", 50 }, { "Iron", 30 }, { "Piedra", 60 }, { "Alfa Crystals", 3 } },
+            UpgradeLevel.Level2 => new Dictionary<string, int> { { "Iron", 50 }, { "Piedra Compacta", 80 }, { "Alfa Crystals", 5 }, { "Tungsteno", 20 }, { "Ice", 50 }, { "Cobalto", 30 } },
+            UpgradeLevel.Level3 => new Dictionary<string, int> { { "Titanio", 30 }, { "Platino", 50 }, { "Piedra Dura", 200 }, { "Alfa Crystals", 8 }, { "Tungsteno", 20 }, { "Uranio", 50 } },
             _ => null,
         };
     }
@@ -221,4 +237,13 @@ public class BenchController : MonoBehaviour
         return null;
     }
 
+    private void ShowRelevantUpgradeButtons()
+    {
+        int level = PlayerController.ExcavationLevel;
+
+        for (int i = 0; i < upgradeButtons.Length; i++)
+        {
+            upgradeButtons[i].transform.parent.gameObject.SetActive(i == level);
+        }
+    }
 }

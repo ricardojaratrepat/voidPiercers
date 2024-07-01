@@ -8,10 +8,10 @@ public class Cheats : MonoBehaviour
     public GameObject player;
     public GameObject laser;
     public GameObject radar;
-    public GameObject inventory;
+    public GameObject inventoryObject; // Referencia al GameObject que contiene InventoryManager
+    public InventoryManager inventory;
     public GameObject CheatMenu;
     public GameObject Terrain;
-    public GameObject DarkCircle;
     public bool isCheating;
     public Sprite CarbonSprite;
     public Sprite PiedraSprite;
@@ -36,6 +36,7 @@ public class Cheats : MonoBehaviour
 
     void Start()
     {
+        inventory = GameObject.FindObjectOfType<InventoryManager>();
         if (laser != null)
         {
             laserBarController = laser.GetComponent<Laser.LaserBarController>();
@@ -52,13 +53,13 @@ public class Cheats : MonoBehaviour
                 CheatMenu.SetActive(false);
                 isCheating = false;
             }
-            else if (inventory.activeSelf) // Si el inventario está activo, también se cierra con Escape
+            else if (inventoryObject != null && inventoryObject.activeSelf) // Verificar si inventoryObject no es nulo y está activo
             {
-                inventory.SetActive(false);
+                inventoryObject.SetActive(false);
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.L)) // Suponiendo que la tecla C activa/desactiva los cheats
+        if (Input.GetKeyDown(KeyCode.L)) // Suponiendo que la tecla L activa/desactiva los cheats
         {
             if (isCheating)
             {
@@ -73,13 +74,13 @@ public class Cheats : MonoBehaviour
                 isCheating = true;
             }
 
-            if (inventory.activeSelf)
+            if (inventoryObject != null && inventoryObject.activeSelf) // Verificar si inventoryObject no es nulo y está activo
             {
-                inventory.SetActive(false);
+                inventoryObject.SetActive(false);
             }
-            else
+            else if (inventoryObject != null) // Verificar si inventoryObject no es nulo antes de activarlo
             {
-                inventory.SetActive(true);
+                inventoryObject.SetActive(true);
             }
         }
 
@@ -114,7 +115,6 @@ public class Cheats : MonoBehaviour
 
         Debug.Log("Max Laser recargado");
     }
-
 
     public void maxHealth()
     {
@@ -241,32 +241,6 @@ public class Cheats : MonoBehaviour
         }
     }
 
-    public void HideDarkCircle()
-    {
-        if (DarkCircle != null)
-        {
-            var caveLighting = DarkCircle.GetComponent<CaveLighting>();
-            if (caveLighting != null)
-            {
-                caveLighting.lightCircle.SetActive(false);
-                caveLighting.darkCircle.SetActive(false);
-                Debug.Log("Hide Dark Circle");
-            }
-        }
-    }
-
-    public void ShowDarkCircle()
-    {
-        if (DarkCircle != null)
-        {
-            var caveLighting = DarkCircle.GetComponent<CaveLighting>();
-            if (caveLighting != null)
-            {
-                caveLighting.lightCircle.SetActive(true);
-                caveLighting.darkCircle.SetActive(true);
-            }
-        }
-    }
     public void SpawnOven()
     {
         if (player != null)

@@ -11,6 +11,8 @@ TagManager:
   - Ore rare
   - Bedrock
   - Bench
+  - Ore legendary
+  - SpaceShip
   layers:
   - Default
   - TransparentFX

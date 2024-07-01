@@ -53,13 +53,13 @@ public class BatController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
-    {
-        if (!isKnockbackActive)
-        {
-            rb.velocity = velocity;
-        }
-    }
+    // void FixedUpdate()
+    // {
+    //     if (!isKnockbackActive)
+    //     {
+    //         rb.velocity = velocity;
+    //     }
+    // }
 
     void OnCollisionEnter2D(Collision2D collision)
     {

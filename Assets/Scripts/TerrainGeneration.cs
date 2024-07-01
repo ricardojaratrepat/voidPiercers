@@ -21,6 +21,11 @@ public class TerrainGeneration : MonoBehaviour
     public GameObject ButterflyPrefab;
 
     public GameObject BenchPrefab;
+    public GameObject SpaceShipPrefab;
+    private bool spaceShipPlaced = false;
+
+
+
 
     public float terrainFreq = 0.05f;
     public float caveFreq = 0.05f;
@@ -154,6 +159,20 @@ public class TerrainGeneration : MonoBehaviour
                 else
                 {
                     tileSprite = tileAtlas.grass.tileSprite;
+                    if (y == Mathf.FloorToInt(height) - 1)
+                    {
+                        tileSprite = tileAtlas.grass.tileSprite;
+
+                        // Intentar colocar la nave espacial flotando sobre la superficie
+                        if (!spaceShipPlaced && Random.value < 0.01f) // 1% de probabilidad por cada bloque de superficie
+                        {
+                            float floatHeight = Random.Range(3f, 5f); // La nave flotará entre 3 y 5 unidades sobre el suelo
+                            Vector3 spaceShipPosition = new Vector3(x, y + 1 + floatHeight, 0);
+                            Instantiate(SpaceShipPrefab, spaceShipPosition, Quaternion.identity);
+                            spaceShipPlaced = true;
+                        }
+                    }
+
                 }
 
                 if (generateCaves)
@@ -200,6 +219,15 @@ public class TerrainGeneration : MonoBehaviour
                 }
             }
         }
+        if (!spaceShipPlaced)
+        {
+            int randomX = Random.Range(0, worldSize);
+            float surfaceHeight = Mathf.PerlinNoise((randomX + seed) * terrainFreq, seed * terrainFreq) * heightMultiplier + heightAddition;
+            float floatHeight = Random.Range(3f, 5f); // La nave flotará entre 3 y 5 unidades sobre el suelo
+            Vector3 spaceShipPosition = new Vector3(randomX, Mathf.FloorToInt(surfaceHeight) + floatHeight, 0);
+            Instantiate(SpaceShipPrefab, spaceShipPosition, Quaternion.identity);
+        }
+
         Debug.Log($"Posiciones potenciales para benches: {potentialBenchPositions.Count}");
         PlaceBenchPrefabs();
     }
@@ -336,7 +364,7 @@ public class TerrainGeneration : MonoBehaviour
         newTile.transform.position = new Vector2(x + 0.5f, y + 0.5f);
 
         // Asigna el tag "Ore" si el sprite es el de carbón
-        if (tileSprite == tileAtlas.coal.tileSprite || tileSprite == tileAtlas.iron.tileSprite)
+        if (tileSprite == tileAtlas.coal.tileSprite || tileSprite == tileAtlas.iron.tileSprite || tileSprite == tileAtlas.alfa_crystal.tileSprite)
         {
             newTile.tag = "Ore basic";
         }
@@ -344,9 +372,13 @@ public class TerrainGeneration : MonoBehaviour
         {
             newTile.tag = "Ore medium";
         }
-        else if (tileSprite == tileAtlas.alfa_crystal.tileSprite || tileSprite == tileAtlas.uranio.tileSprite || tileSprite == tileAtlas.platino.tileSprite || tileSprite == tileAtlas.titanio.tileSprite || tileSprite == tileAtlas.mugufin.tileSprite)
+        else if (tileSprite == tileAtlas.uranio.tileSprite || tileSprite == tileAtlas.platino.tileSprite || tileSprite == tileAtlas.titanio.tileSprite)
         {
             newTile.tag = "Ore rare";
+        }
+        else if(tileSprite == tileAtlas.mugufin.tileSprite)
+        {
+            newTile.tag = "Ore legendary";
         }
         else if (tileSprite == tileAtlas.bedrock.tileSprite)
         {

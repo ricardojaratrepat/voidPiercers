@@ -10,6 +10,7 @@ namespace Laser
         private LineRenderer lineRenderer;
         private readonly float maxDistance = 10f;
         private Vector3 currentEndPosition;
+        public float laserDamage = 0.5f;
         public LayerMask layerMask; // Añadir una variable para la máscara de capa
 
         private InventoryManager inventoryManager;
@@ -20,6 +21,7 @@ namespace Laser
             lineRenderer = GetComponent<LineRenderer>();
             lineRenderer.positionCount = 2;
             currentEndPosition = transform.position + Vector3.right * maxDistance; // Inicializar con alguna dirección
+            LaserState.currentDuration = 0.0f;
         }
 
         void Update()
@@ -69,7 +71,7 @@ namespace Laser
                 {
                     targetEndPosition = hit.point;
                     // Destroy(hit.collider.gameObject);
-                    hit.collider.gameObject.GetComponent<EnemyHealth>().TakeDamage(0.5f);
+                    hit.collider.gameObject.GetComponent<EnemyHealth>().TakeDamage(laserDamage);
                 }
             }
 
